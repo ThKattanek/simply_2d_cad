@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de_DE" sourcelanguage="en_US">
+<context>
+    <name>MainWindow</name>
+    <message>
+        <source>&amp;Sprache</source>
+        <translation type="vanished">&amp;Language</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="14"/>
+        <source>Simply2DCad by Thorsten Kattanek</source>
+        <translation>Simply2DCad von Thorsten Kattanek</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="27"/>
+        <location filename="mainwindow.cpp" line="92"/>
+        <source>&amp;Language</source>
+        <translation>&amp;Sprache</translation>
+    </message>
+</context>
+</TS>

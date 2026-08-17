@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTranslator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +18,15 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+protected:
+    void changeEvent(QEvent *event) override;
+
 private:
+    void createLanguageMenu();
+    void switchLanguage(const QString &qmFileName);
+
     Ui::MainWindow *ui;
+    QTranslator m_translator;
+    QMenu *m_langMenu = nullptr;
 };
 #endif // MAINWINDOW_H
