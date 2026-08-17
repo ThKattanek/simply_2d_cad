@@ -96,3 +96,8 @@ void MainWindow::changeEvent(QEvent *event)
     // Basisklasse aufrufen, damit das normale Event-Handling weiterläuft
     QMainWindow::changeEvent(event);
 }
+void MainWindow::on_action_Close_triggered()
+{
+    close();
+}
+

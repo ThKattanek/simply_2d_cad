@@ -13,6 +13,16 @@
         <translation>Simply2DCad von Thorsten Kattanek</translation>
     </message>
     <message>
+        <location filename="mainwindow.ui" line="28"/>
+        <source>&amp;File</source>
+        <translation>&amp;Datei</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="37"/>
+        <source>&amp;Exit</source>
+        <translation>&amp;Beenden</translation>
+    </message>
+    <message>
         <location filename="mainwindow.cpp" line="27"/>
         <location filename="mainwindow.cpp" line="92"/>
         <source>&amp;Language</source>

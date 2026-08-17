@@ -21,6 +21,9 @@ public:
 protected:
     void changeEvent(QEvent *event) override;
 
+private slots:
+    void on_action_Close_triggered();
+
 private:
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
