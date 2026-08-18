@@ -7,14 +7,31 @@
 #include <QMenuBar>
 #include <QActionGroup>
 #include <QApplication>
+#include <QAction>
+
+#define SCENE_START_X -100000
+#define SCENE_START_Y -100000
+#define SCENE_WIDTH 200000
+#define SCENE_HEIGHT 200000
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Szene und View erstellen und in das zentrale Widget einfügen
+    m_cadScene = new CADScene(this, SCENE_START_X, SCENE_START_Y, SCENE_WIDTH, SCENE_HEIGHT);
+    m_cadView = new CADView(m_cadScene, this);
+    setCentralWidget(m_cadView);
+    //showMaximized();
+
+    m_cadScene->setMode(DrawMode::Select);
+
     createLanguageMenu();
     ui->retranslateUi(this);
+
+    createToolBar();
 }
 
 MainWindow::~MainWindow()
@@ -34,7 +51,7 @@ void MainWindow::createLanguageMenu()
     QDir i18nDir(":/i18n/");
     QStringList qmFiles = i18nDir.entryList(QStringList() << "*.qm", QDir::Files);
 
-    for (const QString &fileName : qmFiles) {
+    for (const QString &fileName : std::as_const(qmFiles)) {
         // Der Dateiname sieht meist so aus: "simply_2d_cad_de_DE.qm"
         // Wir wollen nur das "de_DE" extrahieren:
         QString localeCode = fileName;
@@ -96,8 +113,29 @@ void MainWindow::changeEvent(QEvent *event)
     // Basisklasse aufrufen, damit das normale Event-Handling weiterläuft
     QMainWindow::changeEvent(event);
 }
+
 void MainWindow::on_action_Close_triggered()
 {
     close();
 }
 
+void MainWindow::createToolBar() {
+    toolBar = addToolBar(tr("Tools"));
+
+    QAction *selectAction = new QAction(tr("Select"), this);
+    connect(selectAction, &QAction::triggered, [this]() {
+        m_cadScene->setMode(DrawMode::Select);
+        //cadView->setDragMode(QGraphicsView::RubberBandDrag); // Auswahl-Rechteck
+    });
+
+    toolBar->addAction(selectAction);
+
+    toolBar->addAction(selectAction);
+
+    QAction *lineAction = new QAction(tr("Line"), this);
+    connect(lineAction, &QAction::triggered, [this]() {
+        m_cadScene->setMode(DrawMode::DrawLine);
+        //cadView->setDragMode(QGraphicsView::NoDrag);
+    });
+    toolBar->addAction(lineAction);
+}

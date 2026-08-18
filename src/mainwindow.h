@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include <QTranslator>
+#include <QToolBar>
+
+#include "./cadview.h"
+#include "./cadscene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,9 +31,14 @@ private slots:
 private:
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
+    void createToolBar();
 
     Ui::MainWindow *ui;
     QTranslator m_translator;
     QMenu *m_langMenu = nullptr;
+    QToolBar *toolBar = nullptr;
+
+    CADView *m_cadView;
+    CADScene *m_cadScene;
 };
 #endif // MAINWINDOW_H
