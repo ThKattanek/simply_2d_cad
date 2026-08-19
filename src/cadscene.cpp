@@ -20,6 +20,9 @@ void CADScene::setMode(DrawMode mode)
 
 void CADScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    switch(event->button())
+    {
+    case Qt::LeftButton:
     if (m_currentMode == DrawMode::DrawLine) {
         if (!m_isDrawing) {
             // Erster Klick: Startpunkt setzen
@@ -46,6 +49,21 @@ void CADScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     } else {
         QGraphicsScene::mousePressEvent(event);
+    }
+    break;
+
+    case Qt::RightButton:
+        if(m_currentMode == DrawMode::DrawLine)
+        {
+            if(m_isDrawing){
+                removeItem(m_previewLine);
+                m_isDrawing = false;
+            }
+            setMode(DrawMode::Select);
+        }
+    break;
+    default:
+        break;
     }
 }
 
