@@ -13,14 +13,18 @@ CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // Cursor auf Kreuz setzen, um den CAD-Charakter zu unterstreichen
     this->setCursor(Qt::CrossCursor);
 
+    // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
     setRenderHint(QPainter::Antialiasing);
     setRenderHint(QPainter::TextAntialiasing);
 
+    // Hintergrundfarbe auf Schwarz setzen, um den klassischen CAD-Look zu erreichen
     setBackgroundBrush(QColor(0,0,0));
 
+    // Die Transformation und Resize-Ankerpunkte auf die Mausposition setzen, damit Zoom und Resize um die Maus herum erfolgen
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
+    // Scrollbars deaktivieren, da wir in CAD normalerweise keine benötigen
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }

@@ -30,8 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     createLanguageMenu();
     ui->retranslateUi(this);
-
-    createToolBar();
 }
 
 MainWindow::~MainWindow()
@@ -117,25 +115,4 @@ void MainWindow::changeEvent(QEvent *event)
 void MainWindow::on_action_Close_triggered()
 {
     close();
-}
-
-void MainWindow::createToolBar() {
-    toolBar = addToolBar(tr("Tools"));
-
-    QAction *selectAction = new QAction(tr("Select"), this);
-    connect(selectAction, &QAction::triggered, [this]() {
-        m_cadScene->setMode(DrawMode::Select);
-        //cadView->setDragMode(QGraphicsView::RubberBandDrag); // Auswahl-Rechteck
-    });
-
-    toolBar->addAction(selectAction);
-
-    toolBar->addAction(selectAction);
-
-    QAction *lineAction = new QAction(tr("Line"), this);
-    connect(lineAction, &QAction::triggered, [this]() {
-        m_cadScene->setMode(DrawMode::DrawLine);
-        //cadView->setDragMode(QGraphicsView::NoDrag);
-    });
-    toolBar->addAction(lineAction);
 }
