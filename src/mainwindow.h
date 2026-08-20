@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QTranslator>
@@ -41,4 +40,3 @@ private:
     CADView *m_cadView;
     CADScene *m_cadScene;
 };
-#endif // MAINWINDOW_H

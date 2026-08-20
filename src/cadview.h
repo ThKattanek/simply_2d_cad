@@ -1,5 +1,4 @@
-#ifndef CADVIEW_H
-#define CADVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 
@@ -11,5 +10,3 @@ public:
 protected:
     void showEvent(QShowEvent *event) override;
 };
-
-#endif // CADVIEW_H

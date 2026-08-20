@@ -12,8 +12,11 @@ qt_add_executable(simply_2d_cad
     src/main.cpp
     src/mainwindow.cpp src/mainwindow.h
     src/mainwindow.ui
-    src/cadview.cpp src/cadview.h
-    src/cadscene.cpp src/cadscene.h
+    src/cadview.h src/cadview.cpp
+    src/cadscene.h src/cadscene.cpp
+    src/cadtool.h
+    src/cadtoolmanager.h src/cadtoolmanager.cpp
+    src/linetool.h src/linetool.cpp
 )
 
 qt_add_translations(

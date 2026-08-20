@@ -1,5 +1,4 @@
-#ifndef CADSCENE_H
-#define CADSCENE_H
+#pragma once
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
@@ -30,5 +29,3 @@ private:
     QPointF m_startPoint;
     QGraphicsLineItem* m_previewLine = nullptr;
 };
-
-#endif // CADSCENE_H
