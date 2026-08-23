@@ -9,12 +9,14 @@ void LineTool::mousePressEvent(CADScene* scene, QGraphicsSceneMouseEvent* event)
         m_startPoint = event->scenePos();
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_startPoint), QPen(Qt::yellow, 1));
     }
+    qDebug() << "MousePressEvent LINE";
 }
 
 void LineTool::mouseMoveEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) {
     if (m_tempLine) {
         m_tempLine->setLine(QLineF(m_startPoint, event->scenePos()));
     }
+    qDebug() << "MouseMoveEvent LINE";
 }
 
 void LineTool::mouseReleaseEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) {
@@ -23,4 +25,14 @@ void LineTool::mouseReleaseEvent(CADScene* scene, QGraphicsSceneMouseEvent* even
         m_tempLine->setFlag(QGraphicsItem::ItemIsSelectable);
         m_tempLine = nullptr;
     }
+    qDebug() << "MouseReleaseEvent LINE";
+}
+
+void LineTool::deactivate(CADScene* scene) {
+    if (m_tempLine) {
+        scene->removeItem(m_tempLine);
+        delete m_tempLine;
+        m_tempLine = nullptr;
+    }
+    qDebug() << "Deactivate LINE";
 }

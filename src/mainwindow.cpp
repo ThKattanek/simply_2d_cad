@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "linetool.h"
 #include "ui_mainwindow.h"
 
 #include <QDir>
@@ -8,6 +9,8 @@
 #include <QActionGroup>
 #include <QApplication>
 #include <QAction>
+
+#include "./cadtoolmanager.h"
 
 #define SCENE_START_X -100000
 #define SCENE_START_Y -100000
@@ -19,17 +22,24 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    // Szene und View erstellen und in das zentrale Widget einfügen
-    m_cadScene = new CADScene(this, SCENE_START_X, SCENE_START_Y, SCENE_WIDTH, SCENE_HEIGHT);
-    m_cadView = new CADView(m_cadScene, this);
-    setCentralWidget(m_cadView);
-    //showMaximized();
-
-    m_cadScene->setMode(DrawMode::Select);
-
     createLanguageMenu();
     ui->retranslateUi(this);
+
+    m_toolManager = new CADToolManager(this);
+    m_cadScene = new CADScene(m_toolManager, this);
+    m_cadView = new CADView(m_cadScene, this);
+    setCentralWidget(m_cadView);
+
+    // 1. Werkzeuge unter den objectNames aus der UI (MainWindow.ui) registrieren​
+    //m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
+    m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
+
+    // 2. UI-Actions automatisch verknüpfen​
+    //m_toolManager->bindAction(ui->actionToolSelect);
+    m_toolManager->bindAction(ui->actionToolLine);
+
+    // Standard-Werkzeug aktivieren​
+    ui->actionToolSelect->trigger();
 }
 
 MainWindow::~MainWindow()

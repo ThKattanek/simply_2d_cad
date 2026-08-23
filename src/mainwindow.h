@@ -6,6 +6,7 @@
 
 #include "./cadview.h"
 #include "./cadscene.h"
+#include "./cadtoolmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,4 +40,5 @@ private:
 
     CADView *m_cadView;
     CADScene *m_cadScene;
+    CADToolManager *m_toolManager;
 };
