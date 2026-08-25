@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include <QTranslator>
 #include <QToolBar>
+#include <QLabel>
 
 #include "./cadview.h"
 #include "./cadscene.h"
@@ -26,6 +27,7 @@ protected:
     void changeEvent(QEvent *event) override;
 
 private slots:
+    void updateCursorPosition(const QPointF& position);
     void on_action_Close_triggered();
 
 private:
@@ -37,6 +39,7 @@ private:
     QTranslator m_translator;
     QMenu *m_langMenu = nullptr;
     QToolBar *toolBar = nullptr;
+    QLabel *m_coordLabel = nullptr;
 
     CADView *m_cadView;
     CADScene *m_cadScene;

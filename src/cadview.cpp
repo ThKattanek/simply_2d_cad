@@ -4,27 +4,27 @@
 
 CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
 {
-    // Die Szene setzen, die im Konstruktor übergeben wurde
+    // Set the scene passed in the constructor
     setScene(scene);
 
-    // Die Y-Achse invertieren, damit die Koordinaten wie in CAD üblich sind (Y nach oben)
+    // Invert the Y-axis to match the typical CAD coordinate system (Y upwards)
     scale(1, -1);
 
-    // Cursor auf Kreuz setzen, um den CAD-Charakter zu unterstreichen
+    // Set cursor to a cross to emphasize the CAD nature
     this->setCursor(Qt::CrossCursor);
 
     // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
     setRenderHint(QPainter::Antialiasing);
     setRenderHint(QPainter::TextAntialiasing);
 
-    // Hintergrundfarbe auf Schwarz setzen, um den klassischen CAD-Look zu erreichen
+    // Set the background color to black for a classic CAD look
     setBackgroundBrush(QColor(0,0,0));
 
-    // Die Transformation und Resize-Ankerpunkte auf die Mausposition setzen, damit Zoom und Resize um die Maus herum erfolgen
+    // Set the transformation and resize anchors to the mouse position for zooming and resizing around the mouse
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
-    // Scrollbars deaktivieren, da wir in CAD normalerweise keine benötigen
+    // deactivate scrollbars
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }

@@ -6,13 +6,18 @@
 
 class QAction;
 class QActionGroup;
+class CADScene;
 
 #include "cadtool.h"
 
-class CADToolManager : public QObject {
+class CADToolManager : public QObject
+{
     Q_OBJECT
 public:
     explicit CADToolManager(QObject* parent = nullptr);
+
+    // Set the scene for tools to interact with
+    void setScene(CADScene* scene) { m_scene = scene; }
 
     // Registers a new tool with the manager
     void registerTool(const QString& actionName, std::shared_ptr<CADTool> tool);
@@ -28,6 +33,7 @@ signals:
 
 private:
     QMap<QString, std::shared_ptr<CADTool>> m_tools;
+    CADScene* m_scene = nullptr;
     std::shared_ptr<CADTool> m_activeTool;
     QActionGroup* m_actionGroup = nullptr;
 };
