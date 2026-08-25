@@ -10,9 +10,14 @@ qt_standard_project_setup()
 qt_add_executable(simply_2d_cad
     WIN32 MACOSX_BUNDLE
     src/main.cpp
-    src/mainwindow.cpp
-    src/mainwindow.h
+    src/mainwindow.cpp src/mainwindow.h
     src/mainwindow.ui
+    src/cadview.h src/cadview.cpp
+    src/cadscene.h src/cadscene.cpp
+    src/cadtool.h
+    src/cadtoolmanager.h src/cadtoolmanager.cpp
+    src/linetool.h src/linetool.cpp
+    src/selecttool.h src/selecttool.cpp
 )
 
 qt_add_translations(

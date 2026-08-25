@@ -7,6 +7,12 @@
 #include <QMenuBar>
 #include <QActionGroup>
 #include <QApplication>
+#include <QAction>
+
+#include "./cadtoolmanager.h"
+
+#include "./selecttool.h"
+#include "./linetool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,6 +21,32 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     createLanguageMenu();
     ui->retranslateUi(this);
+
+    m_toolManager = new CADToolManager(this);
+    m_cadScene = new CADScene(m_toolManager, this);
+    m_cadView = new CADView(m_cadScene, this);
+
+    m_toolManager->setScene(m_cadScene);
+    setCentralWidget(m_cadView);
+
+    m_coordLabel = new QLabel("X: 0.00 | Y: 0.00", this);
+    m_coordLabel->setMinimumWidth(150);
+    ui->statusbar->addWidget(m_coordLabel);
+
+    // Connect the cursorPositionChanged signal to the updateCursorPosition slot
+    connect(m_cadScene, &CADScene::cursorPositionChanged,
+            this, &MainWindow::updateCursorPosition);
+
+    // Register tools under the objectNames from the UI (MainWindow.ui)
+    m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
+    m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
+
+    // Automatically bind UI actions
+    m_toolManager->bindAction(ui->actionToolSelect);
+    m_toolManager->bindAction(ui->actionToolLine);
+
+    // Set the default tool to SelectTool
+    ui->actionToolSelect->trigger();
 }
 
 MainWindow::~MainWindow()
@@ -26,15 +58,15 @@ void MainWindow::createLanguageMenu()
 {
     m_langMenu = menuBar()->addMenu(tr("&Language"));
 
-    // ActionGroup sorgt dafür, dass immer nur ein Menüpunkt gleichzeitig abgehakt ist (Radio-Button-Verhalten)
+    // Create an exclusive action group for the language menu
     QActionGroup *langGroup = new QActionGroup(this);
     langGroup->setExclusive(true);
 
-    // Durchsuche den internen Ressourcen-Ordner nach kompilierten Übersetzungen
+    // Scan the ":/i18n/" resource directory for .qm files
     QDir i18nDir(":/i18n/");
     QStringList qmFiles = i18nDir.entryList(QStringList() << "*.qm", QDir::Files);
 
-    for (const QString &fileName : qmFiles) {
+    for (const QString &fileName : std::as_const(qmFiles)) {
         // Der Dateiname sieht meist so aus: "simply_2d_cad_de_DE.qm"
         // Wir wollen nur das "de_DE" extrahieren:
         QString localeCode = fileName;
@@ -84,7 +116,7 @@ void MainWindow::switchLanguage(const QString &qmFileName)
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
-        // Wenn du Qt Designer Forms (*.ui Dateien) nutzt:
+        // When using Qt Designer Forms (*.ui files):
         ui->retranslateUi(this);
 
         // Texte, die du in C++ gesetzt hast, müssen hier neu aufgerufen werden:
@@ -93,11 +125,18 @@ void MainWindow::changeEvent(QEvent *event)
         }
     }
 
-    // Basisklasse aufrufen, damit das normale Event-Handling weiterläuft
+    // call the base class event handler to ensure proper event processing
     QMainWindow::changeEvent(event);
 }
+
+void MainWindow::updateCursorPosition(const QPointF &position)
+{
+    m_coordLabel->setText(QString("X: %1 | Y: %2")
+                              .arg(position.x(), 0, 'f', 2)
+                              .arg(position.y(), 0, 'f', 2));
+}
+
 void MainWindow::on_action_Close_triggered()
 {
     close();
 }
-

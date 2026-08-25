@@ -1,8 +1,13 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QTranslator>
+#include <QToolBar>
+#include <QLabel>
+
+#include "./cadview.h"
+#include "./cadscene.h"
+#include "./cadtoolmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,14 +27,21 @@ protected:
     void changeEvent(QEvent *event) override;
 
 private slots:
+    void updateCursorPosition(const QPointF& position);
     void on_action_Close_triggered();
 
 private:
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
+    void createToolBar();
 
     Ui::MainWindow *ui;
     QTranslator m_translator;
     QMenu *m_langMenu = nullptr;
+    QToolBar *toolBar = nullptr;
+    QLabel *m_coordLabel = nullptr;
+
+    CADView *m_cadView;
+    CADScene *m_cadScene;
+    CADToolManager *m_toolManager;
 };
-#endif // MAINWINDOW_H

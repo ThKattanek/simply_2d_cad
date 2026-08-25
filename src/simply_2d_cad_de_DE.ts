@@ -13,20 +13,39 @@
         <translation>Simply2DCad von Thorsten Kattanek</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="28"/>
+        <location filename="mainwindow.ui" line="30"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="37"/>
+        <location filename="mainwindow.ui" line="39"/>
+        <source>toolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="52"/>
         <source>&amp;Exit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="27"/>
-        <location filename="mainwindow.cpp" line="92"/>
+        <location filename="mainwindow.cpp" line="59"/>
+        <location filename="mainwindow.cpp" line="124"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprache</translation>
+    </message>
+    <message>
+        <source>Tools</source>
+        <translation type="vanished">Werkzeuge</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="65"/>
+        <source>Select</source>
+        <translation>Auswählen</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="57"/>
+        <source>Line</source>
+        <translation>Linie</translation>
     </message>
 </context>
 </TS>
