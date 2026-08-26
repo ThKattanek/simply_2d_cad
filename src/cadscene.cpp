@@ -1,6 +1,7 @@
 // CadScene.cpp (Auszug)
 #include "cadscene.h"
 #include "cadtoolmanager.h"
+#include <qgraphicsitem.h>
 #include <qgraphicssceneevent.h>
 
 CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
@@ -8,6 +9,48 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
 {
 
     setSceneRect(-50000, -50000, 100000, 100000); // Set a large scene rect for CAD drawing
+
+    m_dashDotDotPenRed = new QPen(Qt::red, 0);
+    m_dotPenRed = new QPen(Qt::red, 0);
+
+    QList<qreal> pattern1;
+    pattern1 << 9.0   // Strich
+            << 3.0   // Lücke
+            << 3.0   // Punkt 1
+            << 3.0   // Lücke
+            << 3.0   // Punkt 2
+            << 3.0;  // Lücke vor dem nächsten Strich
+    m_dashDotDotPenRed->setDashPattern(pattern1);
+
+    QList<qreal> pattern2;
+    pattern2 << 3.0  // Strich
+             << 3.0; // Lücke
+    m_dotPenRed->setDashPattern(pattern2);
+
+    m_centerHLine = addLine(-5000, 0, 5000, 0, *m_dashDotDotPenRed);
+    m_centerVLine = addLine(0, -5000, 0, 5000, *m_dashDotDotPenRed);
+}
+
+CADScene::~CADScene()
+{
+    CADToolManager* m_toolManager;
+    QGraphicsLineItem* m_centerHLine;
+    QGraphicsLineItem* m_cebterVLine;
+
+    if(m_toolManager != nullptr)
+        delete m_toolManager;
+
+    if(m_centerHLine != nullptr)
+        delete m_centerHLine;
+
+    if(m_centerVLine != nullptr)
+        delete m_centerVLine;
+
+    if(m_dashDotDotPenRed != nullptr)
+        delete m_dashDotDotPenRed;
+
+    if(m_dotPenRed != nullptr)
+        delete m_dotPenRed;
 }
 
 void CADScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
