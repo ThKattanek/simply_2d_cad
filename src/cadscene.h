@@ -1,5 +1,6 @@
 #pragma once
 
+#include "crosshairitem.h"
 #include <QGraphicsScene>
 
 class CADToolManager;
@@ -23,6 +24,7 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    CrosshairItem* m_crosshair = nullptr;
     CADToolManager* m_toolManager = nullptr;
     QGraphicsLineItem* m_centerHLine = nullptr;
     QGraphicsLineItem* m_centerVLine = nullptr;

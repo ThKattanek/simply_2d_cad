@@ -13,8 +13,8 @@ CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // Enable mouse tracking to capture mouse movements even when no buttons are pressed
     setMouseTracking(true);
 
-    // Set cursor to a cross to emphasize the CAD nature
-    this->setCursor(Qt::CrossCursor);
+    // Hide the default cursor, as we will use a custom crosshair cursor in the CAD application
+    this->setCursor(Qt::BlankCursor);
 
     // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
     // setRenderHint(QPainter::Antialiasing);

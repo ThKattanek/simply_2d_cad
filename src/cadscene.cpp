@@ -15,6 +15,12 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
     // Set the scene rectangle to a large area to accommodate CAD drawings
     setSceneRect(SCENE_MIN_X, SCENE_MIN_Y, SCENE_MAX_X - SCENE_MIN_X, SCENE_MAX_Y - SCENE_MIN_Y);
 
+    // Create and add the crosshair item to the scene
+    m_crosshair = new CrosshairItem();
+    m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
+    m_crosshair->setSize(4); // Set the size of the crosshair arms to 5 units
+    addItem(m_crosshair);
+
     // Create a dashed line pattern for the center lines
     QList<qreal> pattern1;
     pattern1 << 9.0   // Strich
@@ -63,7 +69,12 @@ void CADScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void CADScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
+    // Update the position of the crosshair item to follow the mouse cursor
+    if(m_crosshair != nullptr) {
+        m_crosshair->setPosition(event->scenePos());
+    }
 
+    // Update the crosshair position based on the mouse movement
     emit cursorPositionChanged(event->scenePos());
 
     if (auto tool = m_toolManager->activeTool()) {
