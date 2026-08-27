@@ -18,6 +18,6 @@ void PointTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event
     }
 }
 
-void PointTool::deactivate(CadScene *scene)
+void PointTool::deactivate(CadScene *)
 {
 }
