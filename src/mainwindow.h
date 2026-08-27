@@ -41,7 +41,7 @@ private:
     QToolBar *toolBar = nullptr;
     QLabel *m_coordLabel = nullptr;
 
-    CADView *m_cadView;
-    CADScene *m_cadScene;
-    CADToolManager *m_toolManager;
+    CADView *m_cadView = nullptr;
+    CADScene *m_cadScene = nullptr;
+    CADToolManager *m_toolManager = nullptr;
 };

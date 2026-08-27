@@ -10,12 +10,15 @@ CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // Invert the Y-axis to match the typical CAD coordinate system (Y upwards)
     scale(1, -1);
 
-    // Set cursor to a cross to emphasize the CAD nature
-    this->setCursor(Qt::CrossCursor);
+    // Enable mouse tracking to capture mouse movements even when no buttons are pressed
+    setMouseTracking(true);
+
+    // Hide the default cursor, as we will use a custom crosshair cursor in the CAD application
+    this->setCursor(Qt::BlankCursor);
 
     // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
-    setRenderHint(QPainter::Antialiasing);
-    setRenderHint(QPainter::TextAntialiasing);
+    // setRenderHint(QPainter::Antialiasing);
+    // setRenderHint(QPainter::TextAntialiasing);
 
     // Set the background color to black for a classic CAD look
     setBackgroundBrush(QColor(0,0,0));

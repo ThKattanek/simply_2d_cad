@@ -52,6 +52,15 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    if(m_cadView != nullptr)
+        delete m_cadView;
+
+    if(m_cadScene != nullptr)
+        delete m_cadScene;
+
+    if(m_toolManager != nullptr)
+        delete m_toolManager;
 }
 
 void MainWindow::createLanguageMenu()
@@ -131,9 +140,9 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::updateCursorPosition(const QPointF &position)
 {
-    m_coordLabel->setText(QString("X: %1 | Y: %2")
-                              .arg(position.x(), 0, 'f', 2)
-                              .arg(position.y(), 0, 'f', 2));
+    m_coordLabel->setText(QString("X: %1 | Y: %2 mm")
+                              .arg(position.x(), 0, 'f', 3)
+                              .arg(position.y(), 0, 'f', 3));
 }
 
 void MainWindow::on_action_Close_triggered()

@@ -10,11 +10,11 @@ class CADTool
 public:
     virtual ~CADTool() = default;
 
-    virtual void mousePressEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) {}
-    virtual void mouseMoveEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) {}
-    virtual void mouseReleaseEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) {}
-    virtual void keyPressEvent(CADScene* scene, QKeyEvent* event) {}
+    virtual void mousePressEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void mouseMoveEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void mouseReleaseEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void keyPressEvent(CADScene* , QKeyEvent* ) {}
 
-    virtual void activate(CADScene* scene) {}
-    virtual void deactivate(CADScene* scene) {}
+    virtual void activate(CADScene* ) {}
+    virtual void deactivate(CADScene* ) {}
 };

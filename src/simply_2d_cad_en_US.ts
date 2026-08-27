@@ -34,8 +34,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="59"/>
-        <location filename="mainwindow.cpp" line="124"/>
+        <location filename="mainwindow.cpp" line="68"/>
+        <location filename="mainwindow.cpp" line="133"/>
         <source>&amp;Language</source>
         <translation type="unfinished"></translation>
     </message>
