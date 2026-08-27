@@ -52,6 +52,9 @@ CADScene::~CADScene()
     if(m_centerVLine != nullptr)
         delete m_centerVLine;
 
+    if(m_crosshair != nullptr)
+        delete m_crosshair;
+
     if(m_dashDotDotPenRed != nullptr)
         delete m_dashDotDotPenRed;
 
