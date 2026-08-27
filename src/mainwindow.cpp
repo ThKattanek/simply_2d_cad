@@ -52,6 +52,15 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    if(m_cadView != nullptr)
+        delete m_cadView;
+
+    if(m_cadScene != nullptr)
+        delete m_cadScene;
+
+    if(m_toolManager != nullptr)
+        delete m_toolManager;
 }
 
 void MainWindow::createLanguageMenu()

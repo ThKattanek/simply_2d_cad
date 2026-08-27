@@ -33,13 +33,6 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
 
 CADScene::~CADScene()
 {
-    CADToolManager* m_toolManager;
-    QGraphicsLineItem* m_centerHLine;
-    QGraphicsLineItem* m_cebterVLine;
-
-    if(m_toolManager != nullptr)
-        delete m_toolManager;
-
     if(m_centerHLine != nullptr)
         delete m_centerHLine;
 
