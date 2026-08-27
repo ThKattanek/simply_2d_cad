@@ -45,6 +45,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionToolSelect"/>
+   <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
   </widget>
   <action name="action_Close">
@@ -63,6 +64,14 @@
   <action name="actionToolSelect">
    <property name="text">
     <string>Select</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolPoint">
+   <property name="text">
+    <string>Point</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

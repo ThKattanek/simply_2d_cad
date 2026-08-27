@@ -5,7 +5,7 @@
 #include <QPen>
 #include <QKeyEvent>
 
-void LineTool::mousePressEvent(CADScene* scene, QGraphicsSceneMouseEvent* event)
+void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -32,7 +32,7 @@ void LineTool::mousePressEvent(CADScene* scene, QGraphicsSceneMouseEvent* event)
     }
 }
 
-void LineTool::mouseMoveEvent(CADScene* , QGraphicsSceneMouseEvent* event)
+void LineTool::mouseMoveEvent(CadScene* , QGraphicsSceneMouseEvent* event)
 {
     if (m_tempLine)
     {
@@ -40,23 +40,23 @@ void LineTool::mouseMoveEvent(CADScene* , QGraphicsSceneMouseEvent* event)
     }
 }
 
-void LineTool::mouseReleaseEvent(CADScene* , QGraphicsSceneMouseEvent* )
+void LineTool::mouseReleaseEvent(CadScene* , QGraphicsSceneMouseEvent* )
 {
     // No action needed on mouse release for this tool
 }
 
-void LineTool::keyPressEvent(CADScene *scene, QKeyEvent *event)
+void LineTool::keyPressEvent(CadScene *scene, QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape && m_lineState == LineState::Drawing)
         cancelDrawing(scene);
 }
 
-void LineTool::deactivate(CADScene* scene)
+void LineTool::deactivate(CadScene* scene)
 {
     cancelDrawing(scene);
 }
 
-void LineTool::cancelDrawing(CADScene *scene)
+void LineTool::cancelDrawing(CadScene *scene)
 {
     m_lineState = LineState::Idle;
     if (m_tempLine)

@@ -2,25 +2,25 @@
 #include <QWheelEvent>
 #include <qgraphicsitem.h>
 
-CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
+CadView::CadView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
 {
     // Set the scene passed in the constructor
     setScene(scene);
 
-    // Invert the Y-axis to match the typical CAD coordinate system (Y upwards)
+    // Invert the Y-axis to match the typical Cad coordinate system (Y upwards)
     scale(1, -1);
 
     // Enable mouse tracking to capture mouse movements even when no buttons are pressed
     setMouseTracking(true);
 
-    // Hide the default cursor, as we will use a custom crosshair cursor in the CAD application
+    // Hide the default cursor, as we will use a custom crosshair cursor in the Cad application
     this->setCursor(Qt::BlankCursor);
 
     // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
     // setRenderHint(QPainter::Antialiasing);
     // setRenderHint(QPainter::TextAntialiasing);
 
-    // Set the background color to black for a classic CAD look
+    // Set the background color to black for a classic Cad look
     setBackgroundBrush(QColor(0,0,0));
 
     // Set the transformation and resize anchors to the mouse position for zooming and resizing around the mouse
@@ -32,7 +32,7 @@ CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void CADView::showEvent(QShowEvent *event)
+void CadView::showEvent(QShowEvent *event)
 {
     QGraphicsView::showEvent(event);
     this->fitInView(QRectF(-100, -100, 200, 200), Qt::KeepAspectRatio);

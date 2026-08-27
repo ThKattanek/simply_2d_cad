@@ -13,6 +13,7 @@
 
 #include "./selecttool.h"
 #include "./linetool.h"
+#include "./pointtool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,9 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
-    m_toolManager = new CADToolManager(this);
-    m_cadScene = new CADScene(m_toolManager, this);
-    m_cadView = new CADView(m_cadScene, this);
+    m_toolManager = new CadToolManager(this);
+    m_cadScene = new CadScene(m_toolManager, this);
+    m_cadView = new CadView(m_cadScene, this);
 
     m_toolManager->setScene(m_cadScene);
     setCentralWidget(m_cadView);
@@ -34,16 +35,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->addWidget(m_coordLabel);
 
     // Connect the cursorPositionChanged signal to the updateCursorPosition slot
-    connect(m_cadScene, &CADScene::cursorPositionChanged,
+    connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
     // Register tools under the objectNames from the UI (MainWindow.ui)
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
+    m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
     m_toolManager->bindAction(ui->actionToolLine);
+    m_toolManager->bindAction(ui->actionToolPoint);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();

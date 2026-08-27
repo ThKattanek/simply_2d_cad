@@ -23,13 +23,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="52"/>
+        <location filename="mainwindow.ui" line="53"/>
         <source>&amp;Exit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="68"/>
-        <location filename="mainwindow.cpp" line="133"/>
+        <location filename="mainwindow.ui" line="74"/>
+        <source>Point</source>
+        <translation>Punkt</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="71"/>
+        <location filename="mainwindow.cpp" line="136"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprache</translation>
     </message>
@@ -38,12 +43,12 @@
         <translation type="vanished">Werkzeuge</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="65"/>
+        <location filename="mainwindow.ui" line="66"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="57"/>
+        <location filename="mainwindow.ui" line="58"/>
         <source>Line</source>
         <translation>Linie</translation>
     </message>

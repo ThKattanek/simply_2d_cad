@@ -3,18 +3,18 @@
 // Forward declarations
 class QGraphicsSceneMouseEvent;
 class QKeyEvent;
-class CADScene;
+class CadScene;
 
-class CADTool
+class CadTool
 {
 public:
-    virtual ~CADTool() = default;
+    virtual ~CadTool() = default;
 
-    virtual void mousePressEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
-    virtual void mouseMoveEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
-    virtual void mouseReleaseEvent(CADScene* , QGraphicsSceneMouseEvent* ) {}
-    virtual void keyPressEvent(CADScene* , QKeyEvent* ) {}
+    virtual void mousePressEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void mouseMoveEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void mouseReleaseEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
+    virtual void keyPressEvent(CadScene* , QKeyEvent* ) {}
 
-    virtual void activate(CADScene* ) {}
-    virtual void deactivate(CADScene* ) {}
+    virtual void activate(CadScene* ) {}
+    virtual void deactivate(CadScene* ) {}
 };
