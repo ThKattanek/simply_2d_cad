@@ -10,6 +10,9 @@ CADView::CADView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // Invert the Y-axis to match the typical CAD coordinate system (Y upwards)
     scale(1, -1);
 
+    // Enable mouse tracking to capture mouse movements even when no buttons are pressed
+    setMouseTracking(true);
+
     // Set cursor to a cross to emphasize the CAD nature
     this->setCursor(Qt::CrossCursor);
 
