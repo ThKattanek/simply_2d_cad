@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QGraphicsItem>
-#include <qpen.h>
+#include <QPen>
 
 class CrosshairItem : public QGraphicsItem
 {
