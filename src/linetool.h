@@ -11,17 +11,17 @@ enum LineState
     Drawing
 };
 
-class LineTool : public CADTool
+class LineTool : public CadTool
 {
 public:
-    void mousePressEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) override;
-    void mouseMoveEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) override;
-    void mouseReleaseEvent(CADScene* scene, QGraphicsSceneMouseEvent* event) override;
-    void keyPressEvent(CADScene* scene, QKeyEvent* event) override;
-    void deactivate(CADScene* scene) override;
+    void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
+    void keyPressEvent(CadScene* scene, QKeyEvent* event) override;
+    void deactivate(CadScene* scene) override;
 
 private:
-    void cancelDrawing(CADScene* scene);
+    void cancelDrawing(CadScene* scene);
 
     QGraphicsLineItem* m_tempLine = nullptr;
     LineState m_lineState = Idle;

@@ -2,7 +2,7 @@
 
 #include "cadtool.h"
 
-class SelectTool : public CADTool
+class SelectTool : public CadTool
 {
 public:
     SelectTool();

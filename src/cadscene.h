@@ -3,16 +3,16 @@
 #include "crosshairitem.h"
 #include <QGraphicsScene>
 
-class CADToolManager;
+class CadToolManager;
 class QGraphicsSceneEvent;
 class QGraphicsItem;
 
-class CADScene : public QGraphicsScene
+class CadScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit CADScene(CADToolManager* toolManager, QObject* parent = nullptr);
-    ~CADScene();
+    explicit CadScene(CadToolManager* toolManager, QObject* parent = nullptr);
+    ~CadScene();
 
 signals:
     void cursorPositionChanged(const QPointF& position);
@@ -25,7 +25,7 @@ protected:
 
 private:
     CrosshairItem* m_crosshair = nullptr;
-    CADToolManager* m_toolManager = nullptr;
+    CadToolManager* m_toolManager = nullptr;
     QGraphicsLineItem* m_centerHLine = nullptr;
     QGraphicsLineItem* m_centerVLine = nullptr;
 

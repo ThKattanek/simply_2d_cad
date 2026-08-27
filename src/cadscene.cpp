@@ -9,10 +9,10 @@
 #define SCENE_MIN_Y -100000
 #define SCENE_MAX_Y 100000
 
-CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
+CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     : QGraphicsScene(parent), m_toolManager(toolManager)
 {
-    // Set the scene rectangle to a large area to accommodate CAD drawings
+    // Set the scene rectangle to a large area to accommodate Cad drawings
     setSceneRect(SCENE_MIN_X, SCENE_MIN_Y, SCENE_MAX_X - SCENE_MIN_X, SCENE_MAX_Y - SCENE_MIN_Y);
 
     // Create and add the crosshair item to the scene
@@ -47,7 +47,7 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
     m_centerVLine->setZValue(100);
 }
 
-CADScene::~CADScene()
+CadScene::~CadScene()
 {
     if(m_centerHLine != nullptr)
         delete m_centerHLine;
@@ -65,7 +65,7 @@ CADScene::~CADScene()
         delete m_dotPenRed;
 }
 
-void CADScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
+void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (auto tool = m_toolManager->activeTool()) {
         tool->mousePressEvent(this, event);
@@ -73,7 +73,7 @@ void CADScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QGraphicsScene::mousePressEvent(event);
 }
 
-void CADScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     // Update the position of the crosshair item to follow the mouse cursor
     if(m_crosshair != nullptr) {
@@ -89,7 +89,7 @@ void CADScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     QGraphicsScene::mouseMoveEvent(event);
 }
 
-void CADScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+void CadScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     if (auto tool = m_toolManager->activeTool()) {
         tool->mouseReleaseEvent(this, event);
@@ -97,7 +97,7 @@ void CADScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     QGraphicsScene::mouseReleaseEvent(event);
 }
 
-void CADScene::keyPressEvent(QKeyEvent *event)
+void CadScene::keyPressEvent(QKeyEvent *event)
 {
     if (auto tool = m_toolManager->activeTool()) {
         tool->keyPressEvent(this, event);

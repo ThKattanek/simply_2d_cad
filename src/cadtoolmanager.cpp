@@ -3,18 +3,18 @@
 #include <QAction>
 #include <QActionGroup>
 
-CADToolManager::CADToolManager(QObject* parent) : QObject(parent)
+CadToolManager::CadToolManager(QObject* parent) : QObject(parent)
 {
     m_actionGroup = new QActionGroup(this);
     m_actionGroup->setExclusive(true);
 }
 
-void CADToolManager::registerTool(const QString& actionName, std::shared_ptr<CADTool> tool)
+void CadToolManager::registerTool(const QString& actionName, std::shared_ptr<CadTool> tool)
 {
     m_tools[actionName] = tool;
 }
 
-void CADToolManager::bindAction(QAction* action)
+void CadToolManager::bindAction(QAction* action)
 {
     action->setCheckable(true);
     m_actionGroup->addAction(action);

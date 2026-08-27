@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
-    m_toolManager = new CADToolManager(this);
-    m_cadScene = new CADScene(m_toolManager, this);
-    m_cadView = new CADView(m_cadScene, this);
+    m_toolManager = new CadToolManager(this);
+    m_cadScene = new CadScene(m_toolManager, this);
+    m_cadView = new CadView(m_cadScene, this);
 
     m_toolManager->setScene(m_cadScene);
     setCentralWidget(m_cadView);
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->addWidget(m_coordLabel);
 
     // Connect the cursorPositionChanged signal to the updateCursorPosition slot
-    connect(m_cadScene, &CADScene::cursorPositionChanged,
+    connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
     // Register tools under the objectNames from the UI (MainWindow.ui)
