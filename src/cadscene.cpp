@@ -41,7 +41,10 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
 
     // Add the center horizontal and vertical lines to the scene
     m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
+    m_centerHLine->setZValue(100);
+
     m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
+    m_centerVLine->setZValue(100);
 }
 
 CADScene::~CADScene()
