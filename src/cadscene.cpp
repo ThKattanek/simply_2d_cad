@@ -4,15 +4,18 @@
 #include <qgraphicsitem.h>
 #include <qgraphicssceneevent.h>
 
+#define SCENE_MIN_X -100000
+#define SCENE_MAX_X 100000
+#define SCENE_MIN_Y -100000
+#define SCENE_MAX_Y 100000
+
 CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
     : QGraphicsScene(parent), m_toolManager(toolManager)
 {
+    // Set the scene rectangle to a large area to accommodate CAD drawings
+    setSceneRect(SCENE_MIN_X, SCENE_MIN_Y, SCENE_MAX_X - SCENE_MIN_X, SCENE_MAX_Y - SCENE_MIN_Y);
 
-    setSceneRect(-50000, -50000, 100000, 100000); // Set a large scene rect for CAD drawing
-
-    m_dashDotDotPenRed = new QPen(Qt::red, 0);
-    m_dotPenRed = new QPen(Qt::red, 0);
-
+    // Create a dashed line pattern for the center lines
     QList<qreal> pattern1;
     pattern1 << 9.0   // Strich
             << 3.0   // Lücke
@@ -20,15 +23,19 @@ CADScene::CADScene(CADToolManager* toolManager, QObject* parent)
             << 3.0   // Lücke
             << 3.0   // Punkt 2
             << 3.0;  // Lücke vor dem nächsten Strich
+    m_dashDotDotPenRed = new QPen(Qt::red, 0);
     m_dashDotDotPenRed->setDashPattern(pattern1);
 
+    // Create a dotted line pattern for the helper lines
     QList<qreal> pattern2;
     pattern2 << 3.0  // Strich
              << 3.0; // Lücke
+    m_dotPenRed = new QPen(Qt::red, 0);
     m_dotPenRed->setDashPattern(pattern2);
 
-    m_centerHLine = addLine(-5000, 0, 5000, 0, *m_dashDotDotPenRed);
-    m_centerVLine = addLine(0, -5000, 0, 5000, *m_dashDotDotPenRed);
+    // Add the center horizontal and vertical lines to the scene
+    m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
+    m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
 }
 
 CADScene::~CADScene()
