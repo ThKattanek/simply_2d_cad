@@ -1,8 +1,8 @@
-// CadScene.cpp (Auszug)
-#include "cadscene.h"
-#include "cadtoolmanager.h"
-#include <qgraphicsitem.h>
-#include <qgraphicssceneevent.h>
+#include "./cad_scene.h"
+#include "./cad_tool_manager.h"
+
+#include <QGraphicsItem>
+#include <QGraphicsSceneEvent>
 
 #define SCENE_MIN_X -100000
 #define SCENE_MAX_X 100000
@@ -63,6 +63,35 @@ CadScene::~CadScene()
 
     if(m_dotPenRed != nullptr)
         delete m_dotPenRed;
+}
+
+void CadScene::setDocument(CadDocument *document)
+{
+    if(m_document == document)
+        return;
+
+    m_document = document;
+
+    // Wenn ein Objekt zum Modell hinzugefügt wird -> Item für Grafik-Scene bauen
+    connect(m_document, &CadDocument::entityAdded, this, [this](CadEntity* entity) {
+        QGraphicsItem* item = entity->createGraphicsItem();
+        if (item) {
+            addItem(item);
+        }
+    });
+
+    // Wenn ein Objekt gelöscht wird -> Item aus der Grafik-Scene entfernen
+    connect(m_document, &CadDocument::entityRemoved, this, [this](CadEntity* entity) {
+        if (QGraphicsItem* item = entity->getGraphicsItem()) {
+            removeItem(item);
+            delete item; // Löscht die visuelle Darstellung aus der Szene
+        }
+    });
+
+    // Beim Leeren des Dokuments
+    connect(m_document, &CadDocument::documentCleared, this, [this]() {
+        clear(); // Leert die QGraphicsScene (Crosshair etc. danach neu erstellen)
+    });
 }
 
 void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)

@@ -5,13 +5,18 @@
 
 // Base class for CAD entities
 
+enum EntityType {
+    Line,
+    Point
+};
+
 class CadEntity
 {
 public:
     virtual ~CadEntity() = default;
-
+    virtual EntityType type() const = 0;
     virtual QGraphicsItem* createGraphicsItem() = 0;
-    virtual void updateGraphicsItem(QGraphicsItem* item) = 0;
+    virtual void updateGraphicsItem() = 0;
 
     QGraphicsItem* getGraphicsItem() const { return m_graphicsItem; }
     void setGraphicsItem(QGraphicsItem* item) { m_graphicsItem = item; }

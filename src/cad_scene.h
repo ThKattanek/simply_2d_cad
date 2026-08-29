@@ -1,6 +1,7 @@
 #pragma once
 
-#include "crosshairitem.h"
+#include "./crosshair_item.h"
+#include "./cad_document/cad_document.h"
 #include <QGraphicsScene>
 
 class CadToolManager;
@@ -13,6 +14,9 @@ class CadScene : public QGraphicsScene
 public:
     explicit CadScene(CadToolManager* toolManager, QObject* parent = nullptr);
     ~CadScene();
+
+    void setDocument(CadDocument* document);
+    CadDocument* getDocument() const { return m_document; }
 
 signals:
     void cursorPositionChanged(const QPointF& position);
@@ -31,4 +35,6 @@ private:
 
     QPen* m_dashDotDotPenRed = nullptr;
     QPen* m_dotPenRed = nullptr;
+
+    CadDocument* m_document = nullptr;
 };

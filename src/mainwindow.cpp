@@ -9,11 +9,14 @@
 #include <QApplication>
 #include <QAction>
 
-#include "./cadtoolmanager.h"
+#include "./cad_tool_manager.h"
 
-#include "./selecttool.h"
-#include "./linetool.h"
-#include "./pointtool.h"
+#include "./select_tool.h"
+#include "./line_tool.h"
+#include "./point_tool.h"
+
+#include "./cad_document/cad_line.h"
+#include "./cad_document/cad_point.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,11 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    m_cadDocument = new CadDocument(this);
+
     m_toolManager = new CadToolManager(this);
     m_cadScene = new CadScene(m_toolManager, this);
+    m_cadScene->setDocument(m_cadDocument);
+    m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
-    m_toolManager->setScene(m_cadScene);
     setCentralWidget(m_cadView);
 
     m_coordLabel = new QLabel("X: 0.00 | Y: 0.00", this);
@@ -64,6 +70,24 @@ MainWindow::~MainWindow()
 
     if(m_toolManager != nullptr)
         delete m_toolManager;
+
+    for (const auto& entity : m_cadDocument->entities()) {
+        switch (entity->type()) {
+        case EntityType::Line: {
+            auto line = static_cast<CadLine*>(entity.get()); // Sicher, da Typ geprüft!
+            qDebug() << "Linie:" << line->start();
+            break;
+        }
+        case EntityType::Point: {
+            auto point = static_cast<CadPoint*>(entity.get());
+            qDebug() << "Punkt:" << point->position();
+            break;
+        }
+        }
+    }
+
+    if(m_cadDocument != nullptr)
+        delete m_cadDocument;
 }
 
 void MainWindow::createLanguageMenu()

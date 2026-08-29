@@ -1,5 +1,7 @@
-#include "linetool.h"
-#include "cadscene.h"
+#include "./line_tool.h"
+#include "./cad_scene.h"
+#include "./cad_document/cad_line.h"
+
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 #include <QPen>
@@ -21,8 +23,14 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
             m_lineState = LineState::Idle;
             if (m_tempLine)
             {
-                m_tempLine->setPen(QPen(Qt::white, 0));
+                m_endPoint = event->scenePos();
+
+                scene->removeItem(m_tempLine);
+                delete m_tempLine;
                 m_tempLine = nullptr;
+
+                auto newLine = std::make_unique<CadLine>(m_startPoint, m_endPoint);
+                scene->getDocument()->addEntity(std::move(newLine));
             }
         }
     } else if (event->button() == Qt::RightButton && m_lineState == LineState::Drawing)

@@ -1,5 +1,5 @@
-#include "./cadtoolmanager.h"
-#include "./cadscene.h"
+#include "./cad_tool_manager.h"
+#include "./cad_scene.h"
 #include <QAction>
 #include <QActionGroup>
 

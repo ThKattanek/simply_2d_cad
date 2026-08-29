@@ -5,9 +5,10 @@
 #include <QToolBar>
 #include <QLabel>
 
-#include "./cadview.h"
-#include "./cadscene.h"
-#include "./cadtoolmanager.h"
+#include "./cad_view.h"
+#include "./cad_scene.h"
+#include "./cad_document/cad_document.h"
+#include "./cad_tool_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,4 +45,6 @@ private:
     CadView *m_cadView = nullptr;
     CadScene *m_cadScene = nullptr;
     CadToolManager *m_toolManager = nullptr;
+
+    CadDocument *m_cadDocument = nullptr;
 };

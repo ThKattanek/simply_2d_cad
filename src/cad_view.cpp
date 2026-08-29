@@ -1,4 +1,4 @@
-#include "cadview.h"
+#include "cad_view.h"
 #include <QWheelEvent>
 #include <qgraphicsitem.h>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cadtool.h"
+#include "cad_tool.h"
 #include <QPointF>
 
 class QGraphicsLineItem;
@@ -26,4 +26,5 @@ private:
     QGraphicsLineItem* m_tempLine = nullptr;
     LineState m_lineState = Idle;
     QPointF m_startPoint;
+    QPointF m_endPoint;
 };

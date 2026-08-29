@@ -1,7 +1,7 @@
-#ifndef POINTTOOL_H
-#define POINTTOOL_H
+#ifndef POINT_TOOL_H
+#define POINT_TOOL_H
 
-#include "cadtool.h"
+#include "cad_tool.h"
 
 class QGraphicsLineItem;
 
@@ -12,4 +12,4 @@ public:
     void deactivate(CadScene* scene) override;
 };
 
-#endif // POINTTOOL_H
+#endif // POINT_TOOL_H
