@@ -9,9 +9,14 @@ public:
     explicit CadPointItem(QGraphicsItem *parent = nullptr);
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-    void setSize(qreal radius) { m_radius = radius; update(); }
+
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
+    static const QBitmap& getPatternBitmap();
+
     QPen m_pen;
-    qreal m_radius = 8.0; // Radius of the point in pixels
+    bool m_isHovered = false;
 };

@@ -8,7 +8,7 @@ class QAction;
 class QActionGroup;
 class CadScene;
 
-#include "cadtool.h"
+#include "cad_tool.h"
 
 class CadToolManager : public QObject
 {

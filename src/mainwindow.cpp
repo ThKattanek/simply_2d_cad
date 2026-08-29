@@ -8,12 +8,14 @@
 #include <QActionGroup>
 #include <QApplication>
 #include <QAction>
+#include <QFileDialog>
+#include <QMessageBox>
 
-#include "./cadtoolmanager.h"
+#include "./cad_tool_manager.h"
 
-#include "./selecttool.h"
-#include "./linetool.h"
-#include "./pointtool.h"
+#include "./select_tool.h"
+#include "./line_tool.h"
+#include "./point_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,11 +25,14 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    m_cadDocument = new CadDocument(this);
+
     m_toolManager = new CadToolManager(this);
     m_cadScene = new CadScene(m_toolManager, this);
+    m_cadScene->setDocument(m_cadDocument);
+    m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
-    m_toolManager->setScene(m_cadScene);
     setCentralWidget(m_cadView);
 
     m_coordLabel = new QLabel("X: 0.00 | Y: 0.00", this);
@@ -64,6 +69,9 @@ MainWindow::~MainWindow()
 
     if(m_toolManager != nullptr)
         delete m_toolManager;
+
+    if(m_cadDocument != nullptr)
+        delete m_cadDocument;
 }
 
 void MainWindow::createLanguageMenu()
@@ -152,3 +160,25 @@ void MainWindow::on_action_Close_triggered()
 {
     close();
 }
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    if (!fileName.isEmpty()) {
+        if (!m_cadDocument->saveToFile(fileName)) {
+            QMessageBox::warning(this, tr("Error"), tr("The file could not be saved."));
+        }
+    }
+}
+
+
+void MainWindow::on_actionLoad_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    if (!fileName.isEmpty()) {
+        if (!m_cadDocument->loadFromFile(fileName)) {
+            QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
+        }
+    }
+}
+

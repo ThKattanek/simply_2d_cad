@@ -1,4 +1,4 @@
-#include "crosshairitem.h"
+#include "crosshair_item.h"
 #include <QPainter>
 
 CrosshairItem::CrosshairItem(QGraphicsItem *parent) : QGraphicsItem(parent)

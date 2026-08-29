@@ -12,15 +12,19 @@ qt_add_executable(simply_2d_cad
     src/main.cpp
     src/mainwindow.cpp src/mainwindow.h
     src/mainwindow.ui
-    src/cadview.h src/cadview.cpp
-    src/cadscene.h src/cadscene.cpp
-    src/cadtool.h
-    src/cadtoolmanager.h src/cadtoolmanager.cpp
-    src/linetool.h src/linetool.cpp
-    src/selecttool.h src/selecttool.cpp
-    src/crosshairitem.h src/crosshairitem.cpp
-    src/cadpointitem.h src/cadpointitem.cpp
-    src/pointtool.h src/pointtool.cpp
+    src/cad_view.h src/cad_view.cpp
+    src/cad_scene.h src/cad_scene.cpp
+    src/cad_tool.h
+    src/cad_tool_manager.h src/cad_tool_manager.cpp
+    src/line_tool.h src/line_tool.cpp
+    src/select_tool.h src/select_tool.cpp
+    src/crosshair_item.h src/crosshair_item.cpp
+    src/cad_point_item.h src/cad_point_item.cpp
+    src/point_tool.h src/point_tool.cpp
+    src/cad_document/cad_entity.h
+    src/cad_document/cad_line.h
+    src/cad_document/cad_point.h
+    src/cad_document/cad_document.h src/cad_document/cad_document.cpp
 )
 
 qt_add_translations(
