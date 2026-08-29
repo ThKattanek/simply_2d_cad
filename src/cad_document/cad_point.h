@@ -12,6 +12,16 @@ public:
 
     EntityType type() const override { return EntityType::Point; }
 
+    void serialize(QDataStream& stream) const override {
+        stream << static_cast<quint8>(EntityType::Point);
+        stream << m_pos << m_layer;
+    }
+
+    void deserialize(QDataStream& stream) override {
+        stream >> m_pos >> m_layer;
+        updateGraphicsItem();
+    }
+
     QGraphicsItem* createGraphicsItem() override {
         auto item = new CadPointItem();
         item->setPos(m_pos);

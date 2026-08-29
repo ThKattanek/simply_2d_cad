@@ -2,6 +2,7 @@
 
 #include <QGraphicsItem>
 #include <QString>
+#include <QDataStream>
 
 // Base class for CAD entities
 
@@ -15,6 +16,10 @@ class CadEntity
 public:
     virtual ~CadEntity() = default;
     virtual EntityType type() const = 0;
+
+    virtual void serialize(QDataStream& out_stream) const = 0;
+    virtual void deserialize(QDataStream& in_stream) = 0;
+
     virtual QGraphicsItem* createGraphicsItem() = 0;
     virtual void updateGraphicsItem() = 0;
 

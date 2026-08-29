@@ -19,7 +19,11 @@ public:
     // Zugriff auf alle Objekte (z. B. für DXF-Export)
     const std::vector<std::unique_ptr<CadEntity>>& entities() const { return m_entities; }
 
+    // Löscht alle Objekte aus dem Dokument
     void clear();
+
+    bool saveToFile(const QString& filePath) const;
+    bool loadFromFile(const QString& filePath);
 
 signals:
     void entityAdded(CadEntity* entity);

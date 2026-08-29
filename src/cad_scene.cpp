@@ -17,6 +17,7 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
 
     // Create and add the crosshair item to the scene
     m_crosshair = new CrosshairItem();
+    m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
     m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
     m_crosshair->setSize(4); // Set the size of the crosshair arms to 5 units
     addItem(m_crosshair);
@@ -41,9 +42,11 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
 
     // Add the center horizontal and vertical lines to the scene
     m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
+    m_centerHLine->setData(Qt::UserRole + 1, "SystemItem");
     m_centerHLine->setZValue(100);
 
     m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
+    m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
     m_centerVLine->setZValue(100);
 }
 
@@ -63,6 +66,17 @@ CadScene::~CadScene()
 
     if(m_dotPenRed != nullptr)
         delete m_dotPenRed;
+}
+
+void CadScene::clearDocumentItems()
+{
+    for (QGraphicsItem* item : items()) {
+        if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
+            continue; // System-Item -> Stehen lassen!
+        }
+        removeItem(item);
+        delete item;
+    }
 }
 
 void CadScene::setDocument(CadDocument *document)
@@ -90,7 +104,7 @@ void CadScene::setDocument(CadDocument *document)
 
     // Beim Leeren des Dokuments
     connect(m_document, &CadDocument::documentCleared, this, [this]() {
-        clear(); // Leert die QGraphicsScene (Crosshair etc. danach neu erstellen)
+        clearDocumentItems(); // Leert die QGraphicsScene ohne die SystemElemente wie Crosshair und CenterLines zu löschen
     });
 }
 

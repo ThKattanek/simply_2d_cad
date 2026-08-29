@@ -8,15 +8,14 @@
 #include <QActionGroup>
 #include <QApplication>
 #include <QAction>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include "./cad_tool_manager.h"
 
 #include "./select_tool.h"
 #include "./line_tool.h"
 #include "./point_tool.h"
-
-#include "./cad_document/cad_line.h"
-#include "./cad_document/cad_point.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -70,21 +69,6 @@ MainWindow::~MainWindow()
 
     if(m_toolManager != nullptr)
         delete m_toolManager;
-
-    for (const auto& entity : m_cadDocument->entities()) {
-        switch (entity->type()) {
-        case EntityType::Line: {
-            auto line = static_cast<CadLine*>(entity.get()); // Sicher, da Typ geprüft!
-            qDebug() << "Linie:" << line->start();
-            break;
-        }
-        case EntityType::Point: {
-            auto point = static_cast<CadPoint*>(entity.get());
-            qDebug() << "Punkt:" << point->position();
-            break;
-        }
-        }
-    }
 
     if(m_cadDocument != nullptr)
         delete m_cadDocument;
@@ -176,3 +160,25 @@ void MainWindow::on_action_Close_triggered()
 {
     close();
 }
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    if (!fileName.isEmpty()) {
+        if (!m_cadDocument->saveToFile(fileName)) {
+            QMessageBox::warning(this, tr("Error"), tr("The file could not be saved."));
+        }
+    }
+}
+
+
+void MainWindow::on_actionLoad_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    if (!fileName.isEmpty()) {
+        if (!m_cadDocument->loadFromFile(fileName)) {
+            QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
+        }
+    }
+}
+

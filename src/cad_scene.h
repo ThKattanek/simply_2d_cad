@@ -15,6 +15,8 @@ public:
     explicit CadScene(CadToolManager* toolManager, QObject* parent = nullptr);
     ~CadScene();
 
+    void clearDocumentItems();
+
     void setDocument(CadDocument* document);
     CadDocument* getDocument() const { return m_document; }
 

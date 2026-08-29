@@ -13,6 +13,19 @@ public:
 
     EntityType type() const override { return EntityType::Line; }
 
+    void serialize(QDataStream& stream) const override {
+        // 1. Typ schreiben (1 Byte)
+        stream << static_cast<quint8>(EntityType::Line);
+        // 2. Geometriedaten binär schreiben
+        stream << m_start << m_end << m_layer;
+    }
+
+    void deserialize(QDataStream& stream) override {
+        // Geometriedaten in exakt derselben Reihenfolge auslesen
+        stream >> m_start >> m_end >> m_layer;
+        updateGraphicsItem();
+    }
+
     QGraphicsItem* createGraphicsItem() override {
         auto item = new QGraphicsLineItem(QLineF(m_start, m_end));
         item->setPen(QPen(Qt::white, 0)); // Cosmetic Pen
