@@ -38,6 +38,8 @@ private:
     void switchLanguage(const QString &qmFileName);
     void createToolBar();
 
+    void zoomToFitGeometry();
+
     Ui::MainWindow *ui;
     QTranslator m_translator;
     QMenu *m_langMenu = nullptr;
