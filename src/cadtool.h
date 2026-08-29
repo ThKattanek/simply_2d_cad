@@ -5,6 +5,8 @@ class QGraphicsSceneMouseEvent;
 class QKeyEvent;
 class CadScene;
 
+// Base class for CAD tools
+
 class CadTool
 {
 public:

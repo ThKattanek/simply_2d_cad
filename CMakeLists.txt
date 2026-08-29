@@ -21,6 +21,7 @@ qt_add_executable(simply_2d_cad
     src/crosshairitem.h src/crosshairitem.cpp
     src/cadpointitem.h src/cadpointitem.cpp
     src/pointtool.h src/pointtool.cpp
+    src/cadentity.h
 )
 
 qt_add_translations(
