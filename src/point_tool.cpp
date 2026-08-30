@@ -6,11 +6,13 @@
 
 void PointTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(scene);
+
     if (event->button() == Qt::LeftButton)
     {
-        // Add a point at the clicked position        
-        auto newLine = std::make_unique<CadPoint>(event->scenePos());
-        scene->getDocument()->addEntity(std::move(newLine));
+        // Add a point at the clicked position
+        auto newPoint = std::make_unique<CadPoint>(event->scenePos());
+        scene->getDocument()->addEntity(std::move(newPoint));
     }
 }
 

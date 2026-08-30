@@ -1,12 +1,15 @@
 #include "cad_view.h"
+#include "cad_scene.h"
 
 #include <QWheelEvent>
 #include <QGraphicsItem>
 #include <QApplication>
+#include <QScrollBar>
 
 CadView::CadView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent)
 {
     // Set the scene passed in the constructor
+    m_cadScene = dynamic_cast<CadScene*>(scene);
     setScene(scene);
 
     // Invert the Y-axis to match the typical Cad coordinate system (Y upwards)
@@ -44,18 +47,14 @@ void CadView::showEvent(QShowEvent *event)
 
 void CadView::mousePressEvent(QMouseEvent *event)
 {
-    // 1. MITTLERE MAUSTASTE: Pan (Bildausschnitt verschieben)
+    // 1. MITTLERE MAUSTASTE: Pan starten
     if (event->button() == Qt::MiddleButton)
     {
+        m_isMiddleMousePanning = true;
+        m_panStartMousePos = event->pos();
+
         QApplication::setOverrideCursor(Qt::BlankCursor);
-
-        setDragMode(QGraphicsView::ScrollHandDrag);
-
-        // Event simulieren, damit QGraphicsView das Verschieben sofort startet
-        QMouseEvent fakeEvent(QEvent::MouseButtonPress, event->position(), event->scenePosition(), event->globalPosition(),
-                              Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
-        QGraphicsView::mousePressEvent(&fakeEvent);
-        return;
+        return; // Kein QGraphicsView::mousePressEvent aufrufen -> Keinerlei Fake-Events, keine Punkte!
     }
 
     // 2. RECHTE MAUSTASTE: Zoom vorbereiten
@@ -69,42 +68,47 @@ void CadView::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    // Für die linke Maustaste (Werkzeuge) normales Verhalten durchreichen
+    // 3. LINKE MAUSTASTE: Durchreichen an Werkzeuge / Szene
     QGraphicsView::mousePressEvent(event);
 }
 
 void CadView::mouseMoveEvent(QMouseEvent *event) {
+    // MITTLERE MAUSTASTE: Verschieben (Pan) ausführen
+    if (m_isMiddleMousePanning)
+    {
+        QPoint delta = event->pos() - m_panStartMousePos;
+        m_panStartMousePos = event->pos();
 
-    if (event->buttons() & Qt::MiddleButton) {
-        // Stellt sicher, dass Qt den Hand-Cursor während des Ziehens nicht erzwingt
-        viewport()->setCursor(Qt::BlankCursor);
+        // Scrollbars direkt gemäß der Mausbewegung verschieben
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - delta.x());
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - delta.y());
+
+        // HIER DER ZUSATZ: Fadenkreuz-Position auf die NEUE Szenen-Koordinate anpassen
+        if (m_cadScene->getCrosshairItem()) {
+            m_cadScene->getCrosshairItem()->setPosition(mapToScene(event->pos()));
+        }
+
+        return; // Verhindert, dass das Zeichenwerkzeug das Move-Event erhält
     }
 
-    if (m_isRightMouseZooming) {
+    // RECHTE MAUSTASTE: Zoom ausführen
+    if (m_isRightMouseZooming)
+    {
         int deltaY = m_lastMousePos.y() - event->pos().y();
         m_lastMousePos = event->pos();
 
         if (deltaY != 0) {
             double factor = (deltaY > 0) ? 1.03 : 0.97;
-
             double currentScale = transform().m11();
+
             if ((factor > 1.0 && currentScale < 12000.0) || (factor < 1.0 && currentScale > 0.001)) {
-
-                // 1. Bildschirm-Position des Klickpunkts VOR dem Skalieren speichern
                 QPointF anchorViewportPos = mapFromScene(m_zoomAnchorScenePos);
-
-                // 2. Skalieren durchführen
                 scale(factor, factor);
-
-                // 3. Berechnen, wo das neue Zentrum der Szenenansicht liegen muss,
-                // damit der geklickte Punkt starr an 'anchorViewportPos' auf dem Bildschirm bleibt
                 QPointF newCenterScene = m_zoomAnchorScenePos - (mapToScene(anchorViewportPos.toPoint()) - mapToScene(viewport()->rect().center()));
-
-                // 4. Die View exakt auf dieses neue Szenenzentrum ausrichten
                 centerOn(newCenterScene);
             }
         }
-        return; // Verhindert, dass das Zeichen-Werkzeug verarbeitet wird
+        return;
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -115,16 +119,14 @@ void CadView::mouseReleaseEvent(QMouseEvent *event)
     // 1. MITTLERE MAUSTASTE: Pan beenden
     if (event->button() == Qt::MiddleButton)
     {
-        QMouseEvent fakeEvent(QEvent::MouseButtonRelease, event->position(), event->scenePosition(), event->globalPosition(),
-                              Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
-        QGraphicsView::mouseReleaseEvent(&fakeEvent);
-        setDragMode(QGraphicsView::NoDrag);
+        m_isMiddleMousePanning = false;
         QApplication::restoreOverrideCursor();
         return;
     }
 
     // 2. RECHTE MAUSTASTE: Zoom beenden
-    if (event->button() == Qt::RightButton) {
+    if (event->button() == Qt::RightButton)
+    {
         m_isRightMouseZooming = false;
         QApplication::restoreOverrideCursor();
         return;

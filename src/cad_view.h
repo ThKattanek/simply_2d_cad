@@ -2,6 +2,8 @@
 
 #include <QGraphicsView>
 
+class CadScene;
+
 class CadView : public QGraphicsView
 {
     Q_OBJECT
@@ -19,4 +21,7 @@ private:
     bool m_isRightMouseZooming = false;
     QPoint m_lastMousePos;
     QPointF m_zoomAnchorScenePos;
+    bool m_isMiddleMousePanning = false;
+    QPoint m_panStartMousePos;
+    CadScene* m_cadScene = nullptr;
 };
