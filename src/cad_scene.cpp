@@ -18,8 +18,8 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     // Create and add the crosshair item to the scene
     m_crosshair = new CrosshairItem();
     m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
+    m_crosshair->setZValue(10000); // Ensure the crosshair is on top of other items
     m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
-    m_crosshair->setSize(4); // Set the size of the crosshair arms to 5 units
     addItem(m_crosshair);
 
     // Create a dashed line pattern for the center lines

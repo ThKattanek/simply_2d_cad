@@ -133,6 +133,45 @@ void MainWindow::switchLanguage(const QString &qmFileName)
     }
 }
 
+void MainWindow::zoomToFitGeometry()
+{
+    QRectF bounds;
+
+    // Alle Items der Szene durchgehen
+    for (QGraphicsItem* item : m_cadScene->items()) {
+
+        // System-Items (Mittellinien, Fadenkreuz) überspringen
+        QString itemType = item->data(Qt::UserRole + 1).toString();
+        if (itemType == "SystemItem") {
+            continue; // Mittellinien und Fadenkreuz ignorieren!
+        }
+
+        // Nur sichtbare Geometrie-Items einrechnen
+        if (item->isVisible()) {
+            bounds = bounds.united(item->sceneBoundingRect());
+        }
+    }
+
+    // Wenn echte Geometrie gefunden wurde:
+    if (!bounds.isEmpty() && bounds.isValid()) {
+
+        // 5 % Rand (Margin) um die Geometrie herum hinzufügen
+        double margin = qMax(bounds.width(), bounds.height()) * 0.05;
+
+        // Mindest-Margin festlegen, falls die Geometrie z. B. nur ein einziger Punkt ist
+        if (margin < 1.0) margin = 5.0;
+
+        bounds.adjust(-margin, -margin, margin, margin);
+
+        // Ansicht perfekt einpassen
+        m_cadView->fitInView(bounds, Qt::KeepAspectRatio);
+
+    } else {
+        // Fallback: Falls die Datei keine Zeichnungselemente enthält
+        m_cadView->centerOn(0, 0);
+    }
+}
+
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
@@ -176,9 +215,13 @@ void MainWindow::on_actionLoad_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
     if (!fileName.isEmpty()) {
-        if (!m_cadDocument->loadFromFile(fileName)) {
+        if (!m_cadDocument->loadFromFile(fileName))
+        {
+            m_cadView->centerOn(0, 0);
             QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
         }
+
+        zoomToFitGeometry();
     }
 }
 
