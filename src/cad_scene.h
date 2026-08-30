@@ -2,6 +2,7 @@
 
 #include "./crosshair_item.h"
 #include "./cad_document/cad_document.h"
+
 #include <QGraphicsScene>
 
 class CadToolManager;
@@ -19,6 +20,7 @@ public:
 
     void setDocument(CadDocument* document);
     CadDocument* getDocument() const { return m_document; }
+    CrosshairItem* getCrosshairItem() { return m_crosshair; }
 
 signals:
     void cursorPositionChanged(const QPointF& position);

@@ -17,19 +17,21 @@ CrosshairItem::CrosshairItem(QGraphicsItem *parent) : QGraphicsItem(parent)
 
 QRectF CrosshairItem::boundingRect() const {
     // Sehr großes Bounding-Rechteck um das Fadenkreuz herum
-    return QRectF(((CROSSHAIR_SIZE - 1) / 2) - CROSSHAIR_SIZE, ((CROSSHAIR_SIZE - 1) / 2) - CROSSHAIR_SIZE, CROSSHAIR_SIZE - 1, CROSSHAIR_SIZE - 1);
+
+    int offset = -(CROSSHAIR_SIZE / 2); // -12 bei Größe 25
+    return QRectF(offset, offset, CROSSHAIR_SIZE, CROSSHAIR_SIZE);
 }
 
 void CrosshairItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {    
     painter->setRenderHint(QPainter::Antialiasing, false);
 
     painter->setPen(m_pen);
-    painter->drawPixmap(((CROSSHAIR_SIZE - 1) / 2) - CROSSHAIR_SIZE, ((CROSSHAIR_SIZE - 1) / 2) - CROSSHAIR_SIZE, getPatternBitmap());
+
+    int offset = -(CROSSHAIR_SIZE / 2); // -12 bei Größe 25
+    painter->drawPixmap(offset, offset, getPatternBitmap());
 }
 
 void CrosshairItem::setPosition(const QPointF &pos) {
-    prepareGeometryChange();
-    m_position = pos;
     setPos(pos);
     update();
 }
@@ -48,8 +50,9 @@ const QBitmap &CrosshairItem::getPatternBitmap()
         QPainter p(bitmap.get());
         p.setPen(QPen(Qt::color1, 1));
 
-        p.drawLine(0, (CROSSHAIR_SIZE - 1) / 2, CROSSHAIR_SIZE - 1, (CROSSHAIR_SIZE - 1) / 2);
-        p.drawLine((CROSSHAIR_SIZE - 1) / 2, 0, (CROSSHAIR_SIZE - 1) / 2, CROSSHAIR_SIZE - 1);
+        int center = (CROSSHAIR_SIZE - 1) / 2; // Pixel 12 bei Größe 25
+        p.drawLine(0, center, CROSSHAIR_SIZE - 1, center);
+        p.drawLine(center, 0, center, CROSSHAIR_SIZE - 1);
 
         // Create the pixmap from the image and store it in the static unique_ptr
         s_bitmap = std::move(bitmap);
