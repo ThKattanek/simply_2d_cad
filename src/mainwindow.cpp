@@ -12,6 +12,7 @@
 #include <QMessageBox>
 
 #include "./cad_tool_manager.h"
+#include "./dxf_manager.h"
 
 #include "./select_tool.h"
 #include "./line_tool.h"
@@ -55,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
+
+    showMaximized();
 }
 
 MainWindow::~MainWindow()
@@ -172,6 +175,31 @@ void MainWindow::zoomToFitGeometry()
     }
 }
 
+bool MainWindow::exportDxf(const QString &fileName)
+{
+    if (!m_cadDocument)
+        return false;
+
+    return DxfManager::exportEntities(fileName, m_cadDocument->getEntities());
+}
+
+bool MainWindow::importDxf(const QString &fileName)
+{
+    if (!m_cadDocument) return false;
+
+    std::vector<std::unique_ptr<CadEntity>> newEntities;
+    if (!DxfManager::importEntities(fileName, newEntities)) {
+        return false;
+    }
+
+    // Neue Entities im CadDocument registrieren
+    for (auto& entity : newEntities) {
+        m_cadDocument->addEntity(std::move(entity));
+    }
+
+    return true;
+}
+
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
@@ -219,8 +247,30 @@ void MainWindow::on_actionLoad_triggered()
         {
             m_cadView->centerOn(0, 0);
             QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
+        } else
+        {
+            zoomToFitGeometry();
         }
+    }
+}
 
+
+void MainWindow::on_actionExportAsDxf_triggered()
+{
+    if(!exportDxf(QFileDialog::getSaveFileName(this, tr("Export as DXF"), "", tr("DXF File (*.dxf)"))))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("The DXF file could not be exported."));
+    }
+}
+
+
+void MainWindow::on_actionImport_triggered()
+{
+    if(!importDxf(QFileDialog::getOpenFileName(this, tr("Import DXF"), "", tr("DXF File (*.dxf)"))))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("The DXF file could not be imported."));
+    } else
+    {
         zoomToFitGeometry();
     }
 }
