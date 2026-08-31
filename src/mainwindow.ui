@@ -29,8 +29,15 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuExport_as">
+     <property name="title">
+      <string>Export as</string>
+     </property>
+     <addaction name="actionExportAsDxf"/>
+    </widget>
     <addaction name="actionLoad"/>
     <addaction name="actionSave"/>
+    <addaction name="menuExport_as"/>
     <addaction name="separator"/>
     <addaction name="action_Close"/>
     <addaction name="separator"/>
@@ -89,6 +96,11 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionExportAsDxf">
+   <property name="text">
+    <string>DXF</string>
    </property>
   </action>
  </widget>

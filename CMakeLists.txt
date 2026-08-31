@@ -27,6 +27,7 @@ set(PROJECT_SOURCES
     src/cad_document/cad_line.h
     src/cad_document/cad_point.h
     src/cad_document/cad_document.h src/cad_document/cad_document.cpp
+    src/dxf_manager.h src/dxf_manager.cpp
 )
 
 set(DXFLIB_SOURCES

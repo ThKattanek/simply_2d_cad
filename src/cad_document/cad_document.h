@@ -17,7 +17,7 @@ public:
     bool removeEntity(CadEntity* entity);
 
     // Zugriff auf alle Objekte (z. B. für DXF-Export)
-    const std::vector<std::unique_ptr<CadEntity>>& entities() const { return m_entities; }
+    const std::vector<std::unique_ptr<CadEntity>>& getEntities() const { return m_entities; }
 
     // Löscht alle Objekte aus dem Dokument
     void clear();

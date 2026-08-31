@@ -33,12 +33,15 @@ private slots:
     void on_actionSave_triggered();
     void on_actionLoad_triggered();
 
+    void on_actionExportAsDxf_triggered();
+
 private:
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
     void createToolBar();
-
     void zoomToFitGeometry();
+    bool exportDxf(const QString &fileName);
+    bool importDxf(const QString &fileName);
 
     Ui::MainWindow *ui;
     QTranslator m_translator;

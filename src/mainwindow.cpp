@@ -12,6 +12,7 @@
 #include <QMessageBox>
 
 #include "./cad_tool_manager.h"
+#include "./dxf_manager.h"
 
 #include "./select_tool.h"
 #include "./line_tool.h"
@@ -172,6 +173,15 @@ void MainWindow::zoomToFitGeometry()
     }
 }
 
+bool MainWindow::exportDxf(const QString &fileName)
+{
+    if (!m_cadDocument) {
+        return false;
+    }
+
+    return DxfManager::exportEntities(fileName, m_cadDocument->getEntities());
+}
+
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
@@ -220,8 +230,13 @@ void MainWindow::on_actionLoad_triggered()
             m_cadView->centerOn(0, 0);
             QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
         }
-
         zoomToFitGeometry();
     }
+}
+
+
+void MainWindow::on_actionExportAsDxf_triggered()
+{
+    exportDxf(QFileDialog::getSaveFileName(this, tr("Export as DXF"), "", tr("DXF File (*.dxf)")));
 }
 
