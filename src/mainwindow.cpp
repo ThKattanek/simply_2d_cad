@@ -247,20 +247,31 @@ void MainWindow::on_actionLoad_triggered()
         {
             m_cadView->centerOn(0, 0);
             QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
+        } else
+        {
+            zoomToFitGeometry();
         }
-        zoomToFitGeometry();
     }
 }
 
 
 void MainWindow::on_actionExportAsDxf_triggered()
 {
-    exportDxf(QFileDialog::getSaveFileName(this, tr("Export as DXF"), "", tr("DXF File (*.dxf)")));
+    if(!exportDxf(QFileDialog::getSaveFileName(this, tr("Export as DXF"), "", tr("DXF File (*.dxf)"))))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("The DXF file could not be exported."));
+    }
 }
 
 
 void MainWindow::on_actionImport_triggered()
 {
-    importDxf(QFileDialog::getOpenFileName(this, tr("Import DXF"), "", tr("DXF File (*.dxf)")));
+    if(!importDxf(QFileDialog::getOpenFileName(this, tr("Import DXF"), "", tr("DXF File (*.dxf)"))))
+    {
+        QMessageBox::warning(this, tr("Error"), tr("The DXF file could not be imported."));
+    } else
+    {
+        zoomToFitGeometry();
+    }
 }
 
