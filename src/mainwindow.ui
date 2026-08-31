@@ -37,10 +37,11 @@
     </widget>
     <addaction name="actionLoad"/>
     <addaction name="actionSave"/>
+    <addaction name="separator"/>
     <addaction name="menuExport_as"/>
+    <addaction name="actionImport"/>
     <addaction name="separator"/>
     <addaction name="action_Close"/>
-    <addaction name="separator"/>
    </widget>
    <addaction name="menu_File"/>
   </widget>
@@ -101,6 +102,11 @@
   <action name="actionExportAsDxf">
    <property name="text">
     <string>DXF</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import</string>
    </property>
   </action>
  </widget>

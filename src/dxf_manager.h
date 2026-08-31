@@ -45,6 +45,10 @@ public:
     // Liest eine DXF-Datei in das DxfData-Zwischenformat ein
     static bool importFile(const QString& filePath, DxfData& outData);
 
+    // Liest eine DXF-Datei ein und liefert direkt eine Liste ersteller CadEntities zurück
+    static bool importEntities(const QString& filePath,
+                               std::vector<std::unique_ptr<CadEntity>>& outEntities);
+
     // --- EXPORT ---
     // Exportiert Rohdaten (Punkte & Linien)
     static bool exportFile(const QString& filePath, const DxfData& data);

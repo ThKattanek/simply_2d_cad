@@ -18,6 +18,30 @@ bool DxfManager::importFile(const QString& filePath, DxfData& outData) {
     return dxf.in(filePath.toLocal8Bit().constData(), &adapter);
 }
 
+bool DxfManager::importEntities(const QString& filePath,
+                                std::vector<std::unique_ptr<CadEntity>>& outEntities)
+{
+    DxfData importedData;
+
+    // 1. Rohdaten per dxflib einlesen
+    if (!importFile(filePath, importedData)) {
+        return false;
+    }
+
+    // 2. Rohdaten in konkrete CadEntities umwandeln
+    outEntities.reserve(outEntities.size() + importedData.points.size() + importedData.lines.size());
+
+    for (const auto& pt : importedData.points) {
+        outEntities.push_back(std::make_unique<CadPoint>(pt));
+    }
+
+    for (const auto& line : importedData.lines) {
+        outEntities.push_back(std::make_unique<CadLine>(line.p1(), line.p2()));
+    }
+
+    return true;
+}
+
 // ==========================================
 // EXPORT
 // ==========================================

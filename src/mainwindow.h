@@ -32,8 +32,10 @@ private slots:
     void on_action_Close_triggered();
     void on_actionSave_triggered();
     void on_actionLoad_triggered();
-
     void on_actionExportAsDxf_triggered();
+
+
+    void on_actionImport_triggered();
 
 private:
     void createLanguageMenu();
