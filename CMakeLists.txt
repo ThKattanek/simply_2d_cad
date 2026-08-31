@@ -7,8 +7,10 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
 
 qt_standard_project_setup()
 
-qt_add_executable(simply_2d_cad
-    WIN32 MACOSX_BUNDLE
+set(DXFLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dxflib)
+include_directories(${DXFLIB_INCLUDE_DIR})
+
+set(PROJECT_SOURCES
     src/main.cpp
     src/mainwindow.cpp src/mainwindow.h
     src/mainwindow.ui
@@ -25,6 +27,17 @@ qt_add_executable(simply_2d_cad
     src/cad_document/cad_line.h
     src/cad_document/cad_point.h
     src/cad_document/cad_document.h src/cad_document/cad_document.cpp
+)
+
+set(DXFLIB_SOURCES
+    3rdparty/dxflib/dl_dxf.cpp
+    3rdparty/dxflib/dl_writer_ascii.cpp
+)
+
+qt_add_executable(simply_2d_cad
+    WIN32 MACOSX_BUNDLE
+    ${PROJECT_SOURCES}
+    ${DXFLIB_SOURCES}
 )
 
 qt_add_translations(

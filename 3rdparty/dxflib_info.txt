@@ -1,0 +1,2 @@
+dxflib Version 3.26.4
+https://qcad.org/en/dxflib-downloads

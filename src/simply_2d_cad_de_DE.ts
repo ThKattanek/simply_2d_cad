@@ -44,39 +44,39 @@
     </message>
     <message>
         <location filename="mainwindow.cpp" line="79"/>
-        <location filename="mainwindow.cpp" line="144"/>
+        <location filename="mainwindow.cpp" line="183"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprache</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="166"/>
+        <location filename="mainwindow.cpp" line="205"/>
         <source>Save Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei speichern</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="166"/>
-        <location filename="mainwindow.cpp" line="177"/>
+        <location filename="mainwindow.cpp" line="205"/>
+        <location filename="mainwindow.cpp" line="216"/>
         <source>Simply 2D CAD File (*.s2dcad)</source>
         <translation>Simply 2D CAD Datei (*.s2dcad)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="169"/>
-        <location filename="mainwindow.cpp" line="180"/>
+        <location filename="mainwindow.cpp" line="208"/>
+        <location filename="mainwindow.cpp" line="221"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="169"/>
+        <location filename="mainwindow.cpp" line="208"/>
         <source>The file could not be saved.</source>
         <translation>Die Datei konnte nicht gespeichert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="177"/>
+        <location filename="mainwindow.cpp" line="216"/>
         <source>Open Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei laden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="180"/>
+        <location filename="mainwindow.cpp" line="221"/>
         <source>The file could not be loaded.</source>
         <translation>Die Datei konnte nicht geladen werden.</translation>
     </message>
