@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>926</width>
-    <height>580</height>
+    <width>1373</width>
+    <height>879</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>926</width>
+     <width>1373</width>
      <height>22</height>
     </rect>
    </property>
@@ -57,7 +57,7 @@
     </size>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+    <enum>Qt::ToolButtonStyle::ToolButtonFollowStyle</enum>
    </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
@@ -75,6 +75,10 @@
    </property>
   </action>
   <action name="actionToolLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_line.svg</normaloff>:/icons/icons_svg/tool_line.svg</iconset>
+   </property>
    <property name="text">
     <string>Line</string>
    </property>
@@ -83,6 +87,10 @@
    </property>
   </action>
   <action name="actionToolSelect">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_select.svg</normaloff>:/icons/icons_svg/tool_select.svg</iconset>
+   </property>
    <property name="text">
     <string>Select</string>
    </property>
@@ -93,7 +101,7 @@
   <action name="actionToolPoint">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icons/test.svg</normaloff>:/icons/test.svg</iconset>
+     <normaloff>:/icons/icons_svg/tool_point.svg</normaloff>:/icons/icons_svg/tool_point.svg</iconset>
    </property>
    <property name="text">
     <string>Point</string>

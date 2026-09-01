@@ -58,12 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
 
-
-
-
-
-  //  ui->actionToolPoint->setIcon(QIcon(":/icons/test.svg"));
-
     showMaximized();
 }
 
