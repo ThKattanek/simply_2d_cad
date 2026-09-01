@@ -46,7 +46,7 @@
    <addaction name="menu_File"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="tb_drawTools">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -55,9 +55,6 @@
      <width>32</width>
      <height>32</height>
     </size>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonStyle::ToolButtonFollowStyle</enum>
    </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
@@ -82,6 +79,15 @@
    <property name="text">
     <string>Line</string>
    </property>
+   <property name="toolTip">
+    <string>Draw Line (L)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a line by specifying its start and end points.</string>
+   </property>
+   <property name="shortcut">
+    <string>L</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
@@ -94,6 +100,15 @@
    <property name="text">
     <string>Select</string>
    </property>
+   <property name="toolTip">
+    <string>Select (S)</string>
+   </property>
+   <property name="statusTip">
+    <string>Select objects or points by clicking or dragging a selection box.</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
@@ -105,6 +120,15 @@
    </property>
    <property name="text">
     <string>Point</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Point (P)</string>
+   </property>
+   <property name="statusTip">
+    <string>Place a single point at the specified coordinates.</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
