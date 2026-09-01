@@ -1,3 +1,13 @@
+/*
+ * Simply 2D CAD
+ * Copyright (C) 2026 Thorsten Kattanek
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -39,7 +49,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_coordLabel = new QLabel("X: 0.00 | Y: 0.00", this);
     m_coordLabel->setMinimumWidth(150);
-    ui->statusbar->addWidget(m_coordLabel);
+    m_coordLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+    // Ganz rechts in die Statusleiste einbetten (wird NIE von StatusTips verdeckt)
+
+    // "addPermanentWidget" means that the widget is permanently added to the status bar and is not affected by temporary messages (like status tips).
+    // It will always be visible in the status bar.
+    ui->statusbar->addPermanentWidget(m_coordLabel);
+
+    //ui->statusbar->addWidget(m_coordLabel);
 
     // Connect the cursorPositionChanged signal to the updateCursorPosition slot
     connect(m_cadScene, &CadScene::cursorPositionChanged,
