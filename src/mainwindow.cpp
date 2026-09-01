@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDirIterator>
 
 #include "./cad_tool_manager.h"
 #include "./dxf_manager.h"

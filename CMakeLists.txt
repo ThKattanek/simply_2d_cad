@@ -3,7 +3,7 @@ project(simply_2d_cad LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools Svg)
 
 qt_standard_project_setup()
 
@@ -35,10 +35,13 @@ set(DXFLIB_SOURCES
     3rdparty/dxflib/dl_writer_ascii.cpp
 )
 
+qt_add_resources(MY_RESOURCES src/resources.qrc)
+
 qt_add_executable(simply_2d_cad
     WIN32 MACOSX_BUNDLE
     ${PROJECT_SOURCES}
     ${DXFLIB_SOURCES}
+    ${MY_RESOURCES}
 )
 
 qt_add_translations(
@@ -51,6 +54,7 @@ target_link_libraries(simply_2d_cad
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt::Svg
 )
 
 install(TARGETS simply_2d_cad

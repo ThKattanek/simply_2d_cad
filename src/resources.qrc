@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons_svg/tool_point.svg</file>
+        <file>icons_svg/tool_line.svg</file>
+        <file>icons_svg/tool_select.svg</file>
+    </qresource>
+</RCC>
