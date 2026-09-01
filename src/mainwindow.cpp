@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDirIterator>
 
 #include "./cad_tool_manager.h"
 #include "./dxf_manager.h"
@@ -56,6 +57,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
+
+
+
+
+
+  //  ui->actionToolPoint->setIcon(QIcon(":/icons/test.svg"));
 
     showMaximized();
 }
