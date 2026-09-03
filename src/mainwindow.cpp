@@ -98,6 +98,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::createLanguageMenu()
 {
+    QLocale system_language(QLocale::system().language());
+    QString configLangaage = m_settings.value("test/current_language", system_language.nativeLanguageName()).toString();
+
     m_langMenu = menuBar()->addMenu(tr("&Language"));
 
     // Create an exclusive action group for the language menu
@@ -150,6 +153,7 @@ void MainWindow::switchLanguage(const QString &qmFileName)
     qApp->removeTranslator(&m_translator);
     if (m_translator.load(":/i18n/" + qmFileName)) {
         qApp->installTranslator(&m_translator);
+        m_settings.setValue("test/current_language", m_translator.language());
     }
     else {
     }
