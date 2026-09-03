@@ -15,12 +15,23 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     // Globale Metadaten für QSettings
     QCoreApplication::setOrganizationName("simply_2d_cad");
     QCoreApplication::setApplicationName("simply_2d_cad");
     QSettings::setDefaultFormat(QSettings::IniFormat);
+
+    // 1. Gespeicherte Sprache laden (Fallback: System-Sprache)
+    QSettings settings;
+    QString langName = settings.value("ui/language", QLocale::system().name()).toString();
+    QLocale currentLocale(langName);
+
+    // 2. Übersetzer laden (falls du .qm Dateien nutzt)
+    QTranslator translator;
+    if (translator.load(currentLocale, "simply_2d_cad", "_", ":/i18n")) {
+        app.installTranslator(&translator);
+    }
 
     MainWindow w;
     w.show();
