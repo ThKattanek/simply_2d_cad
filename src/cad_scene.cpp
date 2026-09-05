@@ -96,6 +96,11 @@ void CadScene::loadSettings()
     QSettings settings;
     m_snapMakerSize = settings.value("Snap/MarkerSize", 10).toInt();
     m_snapManager.setSnapTolerancePixels(settings.value("Snap/TolerancePixels", 10.0).toDouble());
+
+    m_snapManager.setEndpointSnapEnabled(false);
+    m_snapManager.setMidpointSnapEnabled(false);
+    m_snapManager.setIntersectionSnapEnabled(false);
+    //m_snapManager.setPointSnapEnabled(false);
 }
 
 void CadScene::clearDocumentItems()

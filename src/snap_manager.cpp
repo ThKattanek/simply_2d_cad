@@ -33,29 +33,83 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
         }
     };
 
-    // Durch alle Entities im Dokument iterieren
-    for (const auto& entityPtr : doc.getEntities()) {
-        if (!entityPtr) continue;
+    const auto& entities = doc.getEntities();
 
-        switch (entityPtr->type()) {
-        case EntityType::Point: {
-            auto* pt = static_cast<const CadPoint*>(entityPtr.get());
-            checkPoint(pt->position(), SnapType::Endpoint);
-            break;
-        }
-        case EntityType::Line: {
-            auto* line = static_cast<const CadLine*>(entityPtr.get());
-            // Endpunkte fangen
-            checkPoint(line->start(), SnapType::Endpoint);
-            checkPoint(line->end(), SnapType::Endpoint);
+    // 1. DURCHGANG: Endpunkte & Mittelpunkte & Punkte
+    if(m_endpointSnapEnabled || m_midpointSnapEnabled || m_pointSnapEnabled) {
+        for (const auto& entityPtr : entities) {
+            if (!entityPtr) continue;
 
-            // Optional: Mittelpunkt fangen
-            QPointF midPoint = (line->start() + line->end()) * 0.5;
-            checkPoint(midPoint, SnapType::Midpoint);
-            break;
+            switch (entityPtr->type()) {
+            case EntityType::Point: {
+                auto* pt = static_cast<const CadPoint*>(entityPtr.get());
+                if(m_pointSnapEnabled)
+                    checkPoint(pt->position(), SnapType::Point);
+                break;
+            }
+            case EntityType::Line: {
+                auto* line = static_cast<const CadLine*>(entityPtr.get());
+                // Endpunkte fangen
+                if (m_endpointSnapEnabled) {
+                checkPoint(line->start(), SnapType::Endpoint);
+                checkPoint(line->end(), SnapType::Endpoint);
+                }
+
+                // Optional: Mittelpunkt fangen
+                QPointF midPoint = (line->start() + line->end()) * 0.5;
+                if (m_midpointSnapEnabled)
+                    checkPoint(midPoint, SnapType::Midpoint);
+                break;
+            }
+            default:
+                break;
+            }
         }
-        default:
-            break;
+    }
+
+    // 2. DURCHGANG: Schnittpunkte zwischen Linien
+    if (m_intersectionSnapEnabled && entities.size() >= 2) {
+        // Hilfs-Lambda für Linien-Segment-Schnittpunkt
+        auto getIntersection = [](const QPointF& p1, const QPointF& p2,
+                                  const QPointF& p3, const QPointF& p4,
+                                  QPointF& outPt) -> bool
+        {
+            double denominator = (p4.y() - p3.y()) * (p2.x() - p1.x()) -
+                                 (p4.x() - p3.x()) * (p2.y() - p1.y());
+
+            if (std::abs(denominator) < 1e-9) return false; // Parallel
+
+            double ua = ((p4.x() - p3.x()) * (p1.y() - p3.y()) -
+                         (p4.y() - p3.y()) * (p1.x() - p3.x())) / denominator;
+            double ub = ((p2.x() - p1.x()) * (p1.y() - p3.y()) -
+                         (p2.y() - p1.y()) * (p1.x() - p3.x())) / denominator;
+
+            // Liegt der Schnittpunkt auf BEIDEN Liniensegmenten?
+            if (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0) {
+                outPt = QPointF(p1.x() + ua * (p2.x() - p1.x()),
+                                p1.y() + ua * (p2.y() - p1.y()));
+                return true;
+            }
+            return false;
+        };
+
+        // Paarschleife über alle Entities
+        for (size_t i = 0; i < entities.size(); ++i) {
+            if (!entities[i] || entities[i]->type() != EntityType::Line) continue;
+            auto* line1 = static_cast<const CadLine*>(entities[i].get());
+
+            for (size_t j = i + 1; j < entities.size(); ++j) {
+                if (!entities[j] || entities[j]->type() != EntityType::Line) continue;
+                auto* line2 = static_cast<const CadLine*>(entities[j].get());
+
+                QPointF intersectPt;
+                if (getIntersection(line1->start(), line1->end(),
+                                    line2->start(), line2->end(),
+                                    intersectPt))
+                {
+                    checkPoint(intersectPt, SnapType::Intersection);
+                }
+            }
         }
     }
 

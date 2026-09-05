@@ -15,10 +15,9 @@
 enum class SnapType
 {
     None = 0,
-    Grid,               // Snap to grid points
+    Point,              // Snap to specific points
     Endpoint,           // Snap to endpoints of lines
     Midpoint,           // Snap to midpoints of lines
-    Center,             // Snap to center of circles or arcs
     Intersection        // Snap to intersection points of lines
 };
 
