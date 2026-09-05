@@ -11,6 +11,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "app_settings_dialog.h"
+
 #include <QDir>
 #include <QLocale>
 #include <QMenu>
@@ -21,6 +23,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDirIterator>
+#include <QLibraryInfo>
 
 #include "./cad_tool_manager.h"
 #include "./dxf_manager.h"
@@ -36,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // 1. Gespeicherte Sprache laden (Fallback: System-Sprache)
-    QString langName = m_settings.value("ui/language", QLocale::system().name()).toString();
+    QString langName = m_settings.value("Ui/Language", QLocale::system().name()).toString();
     QLocale currentLocale(langName);
 
     // 2. Übersetzer laden (falls du .qm Dateien nutzt)
@@ -86,6 +89,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
+
+    // Load all Settings from QSettings
+    m_cadScene->loadSettings();
 
     showMaximized();
 }
@@ -160,11 +166,18 @@ void MainWindow::createLanguageMenu()
 void MainWindow::switchLanguage(const QString &qmFileName)
 {
     qApp->removeTranslator(&m_translator);
+    qApp->removeTranslator(&m_translatorQtBase);
+
     if (m_translator.load(":/i18n/" + qmFileName)) {
         qApp->installTranslator(&m_translator);
-        m_settings.setValue("ui/language", m_translator.language());
+        m_settings.setValue("Ui/Language", m_translator.language());
     }
-    else {
+
+    QString langCode = m_translator.language();
+    QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+
+    if (m_translatorQtBase.load("qtbase_" + langCode, qtTranslationsPath)) {
+        qApp->installTranslator(&m_translatorQtBase);
     }
 }
 
@@ -286,7 +299,6 @@ void MainWindow::on_actionLoad_triggered()
     }
 }
 
-
 void MainWindow::on_actionExportAsDxf_triggered()
 {
     if(!exportDxf(QFileDialog::getSaveFileName(this, tr("Export as DXF"), "", tr("DXF File (*.dxf)"))))
@@ -294,7 +306,6 @@ void MainWindow::on_actionExportAsDxf_triggered()
         QMessageBox::warning(this, tr("Error"), tr("The DXF file could not be exported."));
     }
 }
-
 
 void MainWindow::on_actionImport_triggered()
 {
@@ -304,6 +315,14 @@ void MainWindow::on_actionImport_triggered()
     } else
     {
         zoomToFitGeometry();
+    }
+}
+
+void MainWindow::on_actionOptions_triggered()
+{
+    AppSettingsDialog settingsDialog(this);
+    if (settingsDialog.exec() == QDialog::Accepted) {
+        m_cadScene->loadSettings(); // Reload settings after changes
     }
 }
 

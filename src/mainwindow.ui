@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1373</width>
-    <height>879</height>
+    <width>767</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1373</width>
+     <width>767</width>
      <height>22</height>
     </rect>
    </property>
@@ -41,6 +41,8 @@
     <addaction name="menuExport_as"/>
     <addaction name="actionImport"/>
     <addaction name="separator"/>
+    <addaction name="actionOptions"/>
+    <addaction name="separator"/>
     <addaction name="action_Close"/>
    </widget>
    <addaction name="menu_File"/>
@@ -57,7 +59,7 @@
     </size>
    </property>
    <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
+    <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
@@ -152,6 +154,11 @@
   <action name="actionImport">
    <property name="text">
     <string>Import</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options...</string>
    </property>
   </action>
  </widget>

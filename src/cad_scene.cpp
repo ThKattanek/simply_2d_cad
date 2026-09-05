@@ -14,8 +14,9 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsSceneEvent>
-#include <qgraphicsview.h>
-#include <qwidget.h>
+#include <QGraphicsView>
+#include <QWidget>
+#include <QSettings>
 
 #define SCENE_MIN_X -100000
 #define SCENE_MAX_X 100000
@@ -90,6 +91,13 @@ CadScene::~CadScene()
         delete m_dotPenRed;
 }
 
+void CadScene::loadSettings()
+{
+    QSettings settings;
+    m_snapMakerSize = settings.value("Snap/MarkerSize", 10).toInt();
+    m_snapManager.setSnapTolerancePixels(settings.value("Snap/TolerancePixels", 10.0).toDouble());
+}
+
 void CadScene::clearDocumentItems()
 {
     for (QGraphicsItem* item : items()) {
@@ -161,7 +169,7 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
         // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
         const double zoomFactor = getZoomFactorFromEvent(event);
-        const double markerSizeWorld = 14.0 / zoomFactor;
+        const double markerSizeWorld = m_snapMakerSize / zoomFactor;
         const double halfSize = markerSizeWorld / 2.0;
 
         // Das Rechteck zentriert auf den Fangpunkt setzen
