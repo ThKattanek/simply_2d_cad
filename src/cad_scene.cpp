@@ -97,10 +97,11 @@ void CadScene::loadSettings()
     m_snapMakerSize = settings.value("Snap/MarkerSize", 10).toInt();
     m_snapManager.setSnapTolerancePixels(settings.value("Snap/TolerancePixels", 10.0).toDouble());
 
-    m_snapManager.setEndpointSnapEnabled(false);
-    m_snapManager.setMidpointSnapEnabled(false);
-    m_snapManager.setIntersectionSnapEnabled(false);
-    //m_snapManager.setPointSnapEnabled(false);
+    m_snapManager.setGridSnapEnabled(settings.value("Snap/GridSnapEnabled", true).toBool());
+    m_snapManager.setPointSnapEnabled(settings.value("Snap/PointSnapEnabled", true).toBool());
+    m_snapManager.setEndpointSnapEnabled(settings.value("Snap/EndpointSnapEnabled", true).toBool());
+    m_snapManager.setMidpointSnapEnabled(settings.value("Snap/MidpointSnapEnabled", true).toBool());
+    m_snapManager.setIntersectionSnapEnabled(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
 }
 
 void CadScene::clearDocumentItems()
