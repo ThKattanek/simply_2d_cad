@@ -11,10 +11,16 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QSettings>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
+    // Globale Metadaten für QSettings
+    QCoreApplication::setOrganizationName("simply_2d_cad");
+    QCoreApplication::setApplicationName("simply_2d_cad");
+    QSettings::setDefaultFormat(QSettings::IniFormat);
 
     MainWindow w;
     w.show();

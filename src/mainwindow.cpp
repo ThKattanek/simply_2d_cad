@@ -34,6 +34,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // 1. Gespeicherte Sprache laden (Fallback: System-Sprache)
+    QString langName = m_settings.value("ui/language", QLocale::system().name()).toString();
+    QLocale currentLocale(langName);
+
+    // 2. Übersetzer laden (falls du .qm Dateien nutzt)
+    qApp->removeTranslator(&m_translator);
+    if (m_translator.load(currentLocale, "simply_2d_cad", "_", ":/i18n")) {
+        qApp->installTranslator(&m_translator);
+    }
+
     createLanguageMenu();
     ui->retranslateUi(this);
 
@@ -130,7 +141,8 @@ void MainWindow::createLanguageMenu()
         action->setData(fileName); // Speichere den Dateinamen versteckt in der Aktion
 
         // Ist das unsere aktuell aktive Sprache des Systems?
-        if (locale.language() == QLocale::system().language()) {
+
+        if (locale.language() == (QLocale)m_translator.language()) {
             action->setChecked(true);
             switchLanguage(fileName);
         }
@@ -150,6 +162,7 @@ void MainWindow::switchLanguage(const QString &qmFileName)
     qApp->removeTranslator(&m_translator);
     if (m_translator.load(":/i18n/" + qmFileName)) {
         qApp->installTranslator(&m_translator);
+        m_settings.setValue("ui/language", m_translator.language());
     }
     else {
     }

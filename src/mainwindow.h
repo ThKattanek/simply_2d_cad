@@ -14,6 +14,7 @@
 #include <QTranslator>
 #include <QToolBar>
 #include <QLabel>
+#include <QSettings>
 
 #include "./cad_view.h"
 #include "./cad_scene.h"
@@ -56,6 +57,7 @@ private:
     bool importDxf(const QString &fileName);
 
     Ui::MainWindow *ui;
+    QSettings m_settings;
     QTranslator m_translator;
     QMenu *m_langMenu = nullptr;
     QToolBar *toolBar = nullptr;
