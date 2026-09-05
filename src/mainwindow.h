@@ -48,6 +48,8 @@ private slots:
 
     void on_actionImport_triggered();
 
+    void on_actionOptions_triggered();
+
 private:
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);

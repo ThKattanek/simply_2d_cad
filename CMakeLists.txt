@@ -45,6 +45,7 @@ qt_add_executable(simply_2d_cad
     ${MY_RESOURCES}
     src/snap_types.h
     src/snap_manager.h src/snap_manager.cpp
+    src/app_settings_dialog.h src/app_settings_dialog.cpp src/app_settings_dialog.ui
 )
 
 qt_add_translations(

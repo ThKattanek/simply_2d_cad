@@ -11,6 +11,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "app_settings_dialog.h"
+
 #include <QDir>
 #include <QLocale>
 #include <QMenu>
@@ -304,6 +306,15 @@ void MainWindow::on_actionImport_triggered()
     } else
     {
         zoomToFitGeometry();
+    }
+}
+
+
+void MainWindow::on_actionOptions_triggered()
+{
+    AppSettingsDialog settingsDialog(this);
+    if (settingsDialog.exec() == QDialog::Accepted) {
+        // Handle settings changes if needed
     }
 }
 
