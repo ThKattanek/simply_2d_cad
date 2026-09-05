@@ -19,12 +19,22 @@
         <translation>Fangen &amp; Raster</translation>
     </message>
     <message>
-        <location filename="app_settings_dialog.ui" line="82"/>
-        <source>Snap Maker Size</source>
-        <translation>Fang Markierung Größe</translation>
+        <location filename="app_settings_dialog.ui" line="89"/>
+        <source>Snap Marker Size</source>
+        <translation>Fang Marker Größe</translation>
     </message>
     <message>
-        <location filename="app_settings_dialog.ui" line="125"/>
+        <location filename="app_settings_dialog.ui" line="132"/>
+        <source>Snap Tolerance</source>
+        <translation>Fang Toleranz</translation>
+    </message>
+    <message>
+        <source>Snap Maker Size</source>
+        <translation type="vanished">Fang Markierung Größe</translation>
+    </message>
+    <message>
+        <location filename="app_settings_dialog.ui" line="82"/>
+        <location filename="app_settings_dialog.ui" line="142"/>
         <source>px</source>
         <translation></translation>
     </message>
@@ -136,68 +146,68 @@
         <translation>Einstellungen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="115"/>
-        <location filename="mainwindow.cpp" line="253"/>
+        <location filename="mainwindow.cpp" line="118"/>
+        <location filename="mainwindow.cpp" line="256"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprache</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="275"/>
+        <location filename="mainwindow.cpp" line="278"/>
         <source>Save Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei speichern</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="275"/>
-        <location filename="mainwindow.cpp" line="286"/>
+        <location filename="mainwindow.cpp" line="278"/>
+        <location filename="mainwindow.cpp" line="289"/>
         <source>Simply 2D CAD File (*.s2dcad)</source>
         <translation>Simply 2D CAD Datei (*.s2dcad)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="278"/>
-        <location filename="mainwindow.cpp" line="291"/>
-        <location filename="mainwindow.cpp" line="304"/>
-        <location filename="mainwindow.cpp" line="313"/>
+        <location filename="mainwindow.cpp" line="281"/>
+        <location filename="mainwindow.cpp" line="294"/>
+        <location filename="mainwindow.cpp" line="306"/>
+        <location filename="mainwindow.cpp" line="314"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="278"/>
+        <location filename="mainwindow.cpp" line="281"/>
         <source>The file could not be saved.</source>
         <translation>Die Datei konnte nicht gespeichert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="286"/>
+        <location filename="mainwindow.cpp" line="289"/>
         <source>Open Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei laden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="291"/>
+        <location filename="mainwindow.cpp" line="294"/>
         <source>The file could not be loaded.</source>
         <translation>Die Datei konnte nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="302"/>
+        <location filename="mainwindow.cpp" line="304"/>
         <source>Export as DXF</source>
         <translation>Exportieren als DXF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="302"/>
-        <location filename="mainwindow.cpp" line="311"/>
+        <location filename="mainwindow.cpp" line="304"/>
+        <location filename="mainwindow.cpp" line="312"/>
         <source>DXF File (*.dxf)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="304"/>
+        <location filename="mainwindow.cpp" line="306"/>
         <source>The DXF file could not be exported.</source>
         <translation>Die DXF-Datei konnte nicht exportiert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="311"/>
+        <location filename="mainwindow.cpp" line="312"/>
         <source>Import DXF</source>
         <translation>DXF importieren</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="313"/>
+        <location filename="mainwindow.cpp" line="314"/>
         <source>The DXF file could not be imported.</source>
         <translation>Die DXF-Datei konnte nicht importiert werden.</translation>
     </message>
