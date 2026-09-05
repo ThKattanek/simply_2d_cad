@@ -36,8 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // 1. Gespeicherte Sprache laden (Fallback: System-Sprache)
-    QSettings settings;
-    QString langName = settings.value("ui/language", QLocale::system().name()).toString();
+    QString langName = m_settings.value("ui/language", QLocale::system().name()).toString();
     QLocale currentLocale(langName);
 
     // 2. Übersetzer laden (falls du .qm Dateien nutzt)
