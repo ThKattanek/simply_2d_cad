@@ -95,6 +95,7 @@ void CadScene::loadSettings()
 {
     QSettings settings;
     m_snapMakerSize = settings.value("Snap/MarkerSize", 10).toInt();
+    m_snapManager.setSnapTolerancePixels(settings.value("Snap/TolerancePixels", 10.0).toDouble());
 }
 
 void CadScene::clearDocumentItems()
