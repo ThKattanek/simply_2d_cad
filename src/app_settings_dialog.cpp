@@ -11,6 +11,7 @@
 #include "app_settings_dialog.h"
 #include "ui_app_settings_dialog.h"
 
+#include <QSettings>
 #include <QPushButton>
 
 AppSettingsDialog::AppSettingsDialog(QWidget *parent)
@@ -18,6 +19,8 @@ AppSettingsDialog::AppSettingsDialog(QWidget *parent)
     , ui(new Ui::AppSettingsDialog)
 {
     ui->setupUi(this);
+    loadSettingsToUi();
+
     ui->listSettingGroups->setCurrentRow(1); // Select the first group by default
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &AppSettingsDialog::onApply);
@@ -42,18 +45,15 @@ void AppSettingsDialog::onApply()
 {
     saveSettingsFromUi();
     accept(); // Close the dialog with QDialog::Accepted result
-    qDebug() << "Settings applied.";
 }
 
 void AppSettingsDialog::onAbort()
 {
-    qDebug() << "Settings changes aborted.";
 }
 
 void AppSettingsDialog::onDefault()
 {
     // Reset settings to default values
-    qDebug() << "Settings reset to default.";
 }
 
 void AppSettingsDialog::retranslateDynamicTexts()
@@ -64,9 +64,17 @@ void AppSettingsDialog::retranslateDynamicTexts()
 void AppSettingsDialog::loadSettingsToUi()
 {
     // Load settings from the application settings to the UI elements
+    QSettings settings;
+
+    ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 10).toInt());
 }
 
 void AppSettingsDialog::saveSettingsFromUi()
 {
     // Save settings from the UI elements to the application settings
+    QSettings settings;
+
+    settings.setValue("Snap/MarkerSize", ui->spinSnapMarkerSize->value());
+
+    emit settingsChanged();
 }

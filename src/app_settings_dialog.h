@@ -32,6 +32,9 @@ private slots:
     void onAbort();
     void onDefault();
 
+signals:
+    void settingsChanged();
+
 private:
     void retranslateDynamicTexts();
     void loadSettingsToUi();

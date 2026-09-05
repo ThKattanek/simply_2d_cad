@@ -25,18 +25,6 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools Svg)
 
 qt_standard_project_setup()
 
-# --- 1. Target für 3rdparty: dxflib ---
-set(DXFLIB_SOURCES
-    3rdparty/dxflib/dl_dxf.cpp
-    3rdparty/dxflib/dl_writer_ascii.cpp
-)
-
-add_library(dxflib STATIC ${DXFLIB_SOURCES})
-target_compile_options(dxflib PRIVATE -w)
-target_include_directories(dxflib SYSTEM PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dxflib
-)
-
 # --- 2. Haupt-Anwendung: Dynamisch über ${PROJECT_NAME} ---
 set(PROJECT_SOURCES
     src/main.cpp
@@ -59,9 +47,21 @@ set(PROJECT_SOURCES
     src/snap_types.h
     src/snap_manager.h src/snap_manager.cpp
     src/app_settings_dialog.h src/app_settings_dialog.cpp src/app_settings_dialog.ui
+
 )
 
 qt_add_resources(MY_RESOURCES src/resources.qrc)
+
+set(DXFLIB_SOURCES
+    3rdparty/dxflib/dl_dxf.cpp
+    3rdparty/dxflib/dl_writer_ascii.cpp
+)
+
+add_library(dxflib STATIC ${DXFLIB_SOURCES})
+target_compile_options(dxflib PRIVATE -w)
+target_include_directories(dxflib SYSTEM PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dxflib
+)
 
 # Verwendet automatisch "simply_2d_cad"
 qt_add_executable(${PROJECT_NAME}

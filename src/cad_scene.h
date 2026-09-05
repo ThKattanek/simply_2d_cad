@@ -28,8 +28,9 @@ public:
     explicit CadScene(CadToolManager* toolManager, QObject* parent = nullptr);
     ~CadScene();
 
-    void clearDocumentItems();
+    void loadSettings();
 
+    void clearDocumentItems();
     void setDocument(CadDocument* document);
     CadDocument* getDocument() const { return m_document; }
     CrosshairItem* getCrosshairItem() { return m_crosshair; }
@@ -61,6 +62,7 @@ private:
 
     // Snapping
     SnapManager m_snapManager;
+    int m_snapMakerSize = 10;
     QGraphicsRectItem* m_snapMarker0 = nullptr;
     QPointF m_activeSnapPoint;
     bool m_hasActiveSnapPoint = false;
