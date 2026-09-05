@@ -23,6 +23,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDirIterator>
+#include <QLibraryInfo>
 
 #include "./cad_tool_manager.h"
 #include "./dxf_manager.h"
@@ -162,11 +163,18 @@ void MainWindow::createLanguageMenu()
 void MainWindow::switchLanguage(const QString &qmFileName)
 {
     qApp->removeTranslator(&m_translator);
+    qApp->removeTranslator(&m_translatorQtBase);
+
     if (m_translator.load(":/i18n/" + qmFileName)) {
         qApp->installTranslator(&m_translator);
         m_settings.setValue("ui/language", m_translator.language());
     }
-    else {
+
+    QString langCode = m_translator.language();
+    QString qtTranslationsPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+
+    if (m_translatorQtBase.load("qtbase_" + langCode, qtTranslationsPath)) {
+        qApp->installTranslator(&m_translatorQtBase);
     }
 }
 
@@ -308,7 +316,6 @@ void MainWindow::on_actionImport_triggered()
         zoomToFitGeometry();
     }
 }
-
 
 void MainWindow::on_actionOptions_triggered()
 {

@@ -24,6 +24,18 @@ public:
     explicit AppSettingsDialog(QWidget *parent = nullptr);
     ~AppSettingsDialog();
 
+protected:
+    void changeEvent(QEvent *event) override;
+
+private slots:
+    void onApply();
+    void onAbort();
+    void onDefault();
+
 private:
+    void retranslateDynamicTexts();
+    void loadSettingsToUi();
+    void saveSettingsFromUi();
+
     Ui::AppSettingsDialog *ui;
 };

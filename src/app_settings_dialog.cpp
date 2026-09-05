@@ -11,14 +11,62 @@
 #include "app_settings_dialog.h"
 #include "ui_app_settings_dialog.h"
 
+#include <QPushButton>
+
 AppSettingsDialog::AppSettingsDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::AppSettingsDialog)
 {
     ui->setupUi(this);
+    ui->listSettingGroups->setCurrentRow(1); // Select the first group by default
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &AppSettingsDialog::onApply);
+    connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &AppSettingsDialog::onDefault);
+    connect(ui->buttonBox->button(QDialogButtonBox::Abort), &QPushButton::clicked, this, &AppSettingsDialog::onAbort);
 }
 
 AppSettingsDialog::~AppSettingsDialog()
 {
     delete ui;
+}
+
+void AppSettingsDialog::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+        retranslateDynamicTexts();
+    }
+}
+
+void AppSettingsDialog::onApply()
+{
+    saveSettingsFromUi();
+    accept(); // Close the dialog with QDialog::Accepted result
+    qDebug() << "Settings applied.";
+}
+
+void AppSettingsDialog::onAbort()
+{
+    qDebug() << "Settings changes aborted.";
+}
+
+void AppSettingsDialog::onDefault()
+{
+    // Reset settings to default values
+    qDebug() << "Settings reset to default.";
+}
+
+void AppSettingsDialog::retranslateDynamicTexts()
+{
+    // Update any dynamic texts in the dialog that need to be retranslated when the language changes
+}
+
+void AppSettingsDialog::loadSettingsToUi()
+{
+    // Load settings from the application settings to the UI elements
+}
+
+void AppSettingsDialog::saveSettingsFromUi()
+{
+    // Save settings from the UI elements to the application settings
 }

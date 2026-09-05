@@ -61,6 +61,7 @@ private:
     Ui::MainWindow *ui;
     QSettings m_settings;
     QTranslator m_translator;
+    QTranslator m_translatorQtBase;
     QMenu *m_langMenu = nullptr;
     QToolBar *toolBar = nullptr;
     QLabel *m_coordLabel = nullptr;
