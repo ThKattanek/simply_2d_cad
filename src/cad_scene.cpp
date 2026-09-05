@@ -10,9 +10,12 @@
 
 #include "./cad_scene.h"
 #include "./cad_tool_manager.h"
+#include "./snap_types.h"
 
 #include <QGraphicsItem>
 #include <QGraphicsSceneEvent>
+#include <qgraphicsview.h>
+#include <qwidget.h>
 
 #define SCENE_MIN_X -100000
 #define SCENE_MAX_X 100000
@@ -58,6 +61,15 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
     m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
     m_centerVLine->setZValue(100);
+
+    // Add the snap marker to the scene
+    m_snapMarker0 = new QGraphicsRectItem();
+    m_snapMarker0->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarker0->setZValue(1000); // over the crosshair
+    m_snapMarker0->setPen(QPen(Qt::green, 0));
+    m_snapMarker0->setBrush(Qt::NoBrush);
+    m_snapMarker0->setVisible(false); // Initially hidden
+    addItem(m_snapMarker0);
 }
 
 CadScene::~CadScene()
@@ -128,17 +140,57 @@ void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
+    QPointF rawMousePos = event->scenePos();
+    SnapResult snap;
+
     // Update the position of the crosshair item to follow the mouse cursor
     if(m_crosshair != nullptr) {
-        m_crosshair->setPosition(event->scenePos());
+        m_crosshair->setPosition(rawMousePos);
     }
 
-    // Update the crosshair position based on the mouse movement
-    emit cursorPositionChanged(event->scenePos());
+    if (m_document) {
+        double zoomFactor = getZoomFactorFromEvent(event);
+        snap = m_snapManager.findSnapPoint(rawMousePos, *m_document, zoomFactor);
+    }
 
+    // 3. Snap-Zustand & Marker aktualisieren
+    m_hasActiveSnapPoint = snap.snapped;
+
+    if (snap.snapped) {
+        m_activeSnapPoint = snap.point;
+
+        // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
+        const double zoomFactor = getZoomFactorFromEvent(event);
+        const double markerSizeWorld = 14.0 / zoomFactor;
+        const double halfSize = markerSizeWorld / 2.0;
+
+        // Das Rechteck zentriert auf den Fangpunkt setzen
+        m_snapMarker0->setRect(snap.point.x() - halfSize,
+                              snap.point.y() - halfSize,
+                              markerSizeWorld,
+                              markerSizeWorld);
+
+        // Optional: Farbe je nach SnapType anpassen
+        if (snap.type == SnapType::Endpoint) {
+            m_snapMarker0->setPen(QPen(Qt::red, 0));
+        } else if (snap.type == SnapType::Midpoint) {
+            m_snapMarker0->setPen(QPen(Qt::cyan, 0));
+        }
+
+        m_snapMarker0->setVisible(true);
+    } else {
+        m_snapMarker0->setVisible(false);
+    }
+
+    // 4. Signal für die Statusleiste senden (Zeigt gefangene Koordinate ODER freie Position)
+    QPointF displayPos = snap.snapped ? snap.point : rawMousePos;
+    emit cursorPositionChanged(displayPos, snap.snapped, snap.type);
+
+    // 5. Werkzeuge aufrufen
     if (auto tool = m_toolManager->activeTool()) {
         tool->mouseMoveEvent(this, event);
     }
+
     QGraphicsScene::mouseMoveEvent(event);
 }
 
@@ -156,4 +208,15 @@ void CadScene::keyPressEvent(QKeyEvent *event)
         tool->keyPressEvent(this, event);
     }
     QGraphicsScene::keyPressEvent(event);
+}
+
+double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
+{
+    if (event && event->widget()) {
+        // Der Parent des Viewports ist die QGraphicsView selbst
+        if (auto* view = qobject_cast<QGraphicsView*>(event->widget()->parentWidget())) {
+            return view->transform().m11(); // Skalierungsfaktor der X-Achse
+        }
+    }
+    return 1.0; // Fallback, falls kein View ermittelt werden kann
 }

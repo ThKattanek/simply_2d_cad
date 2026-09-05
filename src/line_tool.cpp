@@ -21,11 +21,13 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
+        QPointF currentPos = scene->getSnapOrPosition(event->scenePos());
+
         if(m_lineState == LineState::Idle)
         {
             m_lineState = LineState::Drawing;
 
-            m_startPoint = event->scenePos();
+            m_startPoint = currentPos;
             m_tempLine = scene->addLine(QLineF(m_startPoint, m_startPoint), QPen(Qt::gray, 0));
 
         } else if(m_lineState == LineState::Drawing)
@@ -33,7 +35,7 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
             m_lineState = LineState::Idle;
             if (m_tempLine)
             {
-                m_endPoint = event->scenePos();
+                m_endPoint = currentPos;
 
                 scene->removeItem(m_tempLine);
                 delete m_tempLine;
@@ -50,11 +52,12 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
     }
 }
 
-void LineTool::mouseMoveEvent(CadScene* , QGraphicsSceneMouseEvent* event)
+void LineTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (m_tempLine)
     {
-        m_tempLine->setLine(QLineF(m_startPoint, event->scenePos()));
+        QPointF currentPos = scene->getSnapOrPosition(event->scenePos());
+        m_tempLine->setLine(QLineF(m_startPoint, currentPos));
     }
 }
 

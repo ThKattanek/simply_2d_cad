@@ -12,8 +12,10 @@
 
 #include "./crosshair_item.h"
 #include "./cad_document/cad_document.h"
+#include "snap_manager.h"
 
 #include <QGraphicsScene>
+#include <QGraphicsRectItem>
 
 class CadToolManager;
 class QGraphicsSceneEvent;
@@ -32,8 +34,11 @@ public:
     CadDocument* getDocument() const { return m_document; }
     CrosshairItem* getCrosshairItem() { return m_crosshair; }
 
+    QPointF getSnapOrPosition(const QPointF& rawPosition) const {return m_hasActiveSnapPoint ? m_activeSnapPoint : rawPosition;}
+    bool hasActiveSnapPoint() const {return m_hasActiveSnapPoint;}
+
 signals:
-    void cursorPositionChanged(const QPointF& position);
+    void cursorPositionChanged(const QPointF& position, bool isSnapped, SnapType snapType);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -42,6 +47,8 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    double getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const;
+
     CrosshairItem* m_crosshair = nullptr;
     CadToolManager* m_toolManager = nullptr;
     QGraphicsLineItem* m_centerHLine = nullptr;
@@ -51,4 +58,10 @@ private:
     QPen* m_dotPenRed = nullptr;
 
     CadDocument* m_document = nullptr;
+
+    // Snapping
+    SnapManager m_snapManager;
+    QGraphicsRectItem* m_snapMarker0 = nullptr;
+    QPointF m_activeSnapPoint;
+    bool m_hasActiveSnapPoint = false;
 };

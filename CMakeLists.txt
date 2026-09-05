@@ -43,6 +43,8 @@ qt_add_executable(simply_2d_cad
     ${PROJECT_SOURCES}
     ${DXFLIB_SOURCES}
     ${MY_RESOURCES}
+    src/snap_types.h
+    src/snap_manager.h src/snap_manager.cpp
 )
 
 qt_add_translations(
