@@ -11,11 +11,8 @@
 #include "snap_marker_intersection_item.h"
 
 #include <QPainter>
-#include <QPen>
 
-SnapMarkerIntersectionItem::SnapMarkerIntersectionItem(QGraphicsItem *parent) : QGraphicsItem(parent)
-{
-}
+SnapMarkerIntersectionItem::SnapMarkerIntersectionItem(QGraphicsItem *parent) : QGraphicsItem(parent) {}
 
 QRectF SnapMarkerIntersectionItem::boundingRect() const
 {
@@ -28,7 +25,7 @@ void SnapMarkerIntersectionItem::paint(QPainter *painter, const QStyleOptionGrap
     Q_UNUSED(option);
 
     painter->setRenderHint(QPainter::Antialiasing, false); // Für scharfe Pixel-Linien
-    painter->setPen(QPen(Qt::magenta, 0));
+    painter->setPen(QPen(m_color, 0));
 
     const double half = m_size / 2.0;
 

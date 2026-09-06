@@ -34,7 +34,7 @@ CadView::CadView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     this->setCursor(Qt::BlankCursor);
 
     // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
-     setRenderHint(QPainter::Antialiasing);
+    // setRenderHint(QPainter::Antialiasing);
     // setRenderHint(QPainter::TextAntialiasing);
 
     // Set the background color to black for a classic Cad look
