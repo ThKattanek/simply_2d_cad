@@ -8,18 +8,18 @@
  * (at your option) any later version.
  */
 
-#include "snap_marker_point_item.h"
+#include "snap_marker_endpoint_item.h"
 
 #include <QPainter>
 
-SnapMarkerPointItem::SnapMarkerPointItem(QGraphicsItem *parent) : QGraphicsItem(parent) {}
+SnapMarkerEndpointItem::SnapMarkerEndpointItem(QGraphicsItem *parent) : QGraphicsItem(parent) {}
 
-QRectF SnapMarkerPointItem::boundingRect() const
+QRectF SnapMarkerEndpointItem::boundingRect() const
 {
     return QRectF(-m_size/2.0, -m_size/2.0, m_size, m_size);
 }
 
-void SnapMarkerPointItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void SnapMarkerEndpointItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -34,11 +34,10 @@ void SnapMarkerPointItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->setPen(pen);
     painter->setBrush(Qt::NoBrush);
 
-    //painter->drawRect(QRectF(-half, -half, m_size, m_size));
-    painter->drawEllipse(QRectF(-half, -half, m_size, m_size));
+    painter->drawRect(QRectF(-half, -half, m_size, m_size));
 }
 
-void SnapMarkerPointItem::setSize(double size)
+void SnapMarkerEndpointItem::setSize(double size)
 {
     if (m_size == size) return;
     m_size = size;

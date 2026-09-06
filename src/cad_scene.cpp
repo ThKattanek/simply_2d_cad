@@ -67,9 +67,17 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     m_snapMarkerPoint = new SnapMarkerPointItem();
     m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
     m_snapMarkerPoint->setZValue(1000); // over the crosshair
-    m_snapMarkerPoint->setColor(Qt::red);
+    m_snapMarkerPoint->setColor(Qt::yellow);
     m_snapMarkerPoint->setVisible(false); // Initially hidden
     addItem(m_snapMarkerPoint);
+
+    // Add the endpoint snap marker to the scene
+    m_snapMarkerEndpoint = new SnapMarkerEndpointItem();
+    m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerEndpoint->setColor(Qt::red);
+    m_snapMarkerEndpoint->setVisible(false);
+    addItem(m_snapMarkerEndpoint);
 
     // Add the intersection snap marker to the scene
     m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
@@ -177,53 +185,18 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         m_crosshair->setPosition(rawMousePos);
     }
 
+    // Perform snapping if a document is set
     if (m_document) {
         double zoomFactor = getZoomFactorFromEvent(event);
         snap = m_snapManager.findSnapPoint(rawMousePos, *m_document, zoomFactor);
+        updateSnapMarkers(snap, zoomFactor);
     }
 
-    // 3. Snap-Zustand & Marker aktualisieren
-    m_hasActiveSnapPoint = snap.snapped;
-
-    if (snap.snapped) {
-        m_activeSnapPoint = snap.point;
-
-        setVisibleAllSnapMarker(false);
-
-        // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
-        const double zoomFactor = getZoomFactorFromEvent(event);
-        const double markerSizeWorld = m_snapMakerSize / zoomFactor;
-
-        switch (snap.type)
-        {
-        case SnapType::Endpoint:
-        case SnapType::Point:
-            m_snapMarkerPoint->setPos(snap.point);
-            m_snapMarkerPoint->setSize(markerSizeWorld);
-            m_snapMarkerPoint->setVisible(true);
-            break;
-        case SnapType::Midpoint:
-            m_snapMarkerMidpoint->setPos(snap.point);
-            m_snapMarkerMidpoint->setSize(markerSizeWorld);
-            m_snapMarkerMidpoint->setVisible(true);
-            break;
-        case SnapType::Intersection:
-            m_snapMarkerIntersection->setPos(snap.point);
-            m_snapMarkerIntersection->setSize(markerSizeWorld);
-            m_snapMarkerIntersection->setVisible(true);
-            break;
-        default:
-            break;
-        }
-    }
-    else
-        setVisibleAllSnapMarker(false);
-
-    // 4. Signal für die Statusleiste senden (Zeigt gefangene Koordinate ODER freie Position)
+    // Emit the cursor position signal with the snapped position if available
     QPointF displayPos = snap.snapped ? snap.point : rawMousePos;
     emit cursorPositionChanged(displayPos, snap.snapped, snap.type);
 
-    // 5. Werkzeuge aufrufen
+    // Call the active tool's mouseMoveEvent if it exists
     if (auto tool = m_toolManager->activeTool()) {
         tool->mouseMoveEvent(this, event);
     }
@@ -258,9 +231,54 @@ double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
     return 1.0; // Fallback, falls kein View ermittelt werden kann
 }
 
+void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
+{
+    m_hasActiveSnapPoint = snap.snapped;
+
+    // Set the active snap point if snapping occurred
+    if (snap.snapped) {
+        m_activeSnapPoint = snap.point;
+
+        setVisibleAllSnapMarker(false);
+
+        // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
+        const double markerSizeWorld = m_snapMakerSize / zoomFactor;
+
+        switch (snap.type)
+        {
+        case SnapType::Endpoint:
+            m_snapMarkerEndpoint->setPos(snap.point);
+            m_snapMarkerEndpoint->setSize(markerSizeWorld);
+            m_snapMarkerEndpoint->setVisible(true);
+            break;
+        case SnapType::Point:
+            m_snapMarkerPoint->setPos(snap.point);
+            m_snapMarkerPoint->setSize(markerSizeWorld);
+            m_snapMarkerPoint->setVisible(true);
+            break;
+        case SnapType::Midpoint:
+            m_snapMarkerMidpoint->setPos(snap.point);
+            m_snapMarkerMidpoint->setSize(markerSizeWorld);
+            m_snapMarkerMidpoint->setVisible(true);
+            break;
+        case SnapType::Intersection:
+            m_snapMarkerIntersection->setPos(snap.point);
+            m_snapMarkerIntersection->setSize(markerSizeWorld);
+            m_snapMarkerIntersection->setVisible(true);
+            break;
+        default:
+            break;
+        }
+    }
+    else
+        setVisibleAllSnapMarker(false);
+
+}
+
 void CadScene::setVisibleAllSnapMarker(bool visible)
 {
     m_snapMarkerPoint->setVisible(visible);
+    m_snapMarkerEndpoint->setVisible(visible);
     m_snapMarkerIntersection->setVisible(visible);
     m_snapMarkerMidpoint->setVisible(visible);
 }
