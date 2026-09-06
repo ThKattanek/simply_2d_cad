@@ -63,14 +63,29 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
     m_centerVLine->setZValue(100);
 
-    // Add the snap marker to the scene
-    m_snapMarker0 = new QGraphicsRectItem();
-    m_snapMarker0->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarker0->setZValue(1000); // over the crosshair
-    m_snapMarker0->setPen(QPen(Qt::green, 0));
-    m_snapMarker0->setBrush(Qt::NoBrush);
-    m_snapMarker0->setVisible(false); // Initially hidden
-    addItem(m_snapMarker0);
+    // Add the point snap marker to the scene
+    m_snapMarkerPoint = new SnapMarkerPointItem();
+    m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerPoint->setZValue(1000); // over the crosshair
+    m_snapMarkerPoint->setColor(Qt::red);
+    m_snapMarkerPoint->setVisible(false); // Initially hidden
+    addItem(m_snapMarkerPoint);
+
+    // Add the intersection snap marker to the scene
+    m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
+    m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerIntersection->setZValue(1000); // over the crosshair
+    m_snapMarkerIntersection->setColor(Qt::magenta);
+    m_snapMarkerIntersection->setVisible(false);
+    addItem(m_snapMarkerIntersection);
+
+    // Add the midpoint snap marker to the scene
+    m_snapMarkerMidpoint = new SnapMarkerMidpointItem();
+    m_snapMarkerMidpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerMidpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerMidpoint->setColor(Qt::cyan);
+    m_snapMarkerMidpoint->setVisible(false);
+    addItem(m_snapMarkerMidpoint);
 }
 
 CadScene::~CadScene()
@@ -96,6 +111,12 @@ void CadScene::loadSettings()
     QSettings settings;
     m_snapMakerSize = settings.value("Snap/MarkerSize", 10).toInt();
     m_snapManager.setSnapTolerancePixels(settings.value("Snap/TolerancePixels", 10.0).toDouble());
+
+    m_snapManager.setGridSnapEnabled(settings.value("Snap/GridSnapEnabled", true).toBool());
+    m_snapManager.setPointSnapEnabled(settings.value("Snap/PointSnapEnabled", true).toBool());
+    m_snapManager.setEndpointSnapEnabled(settings.value("Snap/EndpointSnapEnabled", true).toBool());
+    m_snapManager.setMidpointSnapEnabled(settings.value("Snap/MidpointSnapEnabled", true).toBool());
+    m_snapManager.setIntersectionSnapEnabled(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
 }
 
 void CadScene::clearDocumentItems()
@@ -167,28 +188,36 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     if (snap.snapped) {
         m_activeSnapPoint = snap.point;
 
+        setVisibleAllSnapMarker(false);
+
         // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
         const double zoomFactor = getZoomFactorFromEvent(event);
         const double markerSizeWorld = m_snapMakerSize / zoomFactor;
-        const double halfSize = markerSizeWorld / 2.0;
 
-        // Das Rechteck zentriert auf den Fangpunkt setzen
-        m_snapMarker0->setRect(snap.point.x() - halfSize,
-                              snap.point.y() - halfSize,
-                              markerSizeWorld,
-                              markerSizeWorld);
-
-        // Optional: Farbe je nach SnapType anpassen
-        if (snap.type == SnapType::Endpoint) {
-            m_snapMarker0->setPen(QPen(Qt::red, 0));
-        } else if (snap.type == SnapType::Midpoint) {
-            m_snapMarker0->setPen(QPen(Qt::cyan, 0));
+        switch (snap.type)
+        {
+        case SnapType::Endpoint:
+        case SnapType::Point:
+            m_snapMarkerPoint->setPos(snap.point);
+            m_snapMarkerPoint->setSize(markerSizeWorld);
+            m_snapMarkerPoint->setVisible(true);
+            break;
+        case SnapType::Midpoint:
+            m_snapMarkerMidpoint->setPos(snap.point);
+            m_snapMarkerMidpoint->setSize(markerSizeWorld);
+            m_snapMarkerMidpoint->setVisible(true);
+            break;
+        case SnapType::Intersection:
+            m_snapMarkerIntersection->setPos(snap.point);
+            m_snapMarkerIntersection->setSize(markerSizeWorld);
+            m_snapMarkerIntersection->setVisible(true);
+            break;
+        default:
+            break;
         }
-
-        m_snapMarker0->setVisible(true);
-    } else {
-        m_snapMarker0->setVisible(false);
     }
+    else
+        setVisibleAllSnapMarker(false);
 
     // 4. Signal für die Statusleiste senden (Zeigt gefangene Koordinate ODER freie Position)
     QPointF displayPos = snap.snapped ? snap.point : rawMousePos;
@@ -227,4 +256,11 @@ double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
         }
     }
     return 1.0; // Fallback, falls kein View ermittelt werden kann
+}
+
+void CadScene::setVisibleAllSnapMarker(bool visible)
+{
+    m_snapMarkerPoint->setVisible(visible);
+    m_snapMarkerIntersection->setVisible(visible);
+    m_snapMarkerMidpoint->setVisible(visible);
 }

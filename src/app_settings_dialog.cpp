@@ -21,6 +21,13 @@ AppSettingsDialog::AppSettingsDialog(QWidget *parent)
     ui->setupUi(this);
     loadSettingsToUi();
 
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setDefault(false);
+    ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setAutoDefault(false);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setDefault(false);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setAutoDefault(false);
+    ui->buttonBox->button(QDialogButtonBox::Abort)->setDefault(false);
+    ui->buttonBox->button(QDialogButtonBox::Abort)->setAutoDefault(false);
+
     ui->listSettingGroups->setCurrentRow(1); // Select the first group by default
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &AppSettingsDialog::onApply);
@@ -60,7 +67,7 @@ void AppSettingsDialog::onDefault()
         break;
 
     case 1: // Snap Settings
-        ui->spinSnapMarkerSize->setValue(10);
+        ui->spinSnapMarkerSize->setValue(12);
         ui->spinSnapTolerance->setValue(10);
         break;
     default:
@@ -78,12 +85,15 @@ void AppSettingsDialog::loadSettingsToUi()
     // Load settings from the application settings to the UI elements
     QSettings settings;
 
-    ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 10).toInt());
+    ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 12).toInt());
     ui->spinSnapTolerance->setValue(settings.value("Snap/TolerancePixels", 10.0).toDouble());
 }
 
 void AppSettingsDialog::saveSettingsFromUi()
 {
+    ui->spinSnapMarkerSize->interpretText();
+    ui->spinSnapTolerance->interpretText();
+
     // Save settings from the UI elements to the application settings
     QSettings settings;
 

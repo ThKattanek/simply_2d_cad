@@ -12,7 +12,10 @@
 
 #include "./crosshair_item.h"
 #include "./cad_document/cad_document.h"
-#include "snap_manager.h"
+#include "./snap_manager.h"
+#include "./snap_marker_point_item.h"
+#include "./snap_marker_intersection_item.h"
+#include "./snap_marker_midpoint_item.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
@@ -49,6 +52,7 @@ protected:
 
 private:
     double getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const;
+    void setVisibleAllSnapMarker(bool visible);
 
     CrosshairItem* m_crosshair = nullptr;
     CadToolManager* m_toolManager = nullptr;
@@ -63,7 +67,9 @@ private:
     // Snapping
     SnapManager m_snapManager;
     int m_snapMakerSize = 10;
-    QGraphicsRectItem* m_snapMarker0 = nullptr;
+    SnapMarkerPointItem* m_snapMarkerPoint = nullptr;
+    SnapMarkerIntersectionItem* m_snapMarkerIntersection = nullptr;
+    SnapMarkerMidpointItem* m_snapMarkerMidpoint = nullptr;
     QPointF m_activeSnapPoint;
     bool m_hasActiveSnapPoint = false;
 };
