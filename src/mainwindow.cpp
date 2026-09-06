@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    connectSnapSettingsToUi();
+
     m_cadDocument = new CadDocument(this);
 
     m_toolManager = new CadToolManager(this);
@@ -93,7 +95,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Load all Settings from QSettings
     m_cadScene->loadSettings();
 
-    showMaximized();
+    // Load the layout settings (window size, position, toolbar positions) from QSettings
+    loadLayoutSettings();
 }
 
 MainWindow::~MainWindow()
@@ -261,6 +264,12 @@ void MainWindow::changeEvent(QEvent *event)
     QMainWindow::changeEvent(event);
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+    saveLayoutSettings();
+}
+
 void MainWindow::updateCursorPosition(const QPointF &position)
 {
     m_coordLabel->setText(QString("X: %1 | Y: %2 mm")
@@ -324,5 +333,77 @@ void MainWindow::on_actionOptions_triggered()
     if (settingsDialog.exec() == QDialog::Accepted) {
         m_cadScene->loadSettings(); // Reload settings after changes
     }
+}
+
+void MainWindow::saveLayoutSettings()
+{
+    m_settings.setValue("MainWindow/Geometry", saveGeometry());
+    m_settings.setValue("MainWindow/State", saveState());
+}
+
+void MainWindow::loadLayoutSettings()
+{
+    QSettings settings;
+    if (settings.contains("MainWindow/Geometry")) {
+        restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
+    }
+    if (settings.contains("MainWindow/State")) {
+        // Stellt exakt wieder her, wo die SnapToolBar zuletzt lag!
+        restoreState(settings.value("MainWindow/State").toByteArray());
+    }
+}
+
+void MainWindow::loadSnapSettingsToUi()
+{
+    QSettings settings;
+
+    // QSignalBlocker verhindert unbeabsichtigte Signal-Kaskaden beim Initialisieren
+    {
+        const QSignalBlocker b0(ui->actionSnapPoint);
+        ui->actionSnapPoint->setChecked(settings.value("Snap/PointSnapEnabled", true).toBool());
+
+        const QSignalBlocker b1(ui->actionSnapEndpoint);
+        ui->actionSnapEndpoint->setChecked(settings.value("Snap/EndpointSnapEnabled", true).toBool());
+    }
+    {
+        const QSignalBlocker b2(ui->actionSnapMidpoint);
+        ui->actionSnapMidpoint->setChecked(settings.value("Snap/MidpointSnapEnabled", true).toBool());
+    }
+    {
+        const QSignalBlocker b3(ui->actionSnapIntersection);
+        ui->actionSnapIntersection->setChecked(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
+    }
+}
+
+void MainWindow::connectSnapSettingsToUi()
+{
+    // Initialen Status der Actions aus QSettings laden
+    loadSnapSettingsToUi();
+
+    // Signale der Designer-Actions verbinden
+
+    connect(ui->actionSnapPoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/PointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapEndpoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/EndpointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapMidpoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/MidpointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapIntersection, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/IntersectionSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
 }
 

@@ -43,18 +43,18 @@
        d="M 1.7935126,30.562586 30.670677,1.4374133"
        id="path1" />
     <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:0.95785;stroke-linejoin:bevel;stroke-miterlimit:0"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.44402;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
        id="rect2"
-       width="3.6105943"
-       height="3.7266412"
-       x="27.220995"
-       y="1.0813756" />
+       width="5.062037"
+       height="5.1573811"
+       x="25.437786"
+       y="1.6082664" />
     <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:0.957928;stroke-linejoin:bevel;stroke-miterlimit:0"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.4;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
        id="rect3"
-       width="3.6395352"
-       height="3.6975589"
-       x="1.4585639"
-       y="27.075972" />
+       width="4.9218345"
+       height="5.0378819"
+       x="1.7935126"
+       y="25.524704" />
   </g>
 </svg>

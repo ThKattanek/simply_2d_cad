@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>767</width>
-    <height>600</height>
+    <width>1260</width>
+    <height>923</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>767</width>
+     <width>1260</width>
      <height>22</height>
     </rect>
    </property>
@@ -52,10 +52,13 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="allowedAreas">
+    <set>Qt::ToolBarArea::AllToolBarAreas</set>
+   </property>
    <property name="iconSize">
     <size>
-     <width>32</width>
-     <height>32</height>
+     <width>24</width>
+     <height>24</height>
     </size>
    </property>
    <attribute name="toolBarArea">
@@ -67,6 +70,30 @@
    <addaction name="actionToolSelect"/>
    <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
+  </widget>
+  <widget class="QToolBar" name="tb_snapTools">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>true</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>BottomToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSnapPoint"/>
+   <addaction name="actionSnapEndpoint"/>
+   <addaction name="actionSnapMidpoint"/>
+   <addaction name="actionSnapIntersection"/>
   </widget>
   <action name="action_Close">
    <property name="text">
@@ -159,6 +186,78 @@
   <action name="actionOptions">
    <property name="text">
     <string>Options...</string>
+   </property>
+  </action>
+  <action name="actionSnapPoint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_point.svg</normaloff>:/icons/icons_svg/snap_point.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapPoint</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap the dots.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapEndpoint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_endpoint.svg</normaloff>:/icons/icons_svg/snap_endpoint.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapEndpoint</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap the endpoints.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapMidpoint">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_midpoint.svg</normaloff>:/icons/icons_svg/snap_midpoint.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapMidpoint</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap the midpoints.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapIntersection">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_intersection.svg</normaloff>:/icons/icons_svg/snap_intersection.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapIntersection</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap the intersections.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
  </widget>

@@ -48,6 +48,7 @@ set(PROJECT_SOURCES
     src/snap_manager.h src/snap_manager.cpp
     src/app_settings_dialog.h src/app_settings_dialog.cpp src/app_settings_dialog.ui
     src/snap_marker_point_item.h src/snap_marker_point_item.cpp
+    src/snap_marker_endpoint_item.h src/snap_marker_endpoint_item.cpp
     src/snap_marker_intersection_item.h src/snap_marker_intersection_item.cpp
     src/snap_marker_midpoint_item.h src/snap_marker_midpoint_item.cpp
 )

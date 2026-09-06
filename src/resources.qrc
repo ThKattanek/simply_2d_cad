@@ -3,5 +3,9 @@
         <file>icons_svg/tool_point.svg</file>
         <file>icons_svg/tool_line.svg</file>
         <file>icons_svg/tool_select.svg</file>
+        <file>icons_svg/snap_point.svg</file>
+        <file>icons_svg/snap_endpoint.svg</file>
+        <file>icons_svg/snap_midpoint.svg</file>
+        <file>icons_svg/snap_intersection.svg</file>
     </qresource>
 </RCC>
