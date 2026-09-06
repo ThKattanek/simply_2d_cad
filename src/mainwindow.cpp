@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    connectSnapSettingsToUi();
+
     m_cadDocument = new CadDocument(this);
 
     m_toolManager = new CadToolManager(this);
@@ -349,5 +351,59 @@ void MainWindow::loadLayoutSettings()
         // Stellt exakt wieder her, wo die SnapToolBar zuletzt lag!
         restoreState(settings.value("MainWindow/State").toByteArray());
     }
+}
+
+void MainWindow::loadSnapSettingsToUi()
+{
+    QSettings settings;
+
+    // QSignalBlocker verhindert unbeabsichtigte Signal-Kaskaden beim Initialisieren
+    {
+        const QSignalBlocker b0(ui->actionSnapPoint);
+        ui->actionSnapPoint->setChecked(settings.value("Snap/PointSnapEnabled", true).toBool());
+
+        const QSignalBlocker b1(ui->actionSnapEndpoint);
+        ui->actionSnapEndpoint->setChecked(settings.value("Snap/EndpointSnapEnabled", true).toBool());
+    }
+    {
+        const QSignalBlocker b2(ui->actionSnapMidpoint);
+        ui->actionSnapMidpoint->setChecked(settings.value("Snap/MidpointSnapEnabled", true).toBool());
+    }
+    {
+        const QSignalBlocker b3(ui->actionSnapIntersection);
+        ui->actionSnapIntersection->setChecked(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
+    }
+}
+
+void MainWindow::connectSnapSettingsToUi()
+{
+    // Initialen Status der Actions aus QSettings laden
+    loadSnapSettingsToUi();
+
+    // Signale der Designer-Actions verbinden
+
+    connect(ui->actionSnapPoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/PointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapEndpoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/EndpointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapMidpoint, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/MidpointSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapIntersection, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/IntersectionSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
 }
 

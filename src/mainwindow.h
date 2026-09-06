@@ -56,6 +56,9 @@ private:
     void saveLayoutSettings();
     void loadLayoutSettings();
 
+    void loadSnapSettingsToUi();
+    void connectSnapSettingsToUi();
+
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
 
