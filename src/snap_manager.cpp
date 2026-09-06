@@ -47,7 +47,8 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
                     checkPoint(pt->position(), SnapType::Point);
                 break;
             }
-            case EntityType::Line: {
+            case EntityType::Line:
+                {
                 auto* line = static_cast<const CadLine*>(entityPtr.get());
                 // Endpunkte fangen
                 if (m_endpointSnapEnabled) {

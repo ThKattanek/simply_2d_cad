@@ -63,14 +63,22 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
     m_centerVLine->setZValue(100);
 
-    // Add the snap marker to the scene
-    m_snapMarker0 = new QGraphicsRectItem();
-    m_snapMarker0->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarker0->setZValue(1000); // over the crosshair
-    m_snapMarker0->setPen(QPen(Qt::green, 0));
-    m_snapMarker0->setBrush(Qt::NoBrush);
-    m_snapMarker0->setVisible(false); // Initially hidden
-    addItem(m_snapMarker0);
+    // Add the endpoint / point snap marker to the scene
+    m_snapMarkerEndpoint = new QGraphicsRectItem();
+    m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerEndpoint->setPen(QPen(Qt::red, 0));
+    m_snapMarkerEndpoint->setBrush(Qt::NoBrush);
+    m_snapMarkerEndpoint->setVisible(false); // Initially hidden
+    addItem(m_snapMarkerEndpoint);
+
+    // Add the intersection snap marker to the scene
+    m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
+    m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerIntersection->setZValue(1000); // over the crosshair
+    m_snapMarkerIntersection->setColor(Qt::magenta);
+    m_snapMarkerIntersection->setVisible(false);
+    addItem(m_snapMarkerIntersection);
 }
 
 CadScene::~CadScene()
@@ -178,22 +186,31 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         const double markerSizeWorld = m_snapMakerSize / zoomFactor;
         const double halfSize = markerSizeWorld / 2.0;
 
-        // Das Rechteck zentriert auf den Fangpunkt setzen
-        m_snapMarker0->setRect(snap.point.x() - halfSize,
-                              snap.point.y() - halfSize,
-                              markerSizeWorld,
-                              markerSizeWorld);
-
-        // Optional: Farbe je nach SnapType anpassen
-        if (snap.type == SnapType::Endpoint) {
-            m_snapMarker0->setPen(QPen(Qt::red, 0));
-        } else if (snap.type == SnapType::Midpoint) {
-            m_snapMarker0->setPen(QPen(Qt::cyan, 0));
+        switch (snap.type)
+        {
+        case SnapType::Endpoint:
+        case SnapType::Midpoint:
+        case SnapType::Point:
+            // Das Rechteck zentriert auf den Fangpunkt setzen
+            m_snapMarkerEndpoint->setRect(snap.point.x() - halfSize,
+                                          snap.point.y() - halfSize,
+                                          markerSizeWorld,
+                                          markerSizeWorld);
+            m_snapMarkerEndpoint->setPen(QPen(Qt::red, 0));
+            m_snapMarkerEndpoint->setVisible(true);
+            break;
+        case SnapType::Intersection:
+            m_snapMarkerIntersection->setPos(snap.point);
+            m_snapMarkerIntersection->setSize(markerSizeWorld);
+            m_snapMarkerIntersection->setVisible(true);
+            break;
+        default:
+            break;
         }
-
-        m_snapMarker0->setVisible(true);
-    } else {
-        m_snapMarker0->setVisible(false);
+    } else
+    {
+        m_snapMarkerEndpoint->setVisible(false);
+        m_snapMarkerIntersection->setVisible(false);
     }
 
     // 4. Signal für die Statusleiste senden (Zeigt gefangene Koordinate ODER freie Position)

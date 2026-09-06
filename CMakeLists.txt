@@ -47,7 +47,7 @@ set(PROJECT_SOURCES
     src/snap_types.h
     src/snap_manager.h src/snap_manager.cpp
     src/app_settings_dialog.h src/app_settings_dialog.cpp src/app_settings_dialog.ui
-
+    src/snap_marker_intersection_item.h src/snap_marker_intersection_item.cpp
 )
 
 qt_add_resources(MY_RESOURCES src/resources.qrc)
