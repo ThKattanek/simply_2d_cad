@@ -8,25 +8,25 @@
  * (at your option) any later version.
  */
 
-#include "snap_marker_intersection_item.h"
+#include "snap_marker_point_item.h"
 
 #include <QPainter>
 
-SnapMarkerIntersectionItem::SnapMarkerIntersectionItem(QGraphicsItem *parent) : QGraphicsItem(parent) {}
+SnapMarkerPointItem::SnapMarkerPointItem(QGraphicsItem *parent) : QGraphicsItem(parent) {}
 
-QRectF SnapMarkerIntersectionItem::boundingRect() const
+QRectF SnapMarkerPointItem::boundingRect() const
 {
     return QRectF(-m_size/2.0, -m_size/2.0, m_size, m_size);
 }
 
-void SnapMarkerIntersectionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void SnapMarkerPointItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(widget);
     Q_UNUSED(option);
+    Q_UNUSED(widget);
 
     const double half = m_size / 2.0;
 
-    painter->setRenderHint(QPainter::Antialiasing, false); // Für scharfe Pixel-Linien
+    painter->setRenderHint(QPainter::Antialiasing, false); // Für scharfe Pixel-Kanten
 
     QPen pen(m_color, 2);
     pen.setCosmetic(true); // Bleibt beim Zoomen immer 2 Pixel dick!
@@ -34,12 +34,10 @@ void SnapMarkerIntersectionItem::paint(QPainter *painter, const QStyleOptionGrap
     painter->setPen(pen);
     painter->setBrush(Qt::NoBrush);
 
-    // 1. Mittleres 'X' (Hauptlinien)
-    painter->drawLine(QPointF(-half, -half), QPointF(half, half));
-    painter->drawLine(QPointF(-half, half), QPointF(half, -half));
+    painter->drawRect(QRectF(-half, -half, m_size, m_size));
 }
 
-void SnapMarkerIntersectionItem::setSize(double size)
+void SnapMarkerPointItem::setSize(double size)
 {
     if (m_size == size) return;
     m_size = size;

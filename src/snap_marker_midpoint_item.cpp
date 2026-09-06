@@ -24,10 +24,9 @@ void SnapMarkerMidpointItem::paint(QPainter *painter, const QStyleOptionGraphics
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
-    painter->setRenderHint(QPainter::Antialiasing, false); // Für scharfe Pixel-Kanten
-    painter->setPen(QPen(m_color, 0)); // Kosmischer Pen (immer 1px breit)
-
     const double halfWidth = m_size / 2.0;
+
+    painter->setRenderHint(QPainter::Antialiasing, false); // Für scharfe Pixel-Kanten
 
     // Höhe eines gleichseitigen Dreiecks (h = sqrt(3)/2 * a)
     const double height = (std::sqrt(3.0) / 2.0) * m_size;
@@ -39,18 +38,13 @@ void SnapMarkerMidpointItem::paint(QPainter *painter, const QStyleOptionGraphics
              << QPointF(halfWidth, halfHeight)      // Unten rechts
              << QPointF(-halfWidth, halfHeight);    // Unten links
 
-    // Umriss zeichnen
-    painter->drawPolygon(triangle);
+    QPen pen(m_color, 2);
+    pen.setCosmetic(true); // Bleibt beim Zoomen immer 2 Pixel dick!
 
-    // Dicker-Effekt durch 1px versetztes inneres Dreieck (wie beim X)
-    const double offset = m_size / 10.0;
-    if (halfWidth - offset > 0 && halfHeight - offset > 0) {
-        QPolygonF innerTriangle;
-        innerTriangle << QPointF(0.0, -halfHeight + offset)
-                      << QPointF(halfWidth - offset, halfHeight - (offset / 2.0))
-                      << QPointF(-halfWidth + offset, halfHeight - (offset / 2.0));
-        painter->drawPolygon(innerTriangle);
-    }
+    // Umriss zeichnen
+    painter->setPen(pen);
+    painter->setBrush(Qt::NoBrush);
+    painter->drawPolygon(triangle);
 }
 
 void SnapMarkerMidpointItem::setSize(double size)

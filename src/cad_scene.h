@@ -13,6 +13,7 @@
 #include "./crosshair_item.h"
 #include "./cad_document/cad_document.h"
 #include "./snap_manager.h"
+#include "./snap_marker_point_item.h"
 #include "./snap_marker_intersection_item.h"
 #include "./snap_marker_midpoint_item.h"
 
@@ -66,7 +67,7 @@ private:
     // Snapping
     SnapManager m_snapManager;
     int m_snapMakerSize = 10;
-    QGraphicsRectItem* m_snapMarkerPoint = nullptr;
+    SnapMarkerPointItem* m_snapMarkerPoint = nullptr;
     SnapMarkerIntersectionItem* m_snapMarkerIntersection = nullptr;
     SnapMarkerMidpointItem* m_snapMarkerMidpoint = nullptr;
     QPointF m_activeSnapPoint;

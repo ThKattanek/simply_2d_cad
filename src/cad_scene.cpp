@@ -64,11 +64,10 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     m_centerVLine->setZValue(100);
 
     // Add the point snap marker to the scene
-    m_snapMarkerPoint = new QGraphicsRectItem();
+    m_snapMarkerPoint = new SnapMarkerPointItem();
     m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
     m_snapMarkerPoint->setZValue(1000); // over the crosshair
-    m_snapMarkerPoint->setPen(QPen(Qt::red, 0));
-    m_snapMarkerPoint->setBrush(Qt::NoBrush);
+    m_snapMarkerPoint->setColor(Qt::red);
     m_snapMarkerPoint->setVisible(false); // Initially hidden
     addItem(m_snapMarkerPoint);
 
@@ -194,18 +193,13 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         // Marker-Größe maßstabsunabhängig auf dem Bildschirm halten (z. B. 10x10 Pixel)
         const double zoomFactor = getZoomFactorFromEvent(event);
         const double markerSizeWorld = m_snapMakerSize / zoomFactor;
-        const double halfSize = markerSizeWorld / 2.0;
 
         switch (snap.type)
         {
         case SnapType::Endpoint:
         case SnapType::Point:
-            // Das Rechteck zentriert auf den Fangpunkt setzen
-            m_snapMarkerPoint->setRect(snap.point.x() - halfSize,
-                                          snap.point.y() - halfSize,
-                                          markerSizeWorld,
-                                          markerSizeWorld);
-            m_snapMarkerPoint->setPen(QPen(Qt::red, 0));
+            m_snapMarkerPoint->setPos(snap.point);
+            m_snapMarkerPoint->setSize(markerSizeWorld);
             m_snapMarkerPoint->setVisible(true);
             break;
         case SnapType::Midpoint:
