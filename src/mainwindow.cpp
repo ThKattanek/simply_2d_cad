@@ -93,7 +93,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Load all Settings from QSettings
     m_cadScene->loadSettings();
 
-    showMaximized();
+    // Load the layout settings (window size, position, toolbar positions) from QSettings
+    loadLayoutSettings();
 }
 
 MainWindow::~MainWindow()
@@ -261,6 +262,12 @@ void MainWindow::changeEvent(QEvent *event)
     QMainWindow::changeEvent(event);
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+    saveLayoutSettings();
+}
+
 void MainWindow::updateCursorPosition(const QPointF &position)
 {
     m_coordLabel->setText(QString("X: %1 | Y: %2 mm")
@@ -323,6 +330,24 @@ void MainWindow::on_actionOptions_triggered()
     AppSettingsDialog settingsDialog(this);
     if (settingsDialog.exec() == QDialog::Accepted) {
         m_cadScene->loadSettings(); // Reload settings after changes
+    }
+}
+
+void MainWindow::saveLayoutSettings()
+{
+    m_settings.setValue("MainWindow/Geometry", saveGeometry());
+    m_settings.setValue("MainWindow/State", saveState());
+}
+
+void MainWindow::loadLayoutSettings()
+{
+    QSettings settings;
+    if (settings.contains("MainWindow/Geometry")) {
+        restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
+    }
+    if (settings.contains("MainWindow/State")) {
+        // Stellt exakt wieder her, wo die SnapToolBar zuletzt lag!
+        restoreState(settings.value("MainWindow/State").toByteArray());
     }
 }
 

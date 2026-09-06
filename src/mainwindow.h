@@ -15,6 +15,7 @@
 #include <QToolBar>
 #include <QLabel>
 #include <QSettings>
+#include <QToolButton>
 
 #include "./cad_view.h"
 #include "./cad_scene.h"
@@ -37,6 +38,7 @@ public:
 
 protected:
     void changeEvent(QEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 private slots:
     void updateCursorPosition(const QPointF& position);
@@ -51,9 +53,12 @@ private slots:
     void on_actionOptions_triggered();
 
 private:
+    void saveLayoutSettings();
+    void loadLayoutSettings();
+
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
-    void createToolBar();
+
     void zoomToFitGeometry();
     bool exportDxf(const QString &fileName);
     bool importDxf(const QString &fileName);
