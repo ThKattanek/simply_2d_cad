@@ -67,7 +67,7 @@ void AppSettingsDialog::onDefault()
         break;
 
     case 1: // Snap Settings
-        ui->spinSnapMarkerSize->setValue(10);
+        ui->spinSnapMarkerSize->setValue(12);
         ui->spinSnapTolerance->setValue(10);
         break;
     default:
@@ -85,7 +85,7 @@ void AppSettingsDialog::loadSettingsToUi()
     // Load settings from the application settings to the UI elements
     QSettings settings;
 
-    ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 10).toInt());
+    ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 12).toInt());
     ui->spinSnapTolerance->setValue(settings.value("Snap/TolerancePixels", 10.0).toDouble());
 }
 
