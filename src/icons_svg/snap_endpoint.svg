@@ -7,8 +7,8 @@
    viewBox="0 0 32 32"
    version="1.1"
    id="svg1"
-   sodipodi:docname="tool_point.svg"
    inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="snap_endpoint.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,23 +23,23 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:document-units="px"
-     inkscape:zoom="36.613521"
-     inkscape:cx="16.687824"
-     inkscape:cy="14.461871"
+     showguides="true"
+     inkscape:zoom="17.234375"
+     inkscape:cx="27.097008"
+     inkscape:cy="16.043518"
      inkscape:window-width="2560"
      inkscape:window-height="1312"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
-     showguides="true">
+     inkscape:current-layer="layer1">
     <sodipodi:guide
-       position="16.035393,35.147843"
+       position="15.536491,36.188803"
        orientation="1,0"
        id="guide1"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="11.537604,16.030798"
+       position="29.565277,16.408432"
        orientation="0,-1"
        id="guide2"
        inkscape:locked="false" />
@@ -50,12 +50,24 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.502;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 0.85973079,31.161859 17.259954,13.812587"
+       id="path1"
+       sodipodi:nodetypes="cc" />
     <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:1.5;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none"
-       id="rect1"
-       width="6.1259265"
-       height="6.0713015"
-       x="12.955709"
-       y="13.037646" />
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.3506;stroke-linejoin:bevel;stroke-miterlimit:0"
+       id="rect2"
+       width="5.1877527"
+       height="5.156755"
+       x="15.536491"
+       y="10.434813" />
+    <rect
+       style="fill:none;stroke:#ed0000;stroke-width:2.5;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3"
+       width="16.453367"
+       height="16.917557"
+       x="9.8609838"
+       y="4.7221642" />
   </g>
 </svg>
