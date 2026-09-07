@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    initializeCommandToolbar();
+
     connectSnapSettingsToUi();
 
     m_cadDocument = new CadDocument(this);
@@ -182,6 +184,32 @@ void MainWindow::switchLanguage(const QString &qmFileName)
     if (m_translatorQtBase.load("qtbase_" + langCode, qtTranslationsPath)) {
         qApp->installTranslator(&m_translatorQtBase);
     }
+}
+
+void MainWindow::initializeCommandToolbar()
+{
+    QWidget* container = new QWidget(this);
+    QVBoxLayout* vLayout = new QVBoxLayout(container);
+
+    // Ränder und Abstände eng halten, damit die Toolbar schön schmal bleibt
+    vLayout->setContentsMargins(0,2,2, 2);
+    vLayout->setSpacing(2);
+
+    m_commandPromt = new QLabel(tr("TEST TSET"), this);
+    QFont font = m_commandPromt->font();
+    font.setPointSize(8); // Etwas kleiner für kompakte Optik
+    m_commandPromt->setFont(font);
+
+    m_commandInput = new QLineEdit(this);
+    m_commandInput->setClearButtonEnabled(true);
+    m_commandInput->setMinimumWidth(250);
+
+    vLayout->addWidget(m_commandPromt);
+    vLayout->addWidget(m_commandInput);
+
+    ui->tb_commandLine->addWidget(container);
+
+    connect(m_commandInput, &QLineEdit::returnPressed, this, &MainWindow::on_commandSubmitted);
 }
 
 void MainWindow::zoomToFitGeometry()
@@ -333,6 +361,11 @@ void MainWindow::on_actionOptions_triggered()
     if (settingsDialog.exec() == QDialog::Accepted) {
         m_cadScene->loadSettings(); // Reload settings after changes
     }
+}
+
+void MainWindow::on_commandSubmitted()
+{
+    qDebug() << "Command Submitted";
 }
 
 void MainWindow::saveLayoutSettings()

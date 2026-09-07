@@ -14,6 +14,7 @@
 #include <QTranslator>
 #include <QToolBar>
 #include <QLabel>
+#include <QLineEdit>
 #include <QSettings>
 #include <QToolButton>
 
@@ -42,15 +43,14 @@ protected:
 
 private slots:
     void updateCursorPosition(const QPointF& position);
+
     void on_action_Close_triggered();
     void on_actionSave_triggered();
     void on_actionLoad_triggered();
     void on_actionExportAsDxf_triggered();
-
-
     void on_actionImport_triggered();
-
     void on_actionOptions_triggered();
+    void on_commandSubmitted();
 
 private:
     void saveLayoutSettings();
@@ -61,6 +61,8 @@ private:
 
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
+
+    void initializeCommandToolbar();
 
     void zoomToFitGeometry();
     bool exportDxf(const QString &fileName);
@@ -79,4 +81,7 @@ private:
     CadToolManager *m_toolManager = nullptr;
 
     CadDocument *m_cadDocument = nullptr;
+
+    QLabel *m_commandPromt = nullptr;
+    QLineEdit *m_commandInput = nullptr;
 };
