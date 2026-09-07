@@ -167,11 +167,36 @@ void CadScene::setDocument(CadDocument *document)
     });
 }
 
+void CadScene::handleCommandInputPoint(const QPointF &parsedPoint)
+{
+    // 1. Letzten Punkt in der Szene aktualisieren
+    m_lastPoint = parsedPoint;
+
+    auto m_activeTool = m_toolManager->activeTool();
+
+    // 2. Falls ein aktives Tool vorhanden ist, den Punkt übergeben
+    if (m_activeTool) {
+        // Option A: Wenn dein Tool eine eigene Methode für Tastaturpunkte hat:
+        m_activeTool->handlePointInput(this, parsedPoint);
+
+        // Option B: Falls du das Tool über sein m_lastPoint informieren willst:
+        m_activeTool->setLastPoint(parsedPoint);
+
+        // Szene neu zeichnen/aktualisieren (z. B. für Vorschau-Linien)
+        update();
+    }
+}
+
 void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (auto tool = m_toolManager->activeTool()) {
-        tool->mousePressEvent(this, event);
+    if(event->button() == Qt::LeftButton) {
+        m_lastPoint = getSnapOrPosition(event->scenePos());
+
+        if (auto tool = m_toolManager->activeTool()) {
+            tool->mousePressEvent(this, event);
+        }
     }
+
     QGraphicsScene::mousePressEvent(event);
 }
 

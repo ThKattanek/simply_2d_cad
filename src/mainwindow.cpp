@@ -205,6 +205,12 @@ void MainWindow::initializeCommandToolbar()
     m_commandInput = new QLineEdit(this);
     m_commandInput->setClearButtonEnabled(true);
     m_commandInput->setMinimumWidth(250);
+    m_commandInput->setFocusPolicy(Qt::NoFocus); // Damit die Toolbar nicht automatisch den Fokus bekommt
+
+    m_commandInput->setStyleSheet(
+    "QLineEdit { border: 1px solid #bcbcbc; border-radius: 3px; background-color: #ffffff; }"
+    "QLineEdit:hover { border: 1px solid #bcbcbc; }"
+    );
 
     vLayout->addWidget(m_commandPromt);
     vLayout->addWidget(m_commandInput);
@@ -367,7 +373,60 @@ void MainWindow::on_actionOptions_triggered()
 
 void MainWindow::on_commandSubmitted()
 {
-    qDebug() << "Command Submitted";
+    QString input = m_commandInput->text().trimmed();
+    if (input.isEmpty()) return;
+
+    bool isRelative = false;
+    if (input.startsWith('@')) {
+        isRelative = true;
+        input.remove(0, 1); // '@' entfernen
+    }
+
+    QPointF parsedPoint;
+    bool validParse = false;
+
+    // 1. Polarkoordinaten prüfen (Format: Länge<Winkel)
+    if (input.contains('<')) {
+        QStringList parts = input.split('<');
+        if (parts.size() == 2) {
+            bool okLen = false, okAngle = false;
+            double length = parts[0].toDouble(&okLen);
+            double angleDeg = parts[1].toDouble(&okAngle);
+
+            if (okLen && okAngle) {
+                // Grad in Radian umrechnen (Standard CAD: 0° = Rechts, 90° = Oben)
+                double angleRad = qDegreesToRadians(angleDeg);
+                parsedPoint = QPointF(length * std::cos(angleRad), -length * std::sin(angleRad));
+                validParse = true;
+            }
+        }
+    }
+    // 2. Kartesische Koordinaten prüfen (Format: X,Y)
+    else if (input.contains(',')) {
+        QStringList parts = input.split(',');
+        if (parts.size() == 2) {
+            bool okX = false, okY = false;
+            double x = parts[0].toDouble(&okX);
+            double y = parts[1].toDouble(&okY);
+
+            if (okX && okY) {
+                parsedPoint = QPointF(x, y);
+                validParse = true;
+            }
+        }
+    }
+
+    if (validParse) {
+        // Bei Relativkoordinaten den Punkt zum letzten geklickten Punkt aufaddieren
+        if (isRelative) {
+            QPointF lastPt = m_cadScene->getLastPoint(); // Letzter Basispunkt aus der Szene
+            parsedPoint += lastPt;
+        }
+
+        // An das aktive Werkzeug übergeben
+        m_cadScene->handleCommandInputPoint(parsedPoint);
+        m_commandInput->clear();
+    }
 }
 
 void MainWindow::saveLayoutSettings()

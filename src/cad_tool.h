@@ -10,7 +10,10 @@
 
 #pragma once
 
+#include <QPointF>
+
 // Forward declarations
+
 class QGraphicsSceneMouseEvent;
 class QKeyEvent;
 class CadScene;
@@ -29,4 +32,12 @@ public:
 
     virtual void activate(CadScene* ) {}
     virtual void deactivate(CadScene* ) {}
+
+    QPointF getLastPoint() const { return m_lastPoint; }
+    void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
+
+    virtual void handlePointInput(CadScene* , const QPointF& ) {}
+
+private:
+    QPointF m_lastPoint; // Stores the last point for relative coordinate input
 };

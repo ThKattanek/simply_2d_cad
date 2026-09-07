@@ -42,6 +42,10 @@ public:
     QPointF getSnapOrPosition(const QPointF& rawPosition) const {return m_hasActiveSnapPoint ? m_activeSnapPoint : rawPosition;}
     bool hasActiveSnapPoint() const {return m_hasActiveSnapPoint;}
 
+    QPointF getLastPoint() const { return m_lastPoint; }
+    void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
+    void handleCommandInputPoint(const QPointF& parsedPoint);
+
 signals:
     void cursorPositionChanged(const QPointF& position, bool isSnapped, SnapType snapType);
 
@@ -65,6 +69,9 @@ private:
     QPen* m_dotPenRed = nullptr;
 
     CadDocument* m_document = nullptr;
+
+    // Last point when left mouse button was clicked (used for relative coordinates)
+    QPointF m_lastPoint;
 
     // Snapping
     SnapManager m_snapManager;

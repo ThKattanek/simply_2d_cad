@@ -18,13 +18,22 @@ void PointTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event
 {
     if (event->button() == Qt::LeftButton)
     {
-        // Add a point at the clicked position
         QPointF currentPosition = scene->getSnapOrPosition(event->scenePos());
-        auto newPoint = std::make_unique<CadPoint>(currentPosition);
-        scene->getDocument()->addEntity(std::move(newPoint));
+        pointStateMachine(scene, currentPosition);
     }
+}
+
+void PointTool::handlePointInput(CadScene *scene, const QPointF &point)
+{
+    pointStateMachine(scene, point);
 }
 
 void PointTool::deactivate(CadScene *)
 {
+}
+
+void PointTool::pointStateMachine(CadScene *scene, const QPointF &point)
+{
+    auto newPoint = std::make_unique<CadPoint>(point);
+    scene->getDocument()->addEntity(std::move(newPoint));
 }
