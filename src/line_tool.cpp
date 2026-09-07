@@ -30,10 +30,11 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 
 void LineTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
+    m_currentMousePos = scene->getSnapOrPosition(event->scenePos());
+
     if (m_tempLine)
     {
-        QPointF currentPos = scene->getSnapOrPosition(event->scenePos());
-        m_tempLine->setLine(QLineF(m_startPoint, currentPos));
+        m_tempLine->setLine(QLineF(m_startPoint, m_currentMousePos));
     }
 }
 
@@ -58,6 +59,11 @@ void LineTool::deactivate(CadScene* scene)
     cancelDrawing(scene);
 }
 
+void LineTool::cancel(CadScene *scene)
+{
+    cancelDrawing(scene);
+}
+
 void LineTool::cancelDrawing(CadScene *scene)
 {
     m_lineState = LineState::Idle;
@@ -78,7 +84,7 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
         m_lineState = LineState::Drawing;
 
         m_startPoint = currentPos;
-        m_tempLine = scene->addLine(QLineF(m_startPoint, m_startPoint), QPen(Qt::gray, 0));
+        m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
     } else if(m_lineState == LineState::Drawing)
     {

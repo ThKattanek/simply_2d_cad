@@ -33,6 +33,8 @@ public:
     virtual void activate(CadScene* ) {}
     virtual void deactivate(CadScene* ) {}
 
+    virtual void cancel(CadScene* ) {}
+
     QPointF getLastPoint() const { return m_lastPoint; }
     void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
 

@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
+    connect(m_cadView, &CadView::cancelCurrentTool, m_cadScene, &CadScene::cancelCurrentTool);
+
     m_cadView->setCommandInput(m_commandInput);
 
     setCentralWidget(m_cadView);
@@ -76,8 +78,6 @@ MainWindow::MainWindow(QWidget *parent)
     // "addPermanentWidget" means that the widget is permanently added to the status bar and is not affected by temporary messages (like status tips).
     // It will always be visible in the status bar.
     ui->statusbar->addPermanentWidget(m_coordLabel);
-
-    //ui->statusbar->addWidget(m_coordLabel);
 
     // Connect the cursorPositionChanged signal to the updateCursorPosition slot
     connect(m_cadScene, &CadScene::cursorPositionChanged,

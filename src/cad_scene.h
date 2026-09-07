@@ -49,6 +49,9 @@ public:
 signals:
     void cursorPositionChanged(const QPointF& position, bool isSnapped, SnapType snapType);
 
+public slots:
+    void cancelCurrentTool();
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;

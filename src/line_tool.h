@@ -30,6 +30,7 @@ public:
     void keyPressEvent(CadScene* scene, QKeyEvent* event) override;
     void handlePointInput(CadScene* scene, const QPointF& point) override;
     void deactivate(CadScene* scene) override;
+    void cancel(CadScene* scene) override;
 
 private:
     void cancelDrawing(CadScene* scene);
@@ -37,6 +38,7 @@ private:
 
     QGraphicsLineItem* m_tempLine = nullptr;
     LineState m_lineState = Idle;
+    QPointF m_currentMousePos;
     QPointF m_startPoint;
     QPointF m_endPoint;
 };

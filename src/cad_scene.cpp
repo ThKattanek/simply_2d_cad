@@ -17,6 +17,7 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QSettings>
+#include <QEvent>
 
 #define SCENE_MIN_X -100000
 #define SCENE_MAX_X 100000
@@ -172,19 +173,24 @@ void CadScene::handleCommandInputPoint(const QPointF &parsedPoint)
     // 1. Letzten Punkt in der Szene aktualisieren
     m_lastPoint = parsedPoint;
 
-    auto m_activeTool = m_toolManager->activeTool();
+    auto activeTool = m_toolManager->activeTool();
 
     // 2. Falls ein aktives Tool vorhanden ist, den Punkt übergeben
-    if (m_activeTool) {
+    if (activeTool) {
         // Option A: Wenn dein Tool eine eigene Methode für Tastaturpunkte hat:
-        m_activeTool->handlePointInput(this, parsedPoint);
+        activeTool->handlePointInput(this, parsedPoint);
 
         // Option B: Falls du das Tool über sein m_lastPoint informieren willst:
-        m_activeTool->setLastPoint(parsedPoint);
+        activeTool->setLastPoint(parsedPoint);
 
         // Szene neu zeichnen/aktualisieren (z. B. für Vorschau-Linien)
         update();
     }
+}
+
+void CadScene::cancelCurrentTool()
+{
+    m_toolManager->activeTool()->cancel(this);
 }
 
 void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -242,6 +248,9 @@ void CadScene::keyPressEvent(QKeyEvent *event)
     if (auto tool = m_toolManager->activeTool()) {
         tool->keyPressEvent(this, event);
     }
+
+    qDebug() << "KEY EVENT";
+
     QGraphicsScene::keyPressEvent(event);
 }
 
