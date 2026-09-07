@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
+    m_cadView->setCommandInput(m_commandInput);
+
     setCentralWidget(m_cadView);
 
     m_coordLabel = new QLabel("X: 0.00 | Y: 0.00", this);

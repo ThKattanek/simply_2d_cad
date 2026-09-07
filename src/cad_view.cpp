@@ -150,3 +150,29 @@ void CadView::wheelEvent(QWheelEvent *event)
     // Zooming with the mouse wheel
     event->accept();
 }
+
+void CadView::keyPressEvent(QKeyEvent *event)
+{
+    // Spezifische CAD-Shortcuts (z. B. ESC zum Abbrechen) zuerst behandeln
+    if (event->key() == Qt::Key_Escape) {
+        emit cancelCurrentTool();
+        return;
+    }
+
+    // Prüfen, ob eine normale Text- oder Zahleneingabe vorliegt
+    QString text = event->text();
+
+    // Ignoriere Steuertasten wie Steuerung, Alt, F-Tasten etc.
+    if (!text.isEmpty() && text.at(0).isPrint()) {
+
+        // 1. Fokus direkt auf das QLineEdit setzen
+        m_commandInput->setFocus();
+
+        // 2. Das Event an das QLineEdit weiterleiten, damit das Zeichen getippt wird
+        QCoreApplication::sendEvent(m_commandInput, event);
+        return;
+    }
+
+    // standardmäßige Event-Weiterleitung für alles andere (z. B. Pfeiltasten für Pan/Zoom)
+    QGraphicsView::keyPressEvent(event);
+}
