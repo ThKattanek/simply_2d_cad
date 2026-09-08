@@ -30,21 +30,27 @@ set(PROJECT_SOURCES
     src/main.cpp
     src/mainwindow.cpp src/mainwindow.h src/mainwindow.ui
     src/app_settings_dialog.h src/app_settings_dialog.cpp src/app_settings_dialog.ui
+    # CAD view and scene
     src/cad_view.h src/cad_view.cpp
     src/cad_scene.h src/cad_scene.cpp
+    # scene items (crosshair, cad point, etc.)
     src/crosshair_item.h src/crosshair_item.cpp
     src/cad_point_item.h src/cad_point_item.cpp
+    # cad document and entities
+    src/cad_document/cad_document.h src/cad_document/cad_document.cpp
     src/cad_document/cad_entity.h
     src/cad_document/cad_line.h
     src/cad_document/cad_point.h
-    src/cad_document/cad_document.h src/cad_document/cad_document.cpp
+    # DXF import/export
     src/dxf_manager.h src/dxf_manager.cpp
+    # snap system
     src/snap_types.h
     src/snap_manager.h src/snap_manager.cpp
     src/snap_marker_point_item.h src/snap_marker_point_item.cpp
     src/snap_marker_endpoint_item.h src/snap_marker_endpoint_item.cpp
     src/snap_marker_intersection_item.h src/snap_marker_intersection_item.cpp
     src/snap_marker_midpoint_item.h src/snap_marker_midpoint_item.cpp
+    # all cad tools (point, line, select, etc.)
     src/cad_tools/cad_tool.h
     src/cad_tools/cad_tool_manager.h src/cad_tools/cad_tool_manager.cpp
     src/cad_tools/select_tool.h src/cad_tools/select_tool.cpp
