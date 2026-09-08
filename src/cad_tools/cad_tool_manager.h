@@ -26,6 +26,9 @@ class CadToolManager : public QObject
 public:
     explicit CadToolManager(QObject* parent = nullptr);
 
+    //
+    void retranslateAllTools();
+
     // Set the scene for tools to interact with
     void setScene(CadScene* scene) { m_scene = scene; }
 
@@ -40,6 +43,7 @@ public:
 
 signals:
     void toolChanged(CadTool* newTool);
+    void promtTextChanged(const QString& text);
 
 private:
     QMap<QString, std::shared_ptr<CadTool>> m_tools;

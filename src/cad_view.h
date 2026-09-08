@@ -11,6 +11,7 @@
 #pragma once
 
 #include <QGraphicsView>
+#include <QLineEdit>
 
 class CadScene;
 
@@ -19,6 +20,7 @@ class CadView : public QGraphicsView
     Q_OBJECT
 public:
     CadView(QGraphicsScene *scene, QWidget *parent = nullptr);
+    void setCommandInput(QLineEdit *commandInput) {m_commandInput = commandInput;}
 
 protected:
     void showEvent(QShowEvent *event) override;
@@ -26,6 +28,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
+signals:
+    void cancelCurrentTool();
 
 private:
     bool m_isRightMouseZooming = false;
@@ -34,4 +40,5 @@ private:
     bool m_isMiddleMousePanning = false;
     QPoint m_panStartMousePos;
     CadScene* m_cadScene = nullptr;
+    QLineEdit *m_commandInput = nullptr;
 };

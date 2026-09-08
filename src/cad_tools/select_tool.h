@@ -12,11 +12,15 @@
 
 #include "cad_tool.h"
 
-class QGraphicsLineItem;
-
-class PointTool : public CadTool
+class SelectTool : public CadTool
 {
+    Q_OBJECT
 public:
-    void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
-    void deactivate(CadScene* scene) override;
+    SelectTool();
+
+    void retranslate() override;
+    void activate(CadScene* scene) override;
+
+private:
+    QString promptMsg01;
 };

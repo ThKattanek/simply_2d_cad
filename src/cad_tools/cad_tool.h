@@ -10,18 +10,26 @@
 
 #pragma once
 
+#include "../cad_scene.h"
+
+#include <QPointF>
+#include <QObject>
+
 // Forward declarations
+
 class QGraphicsSceneMouseEvent;
 class QKeyEvent;
 class CadScene;
 
 // Base class for CAD tools
 
-class CadTool
+class CadTool : public QObject
 {
+    Q_OBJECT
 public:
     virtual ~CadTool() = default;
 
+    virtual void retranslate() {};
     virtual void mousePressEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
     virtual void mouseMoveEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
     virtual void mouseReleaseEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
@@ -29,4 +37,17 @@ public:
 
     virtual void activate(CadScene* ) {}
     virtual void deactivate(CadScene* ) {}
+
+    virtual void cancel(CadScene* ) {}
+
+    QPointF getLastPoint() const { return m_lastPoint; }
+    void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
+
+    virtual void handlePointInput(CadScene* , const QPointF& ) {}
+
+signals:
+    void promptTextChanged(const QString& text);
+
+private:
+    QPointF m_lastPoint; // Stores the last point for relative coordinate input
 };

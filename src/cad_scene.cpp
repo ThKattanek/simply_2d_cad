@@ -9,7 +9,7 @@
  */
 
 #include "./cad_scene.h"
-#include "./cad_tool_manager.h"
+#include "./cad_tools/cad_tool_manager.h"
 #include "./snap_types.h"
 
 #include <QGraphicsItem>
@@ -17,6 +17,7 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QSettings>
+#include <QEvent>
 
 #define SCENE_MIN_X -100000
 #define SCENE_MAX_X 100000
@@ -39,11 +40,11 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     // Create a dashed line pattern for the center lines
     QList<qreal> pattern1;
     pattern1 << 9.0   // Strich
-            << 3.0   // Lücke
-            << 3.0   // Punkt 1
-            << 3.0   // Lücke
-            << 3.0   // Punkt 2
-            << 3.0;  // Lücke vor dem nächsten Strich
+             << 3.0   // Lücke
+             << 3.0   // Punkt 1
+             << 3.0   // Lücke
+             << 3.0   // Punkt 2
+             << 3.0;  // Lücke vor dem nächsten Strich
     m_dashDotDotPenRed = new QPen(Qt::red, 0);
     m_dashDotDotPenRed->setDashPattern(pattern1);
 
@@ -167,11 +168,41 @@ void CadScene::setDocument(CadDocument *document)
     });
 }
 
+void CadScene::handleCommandInputPoint(const QPointF &parsedPoint)
+{
+    // 1. Letzten Punkt in der Szene aktualisieren
+    m_lastPoint = parsedPoint;
+
+    auto activeTool = m_toolManager->activeTool();
+
+    // 2. Falls ein aktives Tool vorhanden ist, den Punkt übergeben
+    if (activeTool) {
+        // Option A: Wenn dein Tool eine eigene Methode für Tastaturpunkte hat:
+        activeTool->handlePointInput(this, parsedPoint);
+
+        // Option B: Falls du das Tool über sein m_lastPoint informieren willst:
+        activeTool->setLastPoint(parsedPoint);
+
+        // Szene neu zeichnen/aktualisieren (z. B. für Vorschau-Linien)
+        update();
+    }
+}
+
+void CadScene::cancelCurrentTool()
+{
+    m_toolManager->activeTool()->cancel(this);
+}
+
 void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if (auto tool = m_toolManager->activeTool()) {
-        tool->mousePressEvent(this, event);
+    if(event->button() == Qt::LeftButton) {
+        m_lastPoint = getSnapOrPosition(event->scenePos());
+
+        if (auto tool = m_toolManager->activeTool()) {
+            tool->mousePressEvent(this, event);
+        }
     }
+
     QGraphicsScene::mousePressEvent(event);
 }
 
@@ -217,6 +248,7 @@ void CadScene::keyPressEvent(QKeyEvent *event)
     if (auto tool = m_toolManager->activeTool()) {
         tool->keyPressEvent(this, event);
     }
+
     QGraphicsScene::keyPressEvent(event);
 }
 
@@ -272,7 +304,6 @@ void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
     }
     else
         setVisibleAllSnapMarker(false);
-
 }
 
 void CadScene::setVisibleAllSnapMarker(bool visible)

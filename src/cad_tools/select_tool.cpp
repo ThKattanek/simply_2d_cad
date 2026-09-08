@@ -8,12 +8,17 @@
  * (at your option) any later version.
  */
 
-#pragma once
+#include "select_tool.h"
 
-#include "cad_tool.h"
+SelectTool::SelectTool() {}
 
-class SelectTool : public CadTool
+void SelectTool::retranslate()
 {
-public:
-    SelectTool();
-};
+    promptMsg01 = tr("Select Tool: Click on an object to select it.");
+}
+
+void SelectTool::activate(CadScene *scene)
+{
+    Q_UNUSED(scene);
+    emit promptTextChanged(promptMsg01);
+}

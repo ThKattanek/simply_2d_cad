@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1260</width>
-    <height>923</height>
+    <width>1222</width>
+    <height>952</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1260</width>
+     <width>1222</width>
      <height>22</height>
     </rect>
    </property>
@@ -94,6 +94,17 @@
    <addaction name="actionSnapEndpoint"/>
    <addaction name="actionSnapMidpoint"/>
    <addaction name="actionSnapIntersection"/>
+  </widget>
+  <widget class="QToolBar" name="tb_commandLine">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>BottomToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
   </widget>
   <action name="action_Close">
    <property name="text">

@@ -9,7 +9,7 @@
  */
 
 #include "./cad_tool_manager.h"
-#include "./cad_scene.h"
+#include "../cad_scene.h"
 #include <QAction>
 #include <QActionGroup>
 
@@ -19,9 +19,19 @@ CadToolManager::CadToolManager(QObject* parent) : QObject(parent)
     m_actionGroup->setExclusive(true);
 }
 
+void CadToolManager::retranslateAllTools()
+{
+    for (auto& tool : m_tools) {
+        if (tool) {
+            tool->retranslate();
+        }
+    }
+}
+
 void CadToolManager::registerTool(const QString& actionName, std::shared_ptr<CadTool> tool)
 {
     m_tools[actionName] = tool;
+    connect(tool.get(), &CadTool::promptTextChanged, this, &::CadToolManager::promtTextChanged);
 }
 
 void CadToolManager::bindAction(QAction* action)

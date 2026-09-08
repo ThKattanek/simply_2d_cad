@@ -25,12 +25,12 @@
 #include <QDirIterator>
 #include <QLibraryInfo>
 
-#include "./cad_tool_manager.h"
+#include "./cad_tools/cad_tool_manager.h"
 #include "./dxf_manager.h"
 
-#include "./select_tool.h"
-#include "./line_tool.h"
-#include "./point_tool.h"
+#include "./cad_tools/select_tool.h"
+#include "./cad_tools/line_tool.h"
+#include "./cad_tools/point_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     createLanguageMenu();
     ui->retranslateUi(this);
 
+    initializeCommandToolbar();
+
     connectSnapSettingsToUi();
 
     m_cadDocument = new CadDocument(this);
@@ -60,6 +62,11 @@ MainWindow::MainWindow(QWidget *parent)
     m_cadScene->setDocument(m_cadDocument);
     m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
+
+    // Connect the cancelCurrentTool signal from CadView to the cancelCurrentTool slot in CadScene
+    connect(m_cadView, &CadView::cancelCurrentTool, m_cadScene, &CadScene::cancelCurrentTool);
+
+    m_cadView->setCommandInput(m_commandInput);
 
     setCentralWidget(m_cadView);
 
@@ -73,13 +80,16 @@ MainWindow::MainWindow(QWidget *parent)
     // It will always be visible in the status bar.
     ui->statusbar->addPermanentWidget(m_coordLabel);
 
-    //ui->statusbar->addWidget(m_coordLabel);
-
     // Connect the cursorPositionChanged signal to the updateCursorPosition slot
     connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
+    connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
+        m_commandPromt->setText(text);
+    });
+
     // Register tools under the objectNames from the UI (MainWindow.ui)
+    // Select Tool
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
@@ -184,6 +194,39 @@ void MainWindow::switchLanguage(const QString &qmFileName)
     }
 }
 
+void MainWindow::initializeCommandToolbar()
+{
+    QWidget* container = new QWidget(this);
+    QVBoxLayout* vLayout = new QVBoxLayout(container);
+
+    // Ränder und Abstände eng halten, damit die Toolbar schön schmal bleibt
+    vLayout->setContentsMargins(0,2,2, 2);
+    vLayout->setSpacing(2);
+
+    m_commandPromt = new QLabel(tr("TEST TSET"), this);
+    QFont font = m_commandPromt->font();
+    font.setPointSize(8); // Etwas kleiner für kompakte Optik
+    font.setBold(true);
+    m_commandPromt->setFont(font);
+
+    m_commandInput = new QLineEdit(this);
+    m_commandInput->setClearButtonEnabled(true);
+    m_commandInput->setMinimumWidth(250);
+    m_commandInput->setFocusPolicy(Qt::NoFocus); // Damit die Toolbar nicht automatisch den Fokus bekommt
+
+    m_commandInput->setStyleSheet(
+        "QLineEdit { border: 1px solid #bcbcbc; border-radius: 3px; background-color: #ffffff; }"
+        "QLineEdit:hover { border: 1px solid #bcbcbc; }"
+        );
+
+    vLayout->addWidget(m_commandPromt);
+    vLayout->addWidget(m_commandInput);
+
+    ui->tb_commandLine->addWidget(container);
+
+    connect(m_commandInput, &QLineEdit::returnPressed, this, &MainWindow::on_commandSubmitted);
+}
+
 void MainWindow::zoomToFitGeometry()
 {
     QRectF bounds;
@@ -253,6 +296,9 @@ void MainWindow::changeEvent(QEvent *event)
     if (event->type() == QEvent::LanguageChange) {
         // When using Qt Designer Forms (*.ui files):
         ui->retranslateUi(this);
+
+        if(m_toolManager)
+            m_toolManager->retranslateAllTools();
 
         // Texte, die du in C++ gesetzt hast, müssen hier neu aufgerufen werden:
         if (m_langMenu) {
@@ -332,6 +378,64 @@ void MainWindow::on_actionOptions_triggered()
     AppSettingsDialog settingsDialog(this);
     if (settingsDialog.exec() == QDialog::Accepted) {
         m_cadScene->loadSettings(); // Reload settings after changes
+    }
+}
+
+void MainWindow::on_commandSubmitted()
+{
+    QString input = m_commandInput->text().trimmed();
+    if (input.isEmpty()) return;
+
+    bool isRelative = false;
+    if (input.startsWith('@')) {
+        isRelative = true;
+        input.remove(0, 1); // '@' entfernen
+    }
+
+    QPointF parsedPoint;
+    bool validParse = false;
+
+    // 1. Polarkoordinaten prüfen (Format: Länge<Winkel)
+    if (input.contains('<')) {
+        QStringList parts = input.split('<');
+        if (parts.size() == 2) {
+            bool okLen = false, okAngle = false;
+            double length = parts[0].toDouble(&okLen);
+            double angleDeg = parts[1].toDouble(&okAngle);
+
+            if (okLen && okAngle) {
+                // Grad in Radian umrechnen (Standard CAD: 0° = Rechts, 90° = Oben)
+                double angleRad = qDegreesToRadians(angleDeg);
+                parsedPoint = QPointF(length * std::cos(angleRad), -length * std::sin(angleRad));
+                validParse = true;
+            }
+        }
+    }
+    // 2. Kartesische Koordinaten prüfen (Format: X,Y)
+    else if (input.contains(',')) {
+        QStringList parts = input.split(',');
+        if (parts.size() == 2) {
+            bool okX = false, okY = false;
+            double x = parts[0].toDouble(&okX);
+            double y = parts[1].toDouble(&okY);
+
+            if (okX && okY) {
+                parsedPoint = QPointF(x, y);
+                validParse = true;
+            }
+        }
+    }
+
+    if (validParse) {
+        // Bei Relativkoordinaten den Punkt zum letzten geklickten Punkt aufaddieren
+        if (isRelative) {
+            QPointF lastPt = m_cadScene->getLastPoint(); // Letzter Basispunkt aus der Szene
+            parsedPoint += lastPt;
+        }
+
+        // An das aktive Werkzeug übergeben
+        m_cadScene->handleCommandInputPoint(parsedPoint);
+        m_commandInput->clear();
     }
 }
 

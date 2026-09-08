@@ -23,18 +23,27 @@ enum LineState
 
 class LineTool : public CadTool
 {
+    Q_OBJECT
 public:
+    void retranslate() override;
     void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void keyPressEvent(CadScene* scene, QKeyEvent* event) override;
+    void handlePointInput(CadScene* scene, const QPointF& point) override;
+    void activate(CadScene* scene) override;
     void deactivate(CadScene* scene) override;
+    void cancel(CadScene* scene) override;
 
 private:
     void cancelDrawing(CadScene* scene);
+    void lineStateMachine(CadScene* scene, const QPointF& point);
 
     QGraphicsLineItem* m_tempLine = nullptr;
     LineState m_lineState = Idle;
+    QPointF m_currentMousePos;
     QPointF m_startPoint;
     QPointF m_endPoint;
+
+    QString promtMsg01, promtMsg02;
 };
