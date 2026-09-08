@@ -9,7 +9,7 @@
  */
 
 #include "./cad_scene.h"
-#include "./cad_tool_manager.h"
+#include "./cad_tools/cad_tool_manager.h"
 #include "./snap_types.h"
 
 #include <QGraphicsItem>

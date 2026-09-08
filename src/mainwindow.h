@@ -21,7 +21,7 @@
 #include "./cad_view.h"
 #include "./cad_scene.h"
 #include "./cad_document/cad_document.h"
-#include "./cad_tool_manager.h"
+#include "./cad_tools/cad_tool_manager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

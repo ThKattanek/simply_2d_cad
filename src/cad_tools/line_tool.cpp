@@ -9,8 +9,7 @@
  */
 
 #include "./line_tool.h"
-#include "./cad_scene.h"
-#include "./cad_document/cad_line.h"
+#include "../cad_document/cad_line.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>

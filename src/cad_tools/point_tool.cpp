@@ -9,8 +9,7 @@
  */
 
 #include "./point_tool.h"
-#include "./cad_scene.h"
-#include "./cad_document/cad_point.h"
+#include "../cad_document/cad_point.h"
 
 #include <QGraphicsSceneMouseEvent>
 

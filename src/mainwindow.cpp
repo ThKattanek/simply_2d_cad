@@ -25,12 +25,12 @@
 #include <QDirIterator>
 #include <QLibraryInfo>
 
-#include "./cad_tool_manager.h"
+#include "./cad_tools/cad_tool_manager.h"
 #include "./dxf_manager.h"
 
-#include "./select_tool.h"
-#include "./line_tool.h"
-#include "./point_tool.h"
+#include "./cad_tools/select_tool.h"
+#include "./cad_tools/line_tool.h"
+#include "./cad_tools/point_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)

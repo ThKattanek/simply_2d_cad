@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "../cad_scene.h"
+
 #include <QPointF>
 #include <QObject>
 
