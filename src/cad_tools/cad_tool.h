@@ -29,6 +29,7 @@ class CadTool : public QObject
 public:
     virtual ~CadTool() = default;
 
+    virtual void retranslate() {};
     virtual void mousePressEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
     virtual void mouseMoveEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}
     virtual void mouseReleaseEvent(CadScene* , QGraphicsSceneMouseEvent* ) {}

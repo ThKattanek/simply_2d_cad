@@ -13,6 +13,13 @@
 
 #include <QGraphicsSceneMouseEvent>
 
+//QString PointTool::promtMsg01 = tr("Click a point or enter the coordinates (x, y).");
+
+void PointTool::retranslate()
+{
+    promtMsg01 = tr("Click a point or enter the coordinates (x, y).");
+}
+
 void PointTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
@@ -30,7 +37,7 @@ void PointTool::handlePointInput(CadScene *scene, const QPointF &point)
 void PointTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(tr("Punkt: Position antippen oder Koordinaten eingeben (z. B. 10,10):"));
+    emit promptTextChanged(promtMsg01);
 }
 
 void PointTool::deactivate(CadScene *)

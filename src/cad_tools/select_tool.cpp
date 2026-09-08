@@ -12,8 +12,13 @@
 
 SelectTool::SelectTool() {}
 
+void SelectTool::retranslate()
+{
+    promptMsg01 = tr("Select Tool: Click on an object to select it.");
+}
+
 void SelectTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(tr("Select Tool: Click on an object to select it."));
+    emit promptTextChanged(promptMsg01);
 }

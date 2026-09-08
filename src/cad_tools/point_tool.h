@@ -16,7 +16,9 @@ class QGraphicsLineItem;
 
 class PointTool : public CadTool
 {
+    Q_OBJECT
 public:
+    void retranslate() override;
     void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void handlePointInput(CadScene* scene, const QPointF& point) override;
     void activate(CadScene* scene) override;
@@ -24,4 +26,6 @@ public:
 
 private:
     void pointStateMachine(CadScene* scene, const QPointF& point);
+
+    QString promtMsg01 = tr("Click a point or enter the coordinates (x, y).");
 };

@@ -16,6 +16,12 @@
 #include <QPen>
 #include <QKeyEvent>
 
+void LineTool::retranslate()
+{
+    promtMsg01 = tr("Click the first point on the line or enter the coordinates (x, y).");
+    promtMsg02 = tr("Click the second point on the line or enter the coordinates (x, y).");
+}
+
 void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
@@ -56,7 +62,7 @@ void LineTool::handlePointInput(CadScene *scene, const QPointF &point)
 void LineTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+    emit promptTextChanged(promtMsg01);
 }
 
 void LineTool::deactivate(CadScene* scene)
@@ -79,7 +85,7 @@ void LineTool::cancelDrawing(CadScene *scene)
         m_tempLine = nullptr;
     }
 
-    emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+    emit promptTextChanged(promtMsg01);
 }
 
 void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
@@ -93,7 +99,7 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
         m_startPoint = currentPos;
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
-        emit promptTextChanged(tr("2. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+        emit promptTextChanged(promtMsg02);
 
     } else if(m_lineState == LineState::Drawing)
     {
@@ -111,6 +117,6 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
             scene->getDocument()->addEntity(std::move(newLine));
         }
 
-        emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+        emit promptTextChanged(promtMsg01);
     }
 }

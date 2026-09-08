@@ -26,6 +26,9 @@ class CadToolManager : public QObject
 public:
     explicit CadToolManager(QObject* parent = nullptr);
 
+    //
+    void retranslateAllTools();
+
     // Set the scene for tools to interact with
     void setScene(CadScene* scene) { m_scene = scene; }
 

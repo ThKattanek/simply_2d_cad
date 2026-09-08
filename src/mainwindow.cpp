@@ -206,6 +206,7 @@ void MainWindow::initializeCommandToolbar()
     m_commandPromt = new QLabel(tr("TEST TSET"), this);
     QFont font = m_commandPromt->font();
     font.setPointSize(8); // Etwas kleiner für kompakte Optik
+    font.setBold(true);
     m_commandPromt->setFont(font);
 
     m_commandInput = new QLineEdit(this);
@@ -295,6 +296,9 @@ void MainWindow::changeEvent(QEvent *event)
     if (event->type() == QEvent::LanguageChange) {
         // When using Qt Designer Forms (*.ui files):
         ui->retranslateUi(this);
+
+        if(m_toolManager)
+            m_toolManager->retranslateAllTools();
 
         // Texte, die du in C++ gesetzt hast, müssen hier neu aufgerufen werden:
         if (m_langMenu) {

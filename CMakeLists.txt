@@ -106,6 +106,9 @@ qt_add_translations(
     TARGETS ${PROJECT_NAME}
     TS_FILES    src/simply_2d_cad_de_DE.ts
                 src/simply_2d_cad_en_US.ts
+    LUPDATE_OPTIONS
+        -no-obsolete
+        -extensions cpp,h,ui
 )
 
 # Installation & Deployment

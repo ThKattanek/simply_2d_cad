@@ -14,8 +14,13 @@
 
 class SelectTool : public CadTool
 {
+    Q_OBJECT
 public:
     SelectTool();
 
+    void retranslate() override;
     void activate(CadScene* scene) override;
+
+private:
+    QString promptMsg01;
 };

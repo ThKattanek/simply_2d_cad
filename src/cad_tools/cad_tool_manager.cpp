@@ -19,6 +19,15 @@ CadToolManager::CadToolManager(QObject* parent) : QObject(parent)
     m_actionGroup->setExclusive(true);
 }
 
+void CadToolManager::retranslateAllTools()
+{
+    for (auto& tool : m_tools) {
+        if (tool) {
+            tool->retranslate();
+        }
+    }
+}
+
 void CadToolManager::registerTool(const QString& actionName, std::shared_ptr<CadTool> tool)
 {
     m_tools[actionName] = tool;
