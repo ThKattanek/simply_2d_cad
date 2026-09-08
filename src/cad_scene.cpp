@@ -40,11 +40,11 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
     // Create a dashed line pattern for the center lines
     QList<qreal> pattern1;
     pattern1 << 9.0   // Strich
-            << 3.0   // Lücke
-            << 3.0   // Punkt 1
-            << 3.0   // Lücke
-            << 3.0   // Punkt 2
-            << 3.0;  // Lücke vor dem nächsten Strich
+             << 3.0   // Lücke
+             << 3.0   // Punkt 1
+             << 3.0   // Lücke
+             << 3.0   // Punkt 2
+             << 3.0;  // Lücke vor dem nächsten Strich
     m_dashDotDotPenRed = new QPen(Qt::red, 0);
     m_dashDotDotPenRed->setDashPattern(pattern1);
 
@@ -249,8 +249,6 @@ void CadScene::keyPressEvent(QKeyEvent *event)
         tool->keyPressEvent(this, event);
     }
 
-    qDebug() << "KEY EVENT";
-
     QGraphicsScene::keyPressEvent(event);
 }
 
@@ -306,7 +304,6 @@ void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
     }
     else
         setVisibleAllSnapMarker(false);
-
 }
 
 void CadScene::setVisibleAllSnapMarker(bool visible)

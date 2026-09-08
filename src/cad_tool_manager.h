@@ -40,6 +40,7 @@ public:
 
 signals:
     void toolChanged(CadTool* newTool);
+    void promtTextChanged(const QString& text);
 
 private:
     QMap<QString, std::shared_ptr<CadTool>> m_tools;

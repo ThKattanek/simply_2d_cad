@@ -10,7 +10,10 @@
 
 #include "select_tool.h"
 
-SelectTool::SelectTool()
-{
+SelectTool::SelectTool() {}
 
+void SelectTool::activate(CadScene *scene)
+{
+    Q_UNUSED(scene);
+    emit promptTextChanged(tr("Select Tool: Click on an object to select it."));
 }

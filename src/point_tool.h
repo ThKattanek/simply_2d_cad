@@ -19,6 +19,7 @@ class PointTool : public CadTool
 public:
     void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void handlePointInput(CadScene* scene, const QPointF& point) override;
+    void activate(CadScene* scene) override;
     void deactivate(CadScene* scene) override;
 
 private:

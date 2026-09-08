@@ -22,6 +22,7 @@ CadToolManager::CadToolManager(QObject* parent) : QObject(parent)
 void CadToolManager::registerTool(const QString& actionName, std::shared_ptr<CadTool> tool)
 {
     m_tools[actionName] = tool;
+    connect(tool.get(), &CadTool::promptTextChanged, this, &::CadToolManager::promtTextChanged);
 }
 
 void CadToolManager::bindAction(QAction* action)

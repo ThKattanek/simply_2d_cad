@@ -11,6 +11,7 @@
 #pragma once
 
 #include <QPointF>
+#include <QObject>
 
 // Forward declarations
 
@@ -20,8 +21,9 @@ class CadScene;
 
 // Base class for CAD tools
 
-class CadTool
+class CadTool : public QObject
 {
+    Q_OBJECT
 public:
     virtual ~CadTool() = default;
 
@@ -39,6 +41,9 @@ public:
     void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
 
     virtual void handlePointInput(CadScene* , const QPointF& ) {}
+
+signals:
+    void promptTextChanged(const QString& text);
 
 private:
     QPointF m_lastPoint; // Stores the last point for relative coordinate input

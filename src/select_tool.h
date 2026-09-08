@@ -16,4 +16,6 @@ class SelectTool : public CadTool
 {
 public:
     SelectTool();
+
+    void activate(CadScene* scene) override;
 };

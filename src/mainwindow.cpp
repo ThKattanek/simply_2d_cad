@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
+    // Connect the cancelCurrentTool signal from CadView to the cancelCurrentTool slot in CadScene
     connect(m_cadView, &CadView::cancelCurrentTool, m_cadScene, &CadScene::cancelCurrentTool);
 
     m_cadView->setCommandInput(m_commandInput);
@@ -83,7 +84,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
+    connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
+        m_commandPromt->setText(text);
+    });
+
     // Register tools under the objectNames from the UI (MainWindow.ui)
+    // Select Tool
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
@@ -208,9 +214,9 @@ void MainWindow::initializeCommandToolbar()
     m_commandInput->setFocusPolicy(Qt::NoFocus); // Damit die Toolbar nicht automatisch den Fokus bekommt
 
     m_commandInput->setStyleSheet(
-    "QLineEdit { border: 1px solid #bcbcbc; border-radius: 3px; background-color: #ffffff; }"
-    "QLineEdit:hover { border: 1px solid #bcbcbc; }"
-    );
+        "QLineEdit { border: 1px solid #bcbcbc; border-radius: 3px; background-color: #ffffff; }"
+        "QLineEdit:hover { border: 1px solid #bcbcbc; }"
+        );
 
     vLayout->addWidget(m_commandPromt);
     vLayout->addWidget(m_commandInput);

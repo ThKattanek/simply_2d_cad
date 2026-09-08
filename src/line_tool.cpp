@@ -54,6 +54,12 @@ void LineTool::handlePointInput(CadScene *scene, const QPointF &point)
     lineStateMachine(scene, point);
 }
 
+void LineTool::activate(CadScene *scene)
+{
+    Q_UNUSED(scene);
+    emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+}
+
 void LineTool::deactivate(CadScene* scene)
 {
     cancelDrawing(scene);
@@ -73,6 +79,8 @@ void LineTool::cancelDrawing(CadScene *scene)
         delete m_tempLine;
         m_tempLine = nullptr;
     }
+
+    emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
 }
 
 void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
@@ -86,9 +94,12 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
         m_startPoint = currentPos;
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
+        emit promptTextChanged(tr("2. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
+
     } else if(m_lineState == LineState::Drawing)
     {
         m_lineState = LineState::Idle;
+
         if (m_tempLine)
         {
             m_endPoint = currentPos;
@@ -100,5 +111,7 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
             auto newLine = std::make_unique<CadLine>(m_startPoint, m_endPoint);
             scene->getDocument()->addEntity(std::move(newLine));
         }
+
+        emit promptTextChanged(tr("1. Punkt der Line: Klicken Sie auf die Startposition oder geben Sie die Koordinaten ein."));
     }
 }

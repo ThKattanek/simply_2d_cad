@@ -28,6 +28,12 @@ void PointTool::handlePointInput(CadScene *scene, const QPointF &point)
     pointStateMachine(scene, point);
 }
 
+void PointTool::activate(CadScene *scene)
+{
+    Q_UNUSED(scene);
+    emit promptTextChanged(tr("Punkt: Position antippen oder Koordinaten eingeben (z. B. 10,10):"));
+}
+
 void PointTool::deactivate(CadScene *)
 {
 }
