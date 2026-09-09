@@ -511,3 +511,9 @@ void MainWindow::connectSnapSettingsToUi()
     });
 }
 
+
+void MainWindow::on_actionNew_triggered()
+{
+    m_cadScene->clearDocument();
+}
+

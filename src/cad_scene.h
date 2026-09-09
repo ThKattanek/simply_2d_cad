@@ -34,6 +34,8 @@ public:
 
     void loadSettings();
 
+    void clearDocument();
+
     void clearDocumentItems();
     void setDocument(CadDocument* document);
     CadDocument* getDocument() const { return m_document; }
@@ -59,18 +61,19 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
+    void setupSystemItems();
     double getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const;
     void updateSnapMarkers(const SnapResult& snap, double zoomFactor);
     void setVisibleAllSnapMarker(bool visible);
 
     CrosshairItem* m_crosshair = nullptr;
-    CadToolManager* m_toolManager = nullptr;
     QGraphicsLineItem* m_centerHLine = nullptr;
     QGraphicsLineItem* m_centerVLine = nullptr;
 
     QPen* m_dashDotDotPenRed = nullptr;
     QPen* m_dotPenRed = nullptr;
 
+    CadToolManager* m_toolManager = nullptr;
     CadDocument* m_document = nullptr;
 
     // Last point when left mouse button was clicked (used for relative coordinates)

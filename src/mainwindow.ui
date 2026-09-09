@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -35,6 +35,7 @@
      </property>
      <addaction name="actionExportAsDxf"/>
     </widget>
+    <addaction name="actionNew"/>
     <addaction name="actionLoad"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
@@ -50,7 +51,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="tb_drawTools">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Draw Tools Toolbar</string>
    </property>
    <property name="allowedAreas">
     <set>Qt::ToolBarArea::AllToolBarAreas</set>
@@ -73,7 +74,7 @@
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Sanp Tools Toolbar</string>
    </property>
    <property name="movable">
     <bool>true</bool>
@@ -97,7 +98,7 @@
   </widget>
   <widget class="QToolBar" name="tb_commandLine">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Commandline Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>BottomToolBarArea</enum>
@@ -266,6 +267,14 @@
    </property>
    <property name="toolTip">
     <string>Snap the intersections.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

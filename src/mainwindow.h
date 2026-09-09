@@ -51,6 +51,7 @@ private slots:
     void on_actionImport_triggered();
     void on_actionOptions_triggered();
     void on_commandSubmitted();
+    void on_actionNew_triggered();
 
 private:
     void saveLayoutSettings();

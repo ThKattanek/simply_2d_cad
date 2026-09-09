@@ -29,72 +29,7 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
 {
     // Set the scene rectangle to a large area to accommodate Cad drawings
     setSceneRect(SCENE_MIN_X, SCENE_MIN_Y, SCENE_MAX_X - SCENE_MIN_X, SCENE_MAX_Y - SCENE_MIN_Y);
-
-    // Create and add the crosshair item to the scene
-    m_crosshair = new CrosshairItem();
-    m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
-    m_crosshair->setZValue(10000); // Ensure the crosshair is on top of other items
-    m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
-    addItem(m_crosshair);
-
-    // Create a dashed line pattern for the center lines
-    QList<qreal> pattern1;
-    pattern1 << 9.0   // Strich
-             << 3.0   // Lücke
-             << 3.0   // Punkt 1
-             << 3.0   // Lücke
-             << 3.0   // Punkt 2
-             << 3.0;  // Lücke vor dem nächsten Strich
-    m_dashDotDotPenRed = new QPen(Qt::red, 0);
-    m_dashDotDotPenRed->setDashPattern(pattern1);
-
-    // Create a dotted line pattern for the helper lines
-    QList<qreal> pattern2;
-    pattern2 << 3.0  // Strich
-             << 3.0; // Lücke
-    m_dotPenRed = new QPen(Qt::red, 0);
-    m_dotPenRed->setDashPattern(pattern2);
-
-    // Add the center horizontal and vertical lines to the scene
-    m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
-    m_centerHLine->setData(Qt::UserRole + 1, "SystemItem");
-    m_centerHLine->setZValue(100);
-
-    m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
-    m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
-    m_centerVLine->setZValue(100);
-
-    // Add the point snap marker to the scene
-    m_snapMarkerPoint = new SnapMarkerPointItem();
-    m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarkerPoint->setZValue(1000); // over the crosshair
-    m_snapMarkerPoint->setColor(Qt::yellow);
-    m_snapMarkerPoint->setVisible(false); // Initially hidden
-    addItem(m_snapMarkerPoint);
-
-    // Add the endpoint snap marker to the scene
-    m_snapMarkerEndpoint = new SnapMarkerEndpointItem();
-    m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
-    m_snapMarkerEndpoint->setColor(Qt::red);
-    m_snapMarkerEndpoint->setVisible(false);
-    addItem(m_snapMarkerEndpoint);
-
-    // Add the intersection snap marker to the scene
-    m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
-    m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarkerIntersection->setZValue(1000); // over the crosshair
-    m_snapMarkerIntersection->setColor(Qt::magenta);
-    m_snapMarkerIntersection->setVisible(false);
-    addItem(m_snapMarkerIntersection);
-
-    // Add the midpoint snap marker to the scene
-    m_snapMarkerMidpoint = new SnapMarkerMidpointItem();
-    m_snapMarkerMidpoint->setData(Qt::UserRole + 1, "SystemItem");
-    m_snapMarkerMidpoint->setZValue(1000); // over the crosshair
-    m_snapMarkerMidpoint->setColor(Qt::cyan);
-    m_snapMarkerMidpoint->setVisible(false);
-    addItem(m_snapMarkerMidpoint);
+    clearDocument();
 }
 
 CadScene::~CadScene()
@@ -126,6 +61,30 @@ void CadScene::loadSettings()
     m_snapManager.setEndpointSnapEnabled(settings.value("Snap/EndpointSnapEnabled", true).toBool());
     m_snapManager.setMidpointSnapEnabled(settings.value("Snap/MidpointSnapEnabled", true).toBool());
     m_snapManager.setIntersectionSnapEnabled(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
+}
+
+void CadScene::clearDocument()
+{
+    cancelCurrentTool();
+
+    clear();
+
+    m_crosshair = nullptr;
+    m_centerHLine = nullptr;
+    m_centerVLine = nullptr;
+    m_snapMarkerPoint = nullptr;
+    m_snapMarkerEndpoint = nullptr;
+    m_snapMarkerIntersection = nullptr;
+    m_snapMarkerMidpoint = nullptr;
+
+    if (m_document) {
+        m_document->clear();
+    }
+
+    setupSystemItems();
+
+    m_lastPoint = QPointF(0, 0);
+    update();
 }
 
 void CadScene::clearDocumentItems()
@@ -190,7 +149,9 @@ void CadScene::handleCommandInputPoint(const QPointF &parsedPoint)
 
 void CadScene::cancelCurrentTool()
 {
-    m_toolManager->activeTool()->cancel(this);
+    if(m_toolManager != nullptr)
+        if(m_toolManager->activeTool() != nullptr)
+            m_toolManager->activeTool()->cancel(this);
 }
 
 void CadScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -250,6 +211,81 @@ void CadScene::keyPressEvent(QKeyEvent *event)
     }
 
     QGraphicsScene::keyPressEvent(event);
+}
+
+void CadScene::setupSystemItems()
+{
+    // Create and add the crosshair item to the scene
+    m_crosshair = new CrosshairItem();
+    m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
+    m_crosshair->setZValue(10000); // Ensure the crosshair is on top of other items
+    m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
+    addItem(m_crosshair);
+
+    // Create a dashed line pattern for the center lines
+    if(m_dashDotDotPenRed == nullptr)
+    {
+        QList<qreal> pattern1;
+        pattern1 << 9.0   // Strich
+                 << 3.0   // Lücke
+                 << 3.0   // Punkt 1
+                 << 3.0   // Lücke
+                 << 3.0   // Punkt 2
+                 << 3.0;  // Lücke vor dem nächsten Strich
+        m_dashDotDotPenRed = new QPen(Qt::red, 0);
+        m_dashDotDotPenRed->setDashPattern(pattern1);
+    }
+
+    // Create a dotted line pattern for the helper lines
+    if(m_dotPenRed == nullptr)
+    {
+        QList<qreal> pattern2;
+        pattern2 << 3.0  // Strich
+                 << 3.0; // Lücke
+        m_dotPenRed = new QPen(Qt::red, 0);
+        m_dotPenRed->setDashPattern(pattern2);
+    }
+
+    // Add the center horizontal and vertical lines to the scene
+    m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
+    m_centerHLine->setData(Qt::UserRole + 1, "SystemItem");
+    m_centerHLine->setZValue(100);
+
+    m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
+    m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
+    m_centerVLine->setZValue(100);
+
+    // Add the point snap marker to the scene
+    m_snapMarkerPoint = new SnapMarkerPointItem();
+    m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerPoint->setZValue(1000); // over the crosshair
+    m_snapMarkerPoint->setColor(Qt::yellow);
+    m_snapMarkerPoint->setVisible(false); // Initially hidden
+    addItem(m_snapMarkerPoint);
+
+    // Add the endpoint snap marker to the scene
+    m_snapMarkerEndpoint = new SnapMarkerEndpointItem();
+    m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerEndpoint->setColor(Qt::red);
+    m_snapMarkerEndpoint->setVisible(false);
+    addItem(m_snapMarkerEndpoint);
+
+    // Add the intersection snap marker to the scene
+    m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
+    m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerIntersection->setZValue(1000); // over the crosshair
+    m_snapMarkerIntersection->setColor(Qt::magenta);
+    m_snapMarkerIntersection->setVisible(false);
+    addItem(m_snapMarkerIntersection);
+
+    // Add the midpoint snap marker to the scene
+    m_snapMarkerMidpoint = new SnapMarkerMidpointItem();
+    m_snapMarkerMidpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerMidpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerMidpoint->setColor(Qt::cyan);
+    m_snapMarkerMidpoint->setVisible(false);
+    addItem(m_snapMarkerMidpoint);
 }
 
 double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
