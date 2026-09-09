@@ -18,7 +18,8 @@
 
 enum EntityType {
     Line,
-    Point
+    Point,
+    Circle
 };
 
 class CadEntity

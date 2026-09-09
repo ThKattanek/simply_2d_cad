@@ -29,8 +29,9 @@
 #include "./dxf_manager.h"
 
 #include "./cad_tools/select_tool.h"
-#include "./cad_tools/line_tool.h"
 #include "./cad_tools/point_tool.h"
+#include "./cad_tools/line_tool.h"
+#include "./cad_tools/circle_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -93,11 +94,13 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
+    m_toolManager->registerTool("actionToolCircle", std::make_shared<CircleTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
     m_toolManager->bindAction(ui->actionToolLine);
     m_toolManager->bindAction(ui->actionToolPoint);
+    m_toolManager->bindAction(ui->actionToolCircle);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
@@ -514,6 +517,19 @@ void MainWindow::connectSnapSettingsToUi()
 
 void MainWindow::on_actionNew_triggered()
 {
-    m_cadScene->clearDocument();
+    // Sicherheitsabfrage (falls ungespeicherte Änderungen vorliegen)
+    auto result = QMessageBox::question(
+        this,
+        tr("New Document"),
+        tr("Are you sure you want to reset the current document? All unsaved data will be lost."),
+        QMessageBox::Yes | QMessageBox::No
+        );
+
+    if (result == QMessageBox::Yes) {
+        m_cadScene->clearDocument();
+
+        //m_undoStack->clear(); // Undo-Speicher leeren
+        //ui->lblCommandPrompt->setText(tr("Befehl / Koordinaten eingeben:"));
+    }
 }
 

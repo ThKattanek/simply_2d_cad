@@ -29,7 +29,7 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
         QPointF currentPosition = scene->getSnapOrPosition(event->scenePos());
         lineStateMachine(scene, currentPosition);
     }
-    else if (event->button() == Qt::RightButton && m_lineState == LineState::Drawing)
+    else if (event->button() == Qt::RightButton && m_lineState == ToolState::Drawing)
         cancelDrawing(scene);
 }
 
@@ -50,7 +50,7 @@ void LineTool::mouseReleaseEvent(CadScene* , QGraphicsSceneMouseEvent* )
 
 void LineTool::keyPressEvent(CadScene *scene, QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape && m_lineState == LineState::Drawing)
+    if (event->key() == Qt::Key_Escape && m_lineState == ToolState::Drawing)
         cancelDrawing(scene);
 }
 
@@ -77,7 +77,7 @@ void LineTool::cancel(CadScene *scene)
 
 void LineTool::cancelDrawing(CadScene *scene)
 {
-    m_lineState = LineState::Idle;
+    m_lineState = ToolState::Idle;
     if (m_tempLine)
     {
         scene->removeItem(m_tempLine);
@@ -92,18 +92,18 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
 {
     QPointF currentPos = scene->getSnapOrPosition(point);
 
-    if(m_lineState == LineState::Idle)
+    if(m_lineState == ToolState::Idle)
     {
-        m_lineState = LineState::Drawing;
+        m_lineState = ToolState::Drawing;
 
         m_startPoint = currentPos;
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
         emit promptTextChanged(promtMsg02);
 
-    } else if(m_lineState == LineState::Drawing)
+    } else if(m_lineState == ToolState::Drawing)
     {
-        m_lineState = LineState::Idle;
+        m_lineState = ToolState::Idle;
 
         if (m_tempLine)
         {

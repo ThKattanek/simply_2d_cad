@@ -41,6 +41,7 @@ set(PROJECT_SOURCES
     src/cad_document/cad_entity.h
     src/cad_document/cad_line.h
     src/cad_document/cad_point.h
+    src/cad_document/cad_circle.h
     # DXF import/export
     src/dxf_manager.h src/dxf_manager.cpp
     # snap system
@@ -76,6 +77,7 @@ qt_add_executable(${PROJECT_NAME}
     WIN32 MACOSX_BUNDLE
     ${PROJECT_SOURCES}
     ${MY_RESOURCES}
+    src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
 )
 
 # Strenge Compiler-Regeln für dein Target

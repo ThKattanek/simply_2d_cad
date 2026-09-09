@@ -18,7 +18,7 @@
 
 class CadLine : public CadEntity {
 public:
-    CadLine(const QPointF& start, const QPointF& end)
+    explicit CadLine(const QPointF& start, const QPointF& end)
         : m_start(start), m_end(end) {}
 
     EntityType type() const override { return EntityType::Line; }
