@@ -66,7 +66,16 @@ void CadScene::loadSettings()
 void CadScene::clearDocument()
 {
     cancelCurrentTool();
+
     clear();
+
+    m_crosshair = nullptr;
+    m_centerHLine = nullptr;
+    m_centerVLine = nullptr;
+    m_snapMarkerPoint = nullptr;
+    m_snapMarkerEndpoint = nullptr;
+    m_snapMarkerIntersection = nullptr;
+    m_snapMarkerMidpoint = nullptr;
 
     if (m_document) {
         m_document->clear();
