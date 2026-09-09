@@ -207,13 +207,10 @@ void CadScene::keyPressEvent(QKeyEvent *event)
 void CadScene::setupSystemItems()
 {
     // Create and add the crosshair item to the scene
-    if(m_crosshair == nullptr)
-    {
-        m_crosshair = new CrosshairItem();
-        m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
-        m_crosshair->setZValue(10000); // Ensure the crosshair is on top of other items
-        m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
-    }
+    m_crosshair = new CrosshairItem();
+    m_crosshair->setData(Qt::UserRole + 1, "SystemItem");
+    m_crosshair->setZValue(10000); // Ensure the crosshair is on top of other items
+    m_crosshair->setColor(Qt::white); // Set the color of the crosshair to white
     addItem(m_crosshair);
 
     // Create a dashed line pattern for the center lines
@@ -241,66 +238,44 @@ void CadScene::setupSystemItems()
     }
 
     // Add the center horizontal and vertical lines to the scene
-    if(m_centerHLine == nullptr)
-    {
-        m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
-        m_centerHLine->setData(Qt::UserRole + 1, "SystemItem");
-        m_centerHLine->setZValue(100);
-    }
-    else
-        addItem(m_centerHLine);
+    m_centerHLine = addLine(SCENE_MIN_X, 0, SCENE_MAX_X, 0, *m_dashDotDotPenRed);
+    m_centerHLine->setData(Qt::UserRole + 1, "SystemItem");
+    m_centerHLine->setZValue(100);
 
-    if(m_centerVLine == nullptr)
-    {
-        m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
-        m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
-        m_centerVLine->setZValue(100);
-    }
-    else
-        addItem(m_centerVLine);
+    m_centerVLine = addLine(0, SCENE_MIN_Y, 0, SCENE_MAX_Y, *m_dashDotDotPenRed);
+    m_centerVLine->setData(Qt::UserRole + 1, "SystemItem");
+    m_centerVLine->setZValue(100);
 
     // Add the point snap marker to the scene
-    if(m_snapMarkerPoint == nullptr)
-    {
-        m_snapMarkerPoint = new SnapMarkerPointItem();
-        m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
-        m_snapMarkerPoint->setZValue(1000); // over the crosshair
-        m_snapMarkerPoint->setColor(Qt::yellow);
-        m_snapMarkerPoint->setVisible(false); // Initially hidden
-    }
+    m_snapMarkerPoint = new SnapMarkerPointItem();
+    m_snapMarkerPoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerPoint->setZValue(1000); // over the crosshair
+    m_snapMarkerPoint->setColor(Qt::yellow);
+    m_snapMarkerPoint->setVisible(false); // Initially hidden
     addItem(m_snapMarkerPoint);
 
     // Add the endpoint snap marker to the scene
-    if(m_snapMarkerEndpoint == nullptr)
-    {
-        m_snapMarkerEndpoint = new SnapMarkerEndpointItem();
-        m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
-        m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
-        m_snapMarkerEndpoint->setColor(Qt::red);
-        m_snapMarkerEndpoint->setVisible(false);
-    }
+    m_snapMarkerEndpoint = new SnapMarkerEndpointItem();
+    m_snapMarkerEndpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerEndpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerEndpoint->setColor(Qt::red);
+    m_snapMarkerEndpoint->setVisible(false);
     addItem(m_snapMarkerEndpoint);
 
     // Add the intersection snap marker to the scene
-    if(m_snapMarkerIntersection == nullptr)
-    {
-        m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
-        m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
-        m_snapMarkerIntersection->setZValue(1000); // over the crosshair
-        m_snapMarkerIntersection->setColor(Qt::magenta);
-        m_snapMarkerIntersection->setVisible(false);
-    }
+    m_snapMarkerIntersection = new SnapMarkerIntersectionItem();
+    m_snapMarkerIntersection->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerIntersection->setZValue(1000); // over the crosshair
+    m_snapMarkerIntersection->setColor(Qt::magenta);
+    m_snapMarkerIntersection->setVisible(false);
     addItem(m_snapMarkerIntersection);
 
     // Add the midpoint snap marker to the scene
-    if(m_snapMarkerMidpoint == nullptr)
-    {
-        m_snapMarkerMidpoint = new SnapMarkerMidpointItem();
-        m_snapMarkerMidpoint->setData(Qt::UserRole + 1, "SystemItem");
-        m_snapMarkerMidpoint->setZValue(1000); // over the crosshair
-        m_snapMarkerMidpoint->setColor(Qt::cyan);
-        m_snapMarkerMidpoint->setVisible(false);
-    }
+    m_snapMarkerMidpoint = new SnapMarkerMidpointItem();
+    m_snapMarkerMidpoint->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerMidpoint->setZValue(1000); // over the crosshair
+    m_snapMarkerMidpoint->setColor(Qt::cyan);
+    m_snapMarkerMidpoint->setVisible(false);
     addItem(m_snapMarkerMidpoint);
 }
 
