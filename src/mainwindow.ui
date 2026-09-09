@@ -282,6 +282,10 @@
    </property>
   </action>
   <action name="actionToolCircle">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_circle.svg</normaloff>:/icons/icons_svg/tool_circle.svg</iconset>
+   </property>
    <property name="text">
     <string>Circle</string>
    </property>

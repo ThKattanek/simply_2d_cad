@@ -9,6 +9,7 @@
  */
 
 #include "./cad_document.h"
+#include "cad_circle.h"
 #include "cad_line.h"
 #include "cad_point.h"
 
@@ -117,6 +118,9 @@ bool CadDocument::loadFromFile(const QString &filePath)
             break;
         case EntityType::Point:
             newEntity = std::make_unique<CadPoint>(QPointF());
+            break;
+        case EntityType::Circle:
+            newEntity = std::make_unique<CadCircle>(QPointF(), 0.0);
             break;
         default:
             return false; // Unbekannter Typ / Beschädigte Datei
