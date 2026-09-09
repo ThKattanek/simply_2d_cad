@@ -514,6 +514,19 @@ void MainWindow::connectSnapSettingsToUi()
 
 void MainWindow::on_actionNew_triggered()
 {
-    m_cadScene->clearDocument();
+    // Sicherheitsabfrage (falls ungespeicherte Änderungen vorliegen)
+    auto result = QMessageBox::question(
+        this,
+        tr("New Document"),
+        tr("Are you sure you want to reset the current document? All unsaved data will be lost."),
+        QMessageBox::Yes | QMessageBox::No
+        );
+
+    if (result == QMessageBox::Yes) {
+        m_cadScene->clearDocument();
+
+        //m_undoStack->clear(); // Undo-Speicher leeren
+        //ui->lblCommandPrompt->setText(tr("Befehl / Koordinaten eingeben:"));
+    }
 }
 
