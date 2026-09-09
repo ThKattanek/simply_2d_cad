@@ -77,6 +77,7 @@ qt_add_executable(${PROJECT_NAME}
     WIN32 MACOSX_BUNDLE
     ${PROJECT_SOURCES}
     ${MY_RESOURCES}
+    src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
 )
 
 # Strenge Compiler-Regeln für dein Target

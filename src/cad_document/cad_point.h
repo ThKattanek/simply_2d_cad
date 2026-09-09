@@ -35,6 +35,7 @@ public:
     QGraphicsItem* createGraphicsItem() override {
         auto item = new CadPointItem();
         item->setPos(m_pos);
+        //item->setFlag(QGraphicsItem::ItemIsSelectable);
 
         item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(this)));
 

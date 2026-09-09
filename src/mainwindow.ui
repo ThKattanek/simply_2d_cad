@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -71,6 +71,7 @@
    <addaction name="actionToolSelect"/>
    <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
+   <addaction name="actionToolCircle"/>
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
    <property name="windowTitle">
@@ -275,6 +276,17 @@
   <action name="actionNew">
    <property name="text">
     <string>New</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolCircle">
+   <property name="text">
+    <string>Circle</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Circle (C)</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

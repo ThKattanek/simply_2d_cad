@@ -9,16 +9,16 @@
  */
 
 #pragma once
-
 #include "cad_tool.h"
+
 #include <QPointF>
 
-class QGraphicsLineItem;
+class QGraphicsEllipseItem;
 
-class LineTool : public CadTool
+class CircleTool : public CadTool
 {
     Q_OBJECT
-public:
+public:    
     void retranslate() override;
     void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
@@ -31,13 +31,13 @@ public:
 
 private:
     void cancelDrawing(CadScene* scene);
-    void lineStateMachine(CadScene* scene, const QPointF& point);
+    void circleStateMachine(CadScene* scene, const QPointF& point);
 
-    QGraphicsLineItem* m_tempLine = nullptr;
-    ToolState m_lineState = Idle;
+    QGraphicsEllipseItem* m_tempCircle = nullptr;
+    ToolState m_circleState = Idle;
     QPointF m_currentMousePos;
-    QPointF m_startPoint;
-    QPointF m_endPoint;
+    QPointF m_centerPoint;
+    qreal m_radius;
 
     QString promtMsg01, promtMsg02;
 };

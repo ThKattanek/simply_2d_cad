@@ -21,8 +21,13 @@ class QGraphicsSceneMouseEvent;
 class QKeyEvent;
 class CadScene;
 
-// Base class for CAD tools
+enum ToolState
+{
+    Idle,
+    Drawing
+};
 
+// Base class for CAD tools
 class CadTool : public QObject
 {
     Q_OBJECT
