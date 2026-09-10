@@ -17,7 +17,7 @@
 
 void PointTool::retranslate()
 {
-    promtMsg01 = tr("Click a point or enter the coordinates (x, y).");
+    promtMsg01 = tr("Point: Click a point or enter the coordinates (x, y).");
 }
 
 void PointTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)

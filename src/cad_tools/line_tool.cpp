@@ -18,8 +18,8 @@
 
 void LineTool::retranslate()
 {
-    promtMsg01 = tr("Click the first point on the line or enter the coordinates (x, y).");
-    promtMsg02 = tr("Click the second point on the line or enter the coordinates (x, y).");
+    promtMsg01 = tr("Line: Click the first point on the line or enter the coordinates (x, y).");
+    promtMsg02 = tr("Line: Click the second point on the line or enter the coordinates (x, y).");
 }
 
 void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
