@@ -180,7 +180,7 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     // Perform snapping if a document is set
     if (m_document) {
         double zoomFactor = getZoomFactorFromEvent(event);
-        snap = m_snapManager.findSnapPoint(rawMousePos, *m_document, zoomFactor);
+        snap = m_snapManager.findSnapPoint(rawMousePos, *this, zoomFactor);
         updateSnapMarkers(snap, zoomFactor);
     }
 

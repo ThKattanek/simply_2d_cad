@@ -9,16 +9,20 @@
  */
 
 #include "./snap_manager.h"
-#include "./cad_document/cad_document.h"
+#include "./cad_scene.h"
 #include "./cad_document/cad_line.h"
 #include "./cad_document/cad_point.h"
 #include "./cad_document/cad_circle.h"
 
-SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDocument& doc, double zoomFactor)
+#include <QGraphicsItem>
+#include <vector>
+#include <cmath>
+
+SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &scene, double zoomFactor)
 {
     SnapResult bestSnap;
 
-    // Bildschirm-Toleranz (Pixel) in Weltkoordinaten umrechnen
+    // 1. Bildschirm-Toleranz in Welt-Koordinaten umrechnen
     const double maxDistWorld = m_tolerancePixels / zoomFactor;
     double minDistance = maxDistWorld;
 
@@ -34,22 +38,45 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
         }
     };
 
-    const auto& entities = doc.getEntities();
+    // 2. SPATIAL QUERY: Erstelle ein Such-Rechteck um den Mauszeiger
+    QRectF searchRect(mouseWorldPos.x() - maxDistWorld,
+                      mouseWorldPos.y() - maxDistWorld,
+                      maxDistWorld * 2.0,
+                      maxDistWorld * 2.0);
 
-    // 1. DURCHGANG: Endpunkte, Mittelpunkte & Einzelpunkte
+    // Qt findet blitzschnell über den BSP-Tree NUR die Items im Fang-Bereich!
+    QList<QGraphicsItem*> nearbyGraphicsItems = scene.items(searchRect);
+
+    // Filtere relevante CadEntities heraus (System-Items wie Fadenkreuz/Grid ignorieren)
+    std::vector<const CadEntity*> nearbyEntities;
+    nearbyEntities.reserve(nearbyGraphicsItems.size());
+
+    for (QGraphicsItem* item : nearbyGraphicsItems) {
+        // SystemItems überspringen
+        if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
+            continue;
+        }
+
+        // CAD-Entity aus dem Custom-Data-Pointer oder Dynamic Cast ermitteln
+        // (Falls deine CadEntity das QGraphicsItem besitzt oder speichert):
+        auto entityPtr = item->data(Qt::UserRole).value<CadEntity*>();
+        if (entityPtr) {
+            nearbyEntities.push_back(entityPtr);
+        }
+    }
+
+    // 3. DURCHGANG: Endpunkte, Mittelpunkte & Punkte im Umkreis
     if (m_endpointSnapEnabled || m_midpointSnapEnabled || m_pointSnapEnabled) {
-        for (const auto& entityPtr : entities) {
-            if (!entityPtr) continue;
-
-            switch (entityPtr->type()) {
+        for (const CadEntity* entity : nearbyEntities) {
+            switch (entity->type()) {
             case EntityType::Point: {
-                auto* pt = static_cast<const CadPoint*>(entityPtr.get());
+                auto* pt = static_cast<const CadPoint*>(entity);
                 if (m_pointSnapEnabled)
                     checkPoint(pt->position(), SnapType::Point);
                 break;
             }
             case EntityType::Line: {
-                auto* line = static_cast<const CadLine*>(entityPtr.get());
+                auto* line = static_cast<const CadLine*>(entity);
                 if (m_endpointSnapEnabled) {
                     checkPoint(line->start(), SnapType::Endpoint);
                     checkPoint(line->end(), SnapType::Endpoint);
@@ -60,10 +87,10 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
                 }
                 break;
             }
-            case EntityType::Circle: { // <-- KREIS-MITTELPUNKT
-                auto* circle = static_cast<const CadCircle*>(entityPtr.get());
+            case EntityType::Circle: {
+                auto* circle = static_cast<const CadCircle*>(entity);
                 if (m_midpointSnapEnabled) {
-                    checkPoint(circle->center(), SnapType::Point); // Kreis-Mittelpunkt als Punkt-Snap
+                    checkPoint(circle->center(), SnapType::Midpoint);
                 }
                 break;
             }
@@ -73,10 +100,9 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
         }
     }
 
-    // 2. DURCHGANG: Schnittpunkte (Linie-Linie, Linie-Kreis, Kreis-Kreis)
-    if (m_intersectionSnapEnabled && entities.size() >= 2) {
+    // 4. DURCHGANG: Schnittpunkte (NUR zwischen den nahegelegenen Objekten!)
+    if (m_intersectionSnapEnabled && nearbyEntities.size() >= 2) {
 
-        // --- Helper A: Linie / Linie ---
         auto getLineLineIntersection = [](const QPointF& p1, const QPointF& p2,
                                           const QPointF& p3, const QPointF& p4,
                                           QPointF& outPt) -> bool
@@ -99,7 +125,6 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
             return false;
         };
 
-        // --- Helper B: Linie / Kreis ---
         auto getLineCircleIntersections = [](const QPointF& p1, const QPointF& p2,
                                              const QPointF& center, double radius,
                                              std::vector<QPointF>& outPts)
@@ -112,7 +137,7 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
             double c = (f.x() * f.x() + f.y() * f.y()) - radius * radius;
 
             double discriminant = b * b - 4 * a * c;
-            if (discriminant < 0 || std::abs(a) < 1e-9) return; // Keine echten Schnittpunkte
+            if (discriminant < 0 || std::abs(a) < 1e-9) return;
 
             discriminant = std::sqrt(discriminant);
             double t1 = (-b - discriminant) / (2 * a);
@@ -122,14 +147,11 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
             if (t2 >= 0.0 && t2 <= 1.0) outPts.push_back(p1 + t2 * d);
         };
 
-        // --- Helper C: Kreis / Kreis ---
         auto getCircleCircleIntersections = [](const QPointF& c1, double r1,
                                                const QPointF& c2, double r2,
                                                std::vector<QPointF>& outPts)
         {
             double d = std::hypot(c2.x() - c1.x(), c2.y() - c1.y());
-
-            // Zu weit auseinander, ineinander oder identisch
             if (d > (r1 + r2) || d < std::abs(r1 - r2) || d < 1e-9) return;
 
             double a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
@@ -137,62 +159,43 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, const CadDoc
 
             QPointF p2 = c1 + a * (c2 - c1) / d;
 
-            // Erster Schnittpunkt
             outPts.push_back(QPointF(p2.x() + h * (c2.y() - c1.y()) / d,
                                      p2.y() - h * (c2.x() - c1.x()) / d));
 
-            // Zweiter Schnittpunkt (falls spürbarer Abstand)
             if (h > 1e-6) {
                 outPts.push_back(QPointF(p2.x() - h * (c2.y() - c1.y()) / d,
                                          p2.y() + h * (c2.x() - c1.x()) / d));
             }
         };
 
-        // Paar-Iterationen über alle Entity-Kombinationen
-        for (size_t i = 0; i < entities.size(); ++i) {
-            if (!entities[i]) continue;
+        for (size_t i = 0; i < nearbyEntities.size(); ++i) {
+            for (size_t j = i + 1; j < nearbyEntities.size(); ++j) {
+                auto type1 = nearbyEntities[i]->type();
+                auto type2 = nearbyEntities[j]->type();
 
-            for (size_t j = i + 1; j < entities.size(); ++j) {
-                if (!entities[j]) continue;
-
-                auto type1 = entities[i]->type();
-                auto type2 = entities[j]->type();
-
-                // 1. Linie - Linie
                 if (type1 == EntityType::Line && type2 == EntityType::Line) {
-                    auto* line1 = static_cast<const CadLine*>(entities[i].get());
-                    auto* line2 = static_cast<const CadLine*>(entities[j].get());
-
+                    auto* line1 = static_cast<const CadLine*>(nearbyEntities[i]);
+                    auto* line2 = static_cast<const CadLine*>(nearbyEntities[j]);
                     QPointF intersectPt;
-                    if (getLineLineIntersection(line1->start(), line1->end(),
-                                                line2->start(), line2->end(),
-                                                intersectPt)) {
+                    if (getLineLineIntersection(line1->start(), line1->end(), line2->start(), line2->end(), intersectPt)) {
                         checkPoint(intersectPt, SnapType::Intersection);
                     }
                 }
-                // 2. Linie - Kreis (oder Kreis - Linie)
                 else if ((type1 == EntityType::Line && type2 == EntityType::Circle) ||
                          (type1 == EntityType::Circle && type2 == EntityType::Line)) {
-
-                    const CadLine* line = static_cast<const CadLine*>((type1 == EntityType::Line) ? entities[i].get() : entities[j].get());
-                    const CadCircle* circle = static_cast<const CadCircle*>((type1 == EntityType::Circle) ? entities[i].get() : entities[j].get());
-
+                    const CadLine* line = static_cast<const CadLine*>((type1 == EntityType::Line) ? nearbyEntities[i] : nearbyEntities[j]);
+                    const CadCircle* circle = static_cast<const CadCircle*>((type1 == EntityType::Circle) ? nearbyEntities[i] : nearbyEntities[j]);
                     std::vector<QPointF> intersects;
                     getLineCircleIntersections(line->start(), line->end(), circle->center(), circle->radius(), intersects);
-
                     for (const auto& pt : intersects) {
                         checkPoint(pt, SnapType::Intersection);
                     }
                 }
-                // 3. Kreis - Kreis
                 else if (type1 == EntityType::Circle && type2 == EntityType::Circle) {
-                    auto* circle1 = static_cast<const CadCircle*>(entities[i].get());
-                    auto* circle2 = static_cast<const CadCircle*>(entities[j].get());
-
+                    auto* circle1 = static_cast<const CadCircle*>(nearbyEntities[i]);
+                    auto* circle2 = static_cast<const CadCircle*>(nearbyEntities[j]);
                     std::vector<QPointF> intersects;
-                    getCircleCircleIntersections(circle1->center(), circle1->radius(),
-                                                 circle2->center(), circle2->radius(), intersects);
-
+                    getCircleCircleIntersections(circle1->center(), circle1->radius(), circle2->center(), circle2->radius(), intersects);
                     for (const auto& pt : intersects) {
                         checkPoint(pt, SnapType::Intersection);
                     }

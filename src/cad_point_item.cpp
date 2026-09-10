@@ -18,10 +18,10 @@ CadPointItem::CadPointItem(QGraphicsItem *parent) : QGraphicsItem(parent)
     setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 
     // Set the point to be selectable
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    //setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     // Set the point to be movable
-    setAcceptHoverEvents(true);
+    //setAcceptHoverEvents(true);
 
     // Set the point to be movable
     m_pen = QPen(Qt::white, 0); // Set the pen color to red and width to 0 (cosmetic pen)

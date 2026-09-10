@@ -30,7 +30,7 @@ explicit CadCircle(const QPointF& center, const qreal& radius)
         //item->setFlag(QGraphicsItem::ItemIsSelectable);
 
         // Rückverweis auf dieses Datenobjekt speichern
-        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(this)));
+        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<CadEntity*>(this)));
 
         m_graphicsItem = item;
         return item;
