@@ -18,14 +18,24 @@
 #include "dl_creationadapter.h"
 #include "./cad_document//cad_entity.h"
 
+// Hilfstruktur für Kreise
+struct DxfCircle {
+    QPointF center;
+    qreal radius;
+
+    DxfCircle(const QPointF& c, qreal r) : center(c), radius(r) {}
+};
+
 // Reine Datenstruktur für dxflib (Zwischenspeicher)
 struct DxfData {
     std::vector<QPointF> points;
     std::vector<QLineF> lines;
+    std::vector<DxfCircle> circles;
 
     void clear() {
         points.clear();
         lines.clear();
+        circles.clear();
     }
 };
 
@@ -40,6 +50,10 @@ public:
 
     void addLine(const DL_LineData& data) override {
         m_data.lines.emplace_back(QPointF(data.x1, data.y1), QPointF(data.x2, data.y2));
+    }
+
+    void addCircle(const DL_CircleData& data) override {
+        m_data.circles.emplace_back(QPointF(data.cx, data.cy), data.radius);
     }
 
 private:
