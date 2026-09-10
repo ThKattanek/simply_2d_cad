@@ -147,6 +147,13 @@ void CadScene::handleCommandInputPoint(const QPointF &parsedPoint)
     }
 }
 
+void CadScene::handleCommandInputValue(const double parsedValue)
+{
+    if (auto tool = m_toolManager->activeTool()) {
+        tool->handleValueInput(this, parsedValue);
+    }
+}
+
 void CadScene::cancelCurrentTool()
 {
     if(m_toolManager != nullptr)
@@ -180,7 +187,7 @@ void CadScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     // Perform snapping if a document is set
     if (m_document) {
         double zoomFactor = getZoomFactorFromEvent(event);
-        snap = m_snapManager.findSnapPoint(rawMousePos, *m_document, zoomFactor);
+        snap = m_snapManager.findSnapPoint(rawMousePos, *this, zoomFactor);
         updateSnapMarkers(snap, zoomFactor);
     }
 

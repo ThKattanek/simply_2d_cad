@@ -47,6 +47,7 @@ public:
     QPointF getLastPoint() const { return m_lastPoint; }
     void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
     void handleCommandInputPoint(const QPointF& parsedPoint);
+    void handleCommandInputValue(const double parsedValue);
 
 signals:
     void cursorPositionChanged(const QPointF& position, bool isSnapped, SnapType snapType);

@@ -438,8 +438,18 @@ void MainWindow::on_commandSubmitted()
 
         // An das aktive Werkzeug übergeben
         m_cadScene->handleCommandInputPoint(parsedPoint);
-        m_commandInput->clear();
+
     }
+    else {
+        // 3. Prüfen, ob es eine reine Zahl ist (z. B. Radius, Abstand, Länge)
+        bool ok = false;
+        double value = input.toDouble(&ok);
+
+        if (ok) {
+            m_cadScene->handleCommandInputValue(value);
+        }
+    }
+    m_commandInput->clear();
 }
 
 void MainWindow::saveLayoutSettings()

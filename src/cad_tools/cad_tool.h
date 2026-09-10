@@ -49,6 +49,7 @@ public:
     void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
 
     virtual void handlePointInput(CadScene* , const QPointF& ) {}
+    virtual void handleValueInput(CadScene* scene, double value) { Q_UNUSED(scene); Q_UNUSED(value); }
 
 signals:
     void promptTextChanged(const QString& text);

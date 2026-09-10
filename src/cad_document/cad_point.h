@@ -37,7 +37,7 @@ public:
         item->setPos(m_pos);
         //item->setFlag(QGraphicsItem::ItemIsSelectable);
 
-        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(this)));
+        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<CadEntity*>(this)));
 
         m_graphicsItem = item;
         return item;

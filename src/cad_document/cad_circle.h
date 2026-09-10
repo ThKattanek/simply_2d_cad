@@ -30,7 +30,7 @@ explicit CadCircle(const QPointF& center, const qreal& radius)
         //item->setFlag(QGraphicsItem::ItemIsSelectable);
 
         // Rückverweis auf dieses Datenobjekt speichern
-        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<void*>(this)));
+        item->setData(Qt::UserRole, QVariant::fromValue(static_cast<CadEntity*>(this)));
 
         m_graphicsItem = item;
         return item;
@@ -42,8 +42,8 @@ explicit CadCircle(const QPointF& center, const qreal& radius)
         }
     }
 
-    QPointF center() { return m_center; }
-    qreal radius() { return m_radius; }
+    QPointF center() const { return m_center; }
+    qreal radius() const { return m_radius; }
     void setCenter(QPointF center) { m_center = center; }
     void setRadius(qreal radius) { m_radius = radius; }
 

@@ -13,6 +13,7 @@
 
 #include "./cad_document/cad_point.h"
 #include "./cad_document/cad_line.h"
+#include "./cad_document/cad_circle.h"
 
 // ==========================================
 // IMPORT
@@ -41,12 +42,19 @@ bool DxfManager::importEntities(const QString& filePath,
     // 2. Rohdaten in konkrete CadEntities umwandeln
     outEntities.reserve(outEntities.size() + importedData.points.size() + importedData.lines.size());
 
+    // Punkte importieren
     for (const auto& pt : importedData.points) {
         outEntities.push_back(std::make_unique<CadPoint>(pt));
     }
 
+    // Linien importieren
     for (const auto& line : importedData.lines) {
         outEntities.push_back(std::make_unique<CadLine>(line.p1(), line.p2()));
+    }
+
+    // Kreise importieren
+    for (const auto& circle : importedData.circles) {
+        outEntities.push_back(std::make_unique<CadCircle>(circle.center, circle.radius));
     }
 
     return true;
@@ -65,15 +73,23 @@ bool DxfManager::exportEntities(const QString& filePath,
     for (const auto& entityPtr : entities) {
         if (!entityPtr) continue;
 
+        // Punkte exportieren
         switch (entityPtr->type()) {
         case EntityType::Point: {
             auto* pointEntity = static_cast<const CadPoint*>(entityPtr.get());
             exportData.points.push_back(pointEntity->position());
             break;
         }
+        // Linien exportieren
         case EntityType::Line: {
             auto* lineEntity = static_cast<const CadLine*>(entityPtr.get());
             exportData.lines.emplace_back(lineEntity->start(), lineEntity->end());
+            break;
+        }
+        // Kreise exportieren
+        case EntityType::Circle: { // <-- KREISE RAUSSUCHEN
+            auto* circleEntity = static_cast<const CadCircle*>(entityPtr.get());
+            exportData.circles.emplace_back(circleEntity->center(), circleEntity->radius());
             break;
         }
         default:
@@ -171,6 +187,13 @@ bool DxfManager::exportFile(const QString& filePath, const DxfData& data) {
                       DL_LineData(line.x1(), line.y1(), 0.0,
                                   line.x2(), line.y2(), 0.0),
                       defaultAttribs);
+    }
+
+    // --- Kreise exportieren ---
+    for (const auto& circle : data.circles) {
+        dxf.writeCircle(*dw,
+                        DL_CircleData(circle.center.x(), circle.center.y(), 0.0, circle.radius),
+                        defaultAttribs);
     }
 
     dw->sectionEnd();
