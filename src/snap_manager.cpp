@@ -51,10 +51,24 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
     std::vector<const CadEntity*> nearbyEntities;
     nearbyEntities.reserve(nearbyGraphicsItems.size());
 
+    std::vector<std::unique_ptr<CadLine>> systemLinesStorage;
+
     for (QGraphicsItem* item : nearbyGraphicsItems) {
         // SystemItems überspringen
         if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
-            continue;
+            // Prüfen, ob das Item eine QGraphicsLineItem ist (z. B. deine Mittellinien)
+            if (auto* lineItem = dynamic_cast<QGraphicsLineItem*>(item)) {
+                // Nur horizontale/vertikale Achsen zulassen (Fadenkreuz ausschließen!)
+                if (lineItem != scene.getCrosshairItem()->parentItem()) {
+                    QLineF line = lineItem->line();
+
+                    // Temporäre CadLine für die Snap-Berechnung erzeugen
+                    auto tempCadLine = std::make_unique<CadLine>(line.p1(), line.p2());
+                    nearbyEntities.push_back(tempCadLine.get());
+                    systemLinesStorage.push_back(std::move(tempCadLine));
+                }
+            }
+            continue; // Andere SystemItems (Fadenkreuz, Marker) weiterhin ignorieren
         }
 
         // CAD-Entity aus dem Custom-Data-Pointer oder Dynamic Cast ermitteln
