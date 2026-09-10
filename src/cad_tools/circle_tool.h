@@ -25,6 +25,7 @@ public:
     void mouseReleaseEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void keyPressEvent(CadScene* scene, QKeyEvent* event) override;
     void handlePointInput(CadScene* scene, const QPointF& point) override;
+    void handleValueInput(CadScene* scene, double value) override;
     void activate(CadScene* scene) override;
     void deactivate(CadScene* scene) override;
     void cancel(CadScene* scene) override;

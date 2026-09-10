@@ -18,8 +18,8 @@
 
 void CircleTool::retranslate()
 {
-    promtMsg01 = tr("Click the center of the circle (x, y).");
-    promtMsg02 = tr("Click the second point for the radius (x, y).");
+    promtMsg01 = tr("Circle: Click the center of the circle or enter center point (x, y).");
+    promtMsg02 = tr("Circle: Click the second point or enter radius (x, y / R).");
 }
 
 void CircleTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)
@@ -61,6 +61,25 @@ void CircleTool::keyPressEvent(CadScene *scene, QKeyEvent *event)
 void CircleTool::handlePointInput(CadScene *scene, const QPointF &point)
 {
     circleStateMachine(scene, point);
+}
+
+void CircleTool::handleValueInput(CadScene *scene, double value)
+{
+    if (m_circleState == ToolState::Drawing && value > 0.0)
+    {
+        m_circleState = ToolState::Idle;
+
+        if (m_tempCircle) {
+            scene->removeItem(m_tempCircle);
+            delete m_tempCircle;
+            m_tempCircle = nullptr;
+        }
+
+        auto newCircle = std::make_unique<CadCircle>(m_centerPoint, value);
+        scene->getDocument()->addEntity(std::move(newCircle));
+
+        emit promptTextChanged(promtMsg01);
+    }
 }
 
 void CircleTool::activate(CadScene *scene)
