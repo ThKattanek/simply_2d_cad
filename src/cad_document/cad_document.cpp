@@ -14,6 +14,7 @@
 #include "cad_point.h"
 
 #include <QFile>
+#include <algorithm>
 
 // Magic Number identifiziert deine Datei eindeutig als CAD-Datei
 constexpr quint32 CAD_MAGIC_NUMBER = 0x53324443; // "S2DC" in Hex
@@ -32,15 +33,36 @@ CadEntity* CadDocument::addEntity(std::unique_ptr<CadEntity> entity) {
 }
 
 bool CadDocument::removeEntity(CadEntity* entity) {
+    return static_cast<bool>(takeEntity(entity));
+}
+
+std::unique_ptr<CadEntity> CadDocument::takeEntity(CadEntity* entity)
+{
     auto it = std::find_if(m_entities.begin(), m_entities.end(),
                            [entity](const std::unique_ptr<CadEntity>& e) { return e.get() == entity; });
 
     if (it != m_entities.end()) {
         emit entityRemoved(entity);
-        m_entities.erase(it); // Löscht das C++ Objekt und gibt den Speicher frei
-        return true;
+        std::unique_ptr<CadEntity> removedEntity = std::move(*it);
+        m_entities.erase(it);
+        return removedEntity;
     }
-    return false;
+    return nullptr;
+}
+
+std::unique_ptr<CadEntity> CadDocument::removeLastEntity()
+{
+    if (m_entities.empty()) {
+        return nullptr;
+    }
+
+    CadEntity* rawPtr = m_entities.back().get();
+    emit entityRemoved(rawPtr);
+
+    std::unique_ptr<CadEntity> entity = std::move(m_entities.back());
+    m_entities.pop_back();
+
+    return entity;
 }
 
 void CadDocument::clear() {

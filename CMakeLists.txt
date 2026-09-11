@@ -42,6 +42,11 @@ set(PROJECT_SOURCES
     src/cad_document/cad_line.h
     src/cad_document/cad_point.h
     src/cad_document/cad_circle.h
+    # undo/redo command system
+    src/undo_stack.h src/undo_stack.cpp
+    src/commands/command.h
+    src/commands/add_entity_command.h src/commands/add_entity_command.cpp
+    src/commands/remove_entity_command.h src/commands/remove_entity_command.cpp
     # DXF import/export
     src/dxf_manager.h src/dxf_manager.cpp
     # snap system
