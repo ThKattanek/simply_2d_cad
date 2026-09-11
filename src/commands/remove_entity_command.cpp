@@ -13,8 +13,9 @@
 #include "../cad_document/cad_entity.h"
 #include <utility>
 
-RemoveEntityCommand::RemoveEntityCommand(CadDocument* document, QString description)
+RemoveEntityCommand::RemoveEntityCommand(CadDocument* document, CadEntity* targetEntity, QString description)
     : m_document(document)
+    , m_targetEntity(targetEntity)
     , m_description(std::move(description))
 {
 }
@@ -24,7 +25,16 @@ void RemoveEntityCommand::execute()
     if (!m_document) {
         return;
     }
-    m_removedEntity = m_document->removeLastEntity();
+
+    if (m_targetEntity) {
+        m_removedEntity = m_document->takeEntity(m_targetEntity);
+    } else {
+        m_removedEntity = m_document->removeLastEntity();
+    }
+
+    if (m_removedEntity) {
+        m_targetEntity = m_removedEntity.get();
+    }
 }
 
 void RemoveEntityCommand::undo()
@@ -32,7 +42,7 @@ void RemoveEntityCommand::undo()
     if (!m_document || !m_removedEntity) {
         return;
     }
-    m_document->addEntity(std::move(m_removedEntity));
+    m_targetEntity = m_document->addEntity(std::move(m_removedEntity));
 }
 
 void RemoveEntityCommand::redo()

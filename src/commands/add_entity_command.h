@@ -27,6 +27,7 @@ public:
 
 private:
     CadDocument* m_document = nullptr;
+    CadEntity* m_addedEntity = nullptr;
     std::unique_ptr<CadEntity> m_entity;
     QString m_description;
 };

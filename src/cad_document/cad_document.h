@@ -25,6 +25,7 @@ public:
 
     // Entfernt ein Objekt aus dem Dokument
     bool removeEntity(CadEntity* entity);
+    std::unique_ptr<CadEntity> takeEntity(CadEntity* entity);
     std::unique_ptr<CadEntity> removeLastEntity();
 
     // Zugriff auf alle Objekte (z. B. für DXF-Export)

@@ -25,15 +25,16 @@ void AddEntityCommand::execute()
     if (!m_document || !m_entity) {
         return;
     }
-    m_document->addEntity(std::move(m_entity));
+    m_addedEntity = m_document->addEntity(std::move(m_entity));
 }
 
 void AddEntityCommand::undo()
 {
-    if (!m_document) {
+    if (!m_document || !m_addedEntity) {
         return;
     }
-    m_entity = m_document->removeLastEntity();
+    m_entity = m_document->takeEntity(m_addedEntity);
+    m_addedEntity = nullptr;
 }
 
 void AddEntityCommand::redo()

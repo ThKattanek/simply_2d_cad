@@ -18,7 +18,7 @@ class CadEntity;
 class RemoveEntityCommand : public Command
 {
 public:
-    explicit RemoveEntityCommand(CadDocument* document, QString description);
+    RemoveEntityCommand(CadDocument* document, CadEntity* targetEntity, QString description);
 
     void execute() override;
     void undo() override;
@@ -27,6 +27,7 @@ public:
 
 private:
     CadDocument* m_document = nullptr;
+    CadEntity* m_targetEntity = nullptr;
     std::unique_ptr<CadEntity> m_removedEntity;
     QString m_description;
 };
