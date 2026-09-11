@@ -15,8 +15,6 @@
 
 #include <QGraphicsSceneMouseEvent>
 
-//QString PointTool::promtMsg01 = tr("Click a point or enter the coordinates (x, y).");
-
 void PointTool::retranslate()
 {
     promtMsg01 = tr("Point: Click a point or enter the coordinates (x, y).");

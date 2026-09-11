@@ -10,6 +10,8 @@
 
 #include "./circle_tool.h"
 #include "../cad_document/cad_circle.h"
+#include "../commands/add_entity_command.h"
+#include "../undo_stack.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
@@ -137,10 +139,15 @@ void CircleTool::circleStateMachine(CadScene *scene, const QPointF &point)
             delete m_tempCircle;
             m_tempCircle = nullptr;
 
-            auto newLine = std::make_unique<CadCircle>(m_centerPoint, m_radius);
-            scene->getDocument()->addEntity(std::move(newLine));
-        }
+            auto newCircle = std::make_unique<CadCircle>(m_centerPoint, m_radius);
+            auto command = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(newCircle), tr("Add Circle"));
 
+            if (scene->getUndoStack()) {
+                scene->getUndoStack()->push(std::move(command));
+            } else {
+                command->execute();
+            }
+        }
         emit promptTextChanged(promtMsg01);
     }
 }
