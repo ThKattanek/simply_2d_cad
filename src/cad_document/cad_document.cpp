@@ -43,6 +43,20 @@ bool CadDocument::removeEntity(CadEntity* entity) {
     return false;
 }
 
+std::unique_ptr<CadEntity> CadDocument::removeLastEntity()
+{
+    if (m_entities.empty()) {
+        return nullptr;
+    }
+
+    std::unique_ptr<CadEntity> entity = std::move(m_entities.back());
+    CadEntity* rawPtr = entity.get();
+    m_entities.pop_back();
+    emit entityRemoved(rawPtr);
+
+    return entity;
+}
+
 void CadDocument::clear() {
     m_entities.clear();
     emit documentCleared();

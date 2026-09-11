@@ -17,6 +17,7 @@
 #include <QLineEdit>
 #include <QSettings>
 #include <QToolButton>
+#include <QAction>
 
 #include "./cad_view.h"
 #include "./cad_scene.h"
@@ -64,6 +65,8 @@ private:
     void switchLanguage(const QString &qmFileName);
 
     void initializeCommandToolbar();
+    void setupUndoRedoActions();
+    void updateUndoRedoActions();
 
     void zoomToFitGeometry();
     bool exportDxf(const QString &fileName);
@@ -74,6 +77,7 @@ private:
     QTranslator m_translator;
     QTranslator m_translatorQtBase;
     QMenu *m_langMenu = nullptr;
+    QMenu *m_editMenu = nullptr;
     QToolBar *toolBar = nullptr;
     QLabel *m_coordLabel = nullptr;
 
@@ -82,6 +86,10 @@ private:
     CadToolManager *m_toolManager = nullptr;
 
     CadDocument *m_cadDocument = nullptr;
+    class UndoStack *m_undoStack = nullptr;
+
+    QAction *m_actionUndo = nullptr;
+    QAction *m_actionRedo = nullptr;
 
     QLabel *m_commandPromt = nullptr;
     QLineEdit *m_commandInput = nullptr;

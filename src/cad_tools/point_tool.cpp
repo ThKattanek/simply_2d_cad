@@ -10,6 +10,8 @@
 
 #include "./point_tool.h"
 #include "../cad_document/cad_point.h"
+#include "../commands/add_entity_command.h"
+#include "../undo_stack.h"
 
 #include <QGraphicsSceneMouseEvent>
 
@@ -47,5 +49,11 @@ void PointTool::deactivate(CadScene *)
 void PointTool::pointStateMachine(CadScene *scene, const QPointF &point)
 {
     auto newPoint = std::make_unique<CadPoint>(point);
-    scene->getDocument()->addEntity(std::move(newPoint));
+    auto command = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(newPoint), tr("Add Point"));
+
+    if (scene->getUndoStack()) {
+        scene->getUndoStack()->push(std::move(command));
+    } else {
+        command->execute();
+    }
 }

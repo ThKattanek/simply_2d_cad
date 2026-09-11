@@ -24,6 +24,7 @@
 class CadToolManager;
 class QGraphicsSceneEvent;
 class QGraphicsItem;
+class UndoStack;
 
 class CadScene : public QGraphicsScene
 {
@@ -39,6 +40,8 @@ public:
     void clearDocumentItems();
     void setDocument(CadDocument* document);
     CadDocument* getDocument() const { return m_document; }
+    void setUndoStack(UndoStack* undoStack) { m_undoStack = undoStack; }
+    UndoStack* getUndoStack() const { return m_undoStack; }
     CrosshairItem* getCrosshairItem() { return m_crosshair; }
 
     QPointF getSnapOrPosition(const QPointF& rawPosition) const {return m_hasActiveSnapPoint ? m_activeSnapPoint : rawPosition;}
@@ -76,6 +79,7 @@ private:
 
     CadToolManager* m_toolManager = nullptr;
     CadDocument* m_document = nullptr;
+    UndoStack* m_undoStack = nullptr;
 
     // Last point when left mouse button was clicked (used for relative coordinates)
     QPointF m_lastPoint;
