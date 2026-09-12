@@ -341,6 +341,11 @@ void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
             m_snapMarkerIntersection->setSize(markerSizeWorld);
             m_snapMarkerIntersection->setVisible(true);
             break;
+            case SnapType::Tangent:
+            m_snapMarkerIntersection->setPos(snap.point);
+            m_snapMarkerIntersection->setSize(markerSizeWorld);
+            m_snapMarkerIntersection->setVisible(true);
+            break;
         default:
             break;
         }

@@ -95,9 +95,31 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                     checkPoint(line->start(), SnapType::Endpoint);
                     checkPoint(line->end(), SnapType::Endpoint);
                 }
+
                 if (m_midpointSnapEnabled) {
                     QPointF midPoint = (line->start() + line->end()) * 0.5;
                     checkPoint(midPoint, SnapType::Midpoint);
+                }
+
+                if (m_tangentSnapEnabled) {
+                    QPointF lastPt = scene.getLastPoint();
+                    QPointF A = line->start();
+                    QPointF B = line->end();
+
+                    double dx = B.x() - A.x();
+                    double dy = B.y() - A.y();
+                    double lengthSq = dx * dx + dy * dy;
+
+                    if (lengthSq > 1e-9) { // Division durch Null verhindern
+                        // Skalarprodukt berechnen, um den Parameter t auf der Linie zu finden
+                        double t = ((lastPt.x() - A.x()) * dx + (lastPt.y() - A.y()) * dy) / lengthSq;
+
+                        // Fange nur dann, wenn der Lotpunkt tatsächlich auf dem gezeichneten Liniensegment liegt
+                        if (t >= 0.0 && t <= 1.0) {
+                            QPointF tangentPt(A.x() + t * dx, A.y() + t * dy);
+                            checkPoint(tangentPt, SnapType::Tangent);
+                        }
+                    }
                 }
                 break;
             }
@@ -105,6 +127,35 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                 auto* circle = static_cast<const CadCircle*>(entity);
                 if (m_midpointSnapEnabled) {
                     checkPoint(circle->center(), SnapType::Midpoint);
+                }
+
+                if (m_tangentSnapEnabled) {
+                    QPointF lastPt = scene.getLastPoint();
+                    QPointF c = circle->center();
+                    double r = circle->radius();
+
+                    double dx = lastPt.x() - c.x();
+                    double dy = lastPt.y() - c.y();
+                    double dist2 = dx * dx + dy * dy;
+
+                    // Nur berechnen, wenn der letzte Punkt außerhalb des Kreises liegt
+                    if (dist2 >= r * r && dist2 > 1e-6) {
+                        double L = std::sqrt(dist2 - r * r);
+
+                        // Erster Tangentenpunkt T1
+                        QPointF t1(
+                            c.x() + (r / dist2) * (r * dx - L * dy),
+                            c.y() + (r / dist2) * (r * dy + L * dx)
+                            );
+                        checkPoint(t1, SnapType::Tangent);
+
+                        // Zweiter Tangentenpunkt T2
+                        QPointF t2(
+                            c.x() + (r / dist2) * (r * dx + L * dy),
+                            c.y() + (r / dist2) * (r * dy - L * dx)
+                            );
+                        checkPoint(t2, SnapType::Tangent);
+                    }
                 }
                 break;
             }

@@ -28,6 +28,7 @@ public:
     void setEndpointSnapEnabled(bool enabled) { m_endpointSnapEnabled = enabled; }
     void setMidpointSnapEnabled(bool enabled) { m_midpointSnapEnabled = enabled; }
     void setIntersectionSnapEnabled(bool enabled) { m_intersectionSnapEnabled = enabled; }
+    void setTangentSnapEnabled(bool enabled) { m_tangentSnapEnabled = enabled; }
 
 private:
     double m_tolerancePixels = 10.0;
@@ -37,4 +38,5 @@ private:
     bool m_endpointSnapEnabled = true;
     bool m_midpointSnapEnabled = true;
     bool m_intersectionSnapEnabled = true;
+    bool m_tangentSnapEnabled = true;
 };
