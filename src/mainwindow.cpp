@@ -486,21 +486,23 @@ void MainWindow::loadSnapSettingsToUi()
     QSettings settings;
 
     // QSignalBlocker verhindert unbeabsichtigte Signal-Kaskaden beim Initialisieren
-    {
-        const QSignalBlocker b0(ui->actionSnapPoint);
-        ui->actionSnapPoint->setChecked(settings.value("Snap/PointSnapEnabled", true).toBool());
 
-        const QSignalBlocker b1(ui->actionSnapEndpoint);
-        ui->actionSnapEndpoint->setChecked(settings.value("Snap/EndpointSnapEnabled", true).toBool());
-    }
-    {
-        const QSignalBlocker b2(ui->actionSnapMidpoint);
-        ui->actionSnapMidpoint->setChecked(settings.value("Snap/MidpointSnapEnabled", true).toBool());
-    }
-    {
-        const QSignalBlocker b3(ui->actionSnapIntersection);
-        ui->actionSnapIntersection->setChecked(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
-    }
+    const QSignalBlocker b0(ui->actionSnapPoint);
+    ui->actionSnapPoint->setChecked(settings.value("Snap/PointSnapEnabled", true).toBool());
+
+    const QSignalBlocker b1(ui->actionSnapEndpoint);
+    ui->actionSnapEndpoint->setChecked(settings.value("Snap/EndpointSnapEnabled", true).toBool());
+
+
+    const QSignalBlocker b2(ui->actionSnapMidpoint);
+    ui->actionSnapMidpoint->setChecked(settings.value("Snap/MidpointSnapEnabled", true).toBool());
+
+
+    const QSignalBlocker b3(ui->actionSnapIntersection);
+    ui->actionSnapIntersection->setChecked(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
+
+    const QSignalBlocker b4(ui->actionSnapTangent);
+    ui->actionSnapTangent->setChecked(settings.value("Snap/TangentSnapEnabled", true).toBool());
 }
 
 void MainWindow::connectSnapSettingsToUi()
@@ -531,6 +533,12 @@ void MainWindow::connectSnapSettingsToUi()
     connect(ui->actionSnapIntersection, &QAction::toggled, this, [this](bool checked) {
         QSettings settings;
         settings.setValue("Snap/IntersectionSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapTangent, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/TangentSnapEnabled", checked);
         m_cadScene->loadSettings();
     });
 }
@@ -589,3 +597,4 @@ void MainWindow::on_actionNew_triggered()
         m_undoStack->clear(); // Undo-Speicher leeren
     }
 }
+

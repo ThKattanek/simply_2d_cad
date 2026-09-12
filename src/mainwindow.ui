@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -96,6 +96,7 @@
    <addaction name="actionSnapEndpoint"/>
    <addaction name="actionSnapMidpoint"/>
    <addaction name="actionSnapIntersection"/>
+   <addaction name="actionSnapTangent"/>
   </widget>
   <widget class="QToolBar" name="tb_commandLine">
    <property name="windowTitle">
@@ -294,6 +295,24 @@
    </property>
    <property name="toolTip">
     <string>Draw Circle (C)</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapTangent">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_tangent.svg</normaloff>:/icons/icons_svg/snap_tangent.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapTangent</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap the tangent.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

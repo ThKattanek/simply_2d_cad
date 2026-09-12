@@ -61,6 +61,7 @@ void CadScene::loadSettings()
     m_snapManager.setEndpointSnapEnabled(settings.value("Snap/EndpointSnapEnabled", true).toBool());
     m_snapManager.setMidpointSnapEnabled(settings.value("Snap/MidpointSnapEnabled", true).toBool());
     m_snapManager.setIntersectionSnapEnabled(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
+    m_snapManager.setTangentSnapEnabled(settings.value("Snap/TangentSnapEnabled", true).toBool());
 }
 
 void CadScene::clearDocument()

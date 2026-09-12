@@ -8,5 +8,6 @@
         <file>icons_svg/snap_midpoint.svg</file>
         <file>icons_svg/snap_intersection.svg</file>
         <file>icons_svg/tool_circle.svg</file>
+        <file>icons_svg/snap_tangent.svg</file>
     </qresource>
 </RCC>
