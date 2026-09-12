@@ -10,6 +10,8 @@
 
 #include "./line_tool.h"
 #include "../cad_document/cad_line.h"
+#include "../commands/add_entity_command.h"
+#include "../undo_stack.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
@@ -114,7 +116,13 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
             m_tempLine = nullptr;
 
             auto newLine = std::make_unique<CadLine>(m_startPoint, m_endPoint);
-            scene->getDocument()->addEntity(std::move(newLine));
+            auto command = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(newLine), tr("Add Line"));
+
+            if (scene->getUndoStack()) {
+                scene->getUndoStack()->push(std::move(command));
+            } else {
+                command->execute();
+            }
         }
 
         emit promptTextChanged(promtMsg01);

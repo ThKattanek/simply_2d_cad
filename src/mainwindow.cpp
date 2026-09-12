@@ -20,6 +20,7 @@
 #include <QActionGroup>
 #include <QApplication>
 #include <QAction>
+#include <QKeySequence>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDirIterator>
@@ -27,6 +28,7 @@
 
 #include "./cad_tools/cad_tool_manager.h"
 #include "./dxf_manager.h"
+#include "./undo_stack.h"
 
 #include "./cad_tools/select_tool.h"
 #include "./cad_tools/point_tool.h"
@@ -57,10 +59,12 @@ MainWindow::MainWindow(QWidget *parent)
     connectSnapSettingsToUi();
 
     m_cadDocument = new CadDocument(this);
+    m_undoStack = new UndoStack(this);
 
     m_toolManager = new CadToolManager(this);
     m_cadScene = new CadScene(m_toolManager, this);
     m_cadScene->setDocument(m_cadDocument);
+    m_cadScene->setUndoStack(m_undoStack);
     m_toolManager->setScene(m_cadScene);
     m_cadView = new CadView(m_cadScene, this);
 
@@ -88,6 +92,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
         m_commandPromt->setText(text);
     });
+
+    setupUndoRedoActions();
+    connect(m_cadDocument, &CadDocument::documentCleared, m_undoStack, &UndoStack::clear);
 
     // Register tools under the objectNames from the UI (MainWindow.ui)
     // Select Tool
@@ -307,6 +314,10 @@ void MainWindow::changeEvent(QEvent *event)
         if (m_langMenu) {
             m_langMenu->setTitle(tr("&Language"));
         }
+        if (m_editMenu) {
+            m_editMenu->setTitle(tr("&Edit"));
+        }
+        updateUndoRedoActions();
     }
 
     // call the base class event handler to ensure proper event processing
@@ -524,6 +535,44 @@ void MainWindow::connectSnapSettingsToUi()
     });
 }
 
+void MainWindow::setupUndoRedoActions()
+{
+    m_editMenu = menuBar()->addMenu(tr("&Edit"));
+
+    m_actionUndo = new QAction(this);
+    m_actionUndo->setShortcut(QKeySequence::Undo);
+    m_actionUndo->setEnabled(false);
+    connect(m_actionUndo, &QAction::triggered, m_undoStack, &UndoStack::undo);
+
+    m_actionRedo = new QAction(this);
+    m_actionRedo->setShortcut(QKeySequence::Redo);
+    m_actionRedo->setEnabled(false);
+    connect(m_actionRedo, &QAction::triggered, m_undoStack, &UndoStack::redo);
+
+    m_editMenu->addAction(m_actionUndo);
+    m_editMenu->addAction(m_actionRedo);
+
+    connect(m_undoStack, &UndoStack::stackChanged, this, &MainWindow::updateUndoRedoActions);
+    connect(m_undoStack, &UndoStack::canUndoChanged, m_actionUndo, &QAction::setEnabled);
+    connect(m_undoStack, &UndoStack::canRedoChanged, m_actionRedo, &QAction::setEnabled);
+
+    updateUndoRedoActions();
+}
+
+void MainWindow::updateUndoRedoActions()
+{
+    const QString undoDescription = m_undoStack ? m_undoStack->undoText() : QString();
+    const QString redoDescription = m_undoStack ? m_undoStack->redoText() : QString();
+
+    if (m_actionUndo) {
+        m_actionUndo->setText(
+            undoDescription.isEmpty() ? tr("Undo") : tr("Undo: %1").arg(undoDescription));
+    }
+    if (m_actionRedo) {
+        m_actionRedo->setText(
+            redoDescription.isEmpty() ? tr("Redo") : tr("Redo: %1").arg(redoDescription));
+    }
+}
 
 void MainWindow::on_actionNew_triggered()
 {
@@ -537,9 +586,6 @@ void MainWindow::on_actionNew_triggered()
 
     if (result == QMessageBox::Yes) {
         m_cadScene->clearDocument();
-
-        //m_undoStack->clear(); // Undo-Speicher leeren
-        //ui->lblCommandPrompt->setText(tr("Befehl / Koordinaten eingeben:"));
+        m_undoStack->clear(); // Undo-Speicher leeren
     }
 }
-
