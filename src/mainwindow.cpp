@@ -574,7 +574,6 @@ void MainWindow::updateUndoRedoActions()
     }
 }
 
-
 void MainWindow::on_actionNew_triggered()
 {
     // Sicherheitsabfrage (falls ungespeicherte Änderungen vorliegen)
@@ -587,8 +586,6 @@ void MainWindow::on_actionNew_triggered()
 
     if (result == QMessageBox::Yes) {
         m_cadScene->clearDocument();
-
-        //m_undoStack->clear(); // Undo-Speicher leeren
-        //ui->lblCommandPrompt->setText(tr("Befehl / Koordinaten eingeben:"));
+        m_undoStack->clear(); // Undo-Speicher leeren
     }
 }
