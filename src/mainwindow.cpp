@@ -51,9 +51,6 @@ MainWindow::MainWindow(QWidget *parent)
         qApp->installTranslator(&m_translator);
     }
 
-    createLanguageMenu();
-    ui->retranslateUi(this);
-
     initializeCommandToolbar();
 
     connectSnapSettingsToUi();
@@ -117,6 +114,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Load the layout settings (window size, position, toolbar positions) from QSettings
     loadLayoutSettings();
+
+    createLanguageMenu();
+    ui->retranslateUi(this);
 }
 
 MainWindow::~MainWindow()
