@@ -56,6 +56,7 @@ set(PROJECT_SOURCES
     src/snap_marker_endpoint_item.h src/snap_marker_endpoint_item.cpp
     src/snap_marker_intersection_item.h src/snap_marker_intersection_item.cpp
     src/snap_marker_midpoint_item.h src/snap_marker_midpoint_item.cpp
+    src/snap_marker_tangent_item.h src/snap_marker_tangent_item.cpp
     # all cad tools (point, line, select, etc.)
     src/cad_tools/cad_tool.h
     src/cad_tools/cad_tool_manager.h src/cad_tools/cad_tool_manager.cpp

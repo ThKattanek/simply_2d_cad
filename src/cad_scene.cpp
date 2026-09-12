@@ -293,6 +293,14 @@ void CadScene::setupSystemItems()
     m_snapMarkerMidpoint->setColor(Qt::cyan);
     m_snapMarkerMidpoint->setVisible(false);
     addItem(m_snapMarkerMidpoint);
+
+    // Add the tangent snap marker to the scene
+    m_snapMarkerTangent = new SnapMarkerTangentItem();
+    m_snapMarkerTangent->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerTangent->setZValue(1000); // over the crosshair
+    m_snapMarkerTangent->setColor(Qt::yellow);
+    m_snapMarkerTangent->setVisible(false);
+    addItem(m_snapMarkerTangent);
 }
 
 double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
@@ -342,9 +350,9 @@ void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
             m_snapMarkerIntersection->setVisible(true);
             break;
             case SnapType::Tangent:
-            m_snapMarkerIntersection->setPos(snap.point);
-            m_snapMarkerIntersection->setSize(markerSizeWorld);
-            m_snapMarkerIntersection->setVisible(true);
+            m_snapMarkerTangent->setPos(snap.point);
+            m_snapMarkerTangent->setSize(markerSizeWorld);
+            m_snapMarkerTangent->setVisible(true);
             break;
         default:
             break;
@@ -360,4 +368,5 @@ void CadScene::setVisibleAllSnapMarker(bool visible)
     m_snapMarkerEndpoint->setVisible(visible);
     m_snapMarkerIntersection->setVisible(visible);
     m_snapMarkerMidpoint->setVisible(visible);
+    m_snapMarkerTangent->setVisible(visible);
 }
