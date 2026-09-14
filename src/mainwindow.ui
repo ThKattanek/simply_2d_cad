@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -298,7 +298,7 @@
     <string>Draw Circle (C)</string>
    </property>
    <property name="statusTip">
-    <string>Draw a circle by specifying its start and end points.</string>
+    <string>Draw a circle by specifying its center and radius.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
@@ -332,6 +332,12 @@
    </property>
    <property name="toolTip">
     <string>Draw Rectangle (R)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a rectangle with 2 points.</string>
+   </property>
+   <property name="shortcut">
+    <string>R</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
