@@ -1,6 +1,7 @@
 #include "rectangle_tool.h"
 #include "../cad_document/cad_line.h"
 #include "../commands/add_entity_command.h"
+#include "../commands/macro_command.h"
 #include "../undo_stack.h"
 
 #include <QGraphicsSceneMouseEvent>
@@ -106,27 +107,35 @@ void RectangleTool::rectangleStateMachine(CadScene* scene, const QPointF& point)
             QPointF p1 = m_firstCorner;
             QPointF p2 = currentPos;
 
-            // Die 4 Eckpunkte des Rechtecks
             QPointF corner1(p1.x(), p1.y());
             QPointF corner2(p2.x(), p1.y());
             QPointF corner3(p2.x(), p2.y());
             QPointF corner4(p1.x(), p2.y());
 
-            // 4 einzelne CadLines zum Dokument hinzufügen
-            auto addLine = [&](const QPointF& start, const QPointF& end) {
+            // 1. Erstelle einen MacroCommand für das gesamte Rechteck
+            auto macroCmd = std::make_unique<MacroCommand>(tr("Add Rectangle"));
+
+            // Helper: Einzelne Linien zum MacroCommand hinzufügen statt direkt an den UndoStack
+            auto addLineToMacro = [&](const QPointF& start, const QPointF& end) {
                 auto line = std::make_unique<CadLine>(start, end);
-                auto cmd = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(line), tr("Add Rectangle Line"));
-                if (scene->getUndoStack()) {
-                    scene->getUndoStack()->push(std::move(cmd));
-                } else {
-                    cmd->execute();
-                }
+                auto addCmd = std::make_unique<AddEntityCommand>(
+                    scene->getDocument(), std::move(line), tr("Add Rectangle Line"));
+
+                macroCmd->addCommand(std::move(addCmd));
             };
 
-            addLine(corner1, corner2);
-            addLine(corner2, corner3);
-            addLine(corner3, corner4);
-            addLine(corner4, corner1);
+            // 2. Alle 4 Kanten dem Makro hinzufügen
+            addLineToMacro(corner1, corner2);
+            addLineToMacro(corner2, corner3);
+            addLineToMacro(corner3, corner4);
+            addLineToMacro(corner4, corner1);
+
+            // 3. Nur DAS EINE Makro auf den UndoStack schieben!
+            if (scene->getUndoStack()) {
+                scene->getUndoStack()->push(std::move(macroCmd));
+            } else {
+                macroCmd->execute();
+            }
         }
 
         emit promptTextChanged(promptMsg01);

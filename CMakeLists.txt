@@ -45,6 +45,7 @@ set(PROJECT_SOURCES
     # undo/redo command system
     src/undo_stack.h src/undo_stack.cpp
     src/commands/command.h
+    src/commands/macro_command.h
     src/commands/add_entity_command.h src/commands/add_entity_command.cpp
     src/commands/remove_entity_command.h src/commands/remove_entity_command.cpp
     # DXF import/export
