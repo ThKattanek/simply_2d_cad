@@ -72,6 +72,7 @@
    <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
    <addaction name="actionToolCircle"/>
+   <addaction name="actionToolRectangle"/>
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
    <property name="windowTitle">
@@ -296,6 +297,9 @@
    <property name="toolTip">
     <string>Draw Circle (C)</string>
    </property>
+   <property name="statusTip">
+    <string>Draw a circle by specifying its start and end points.</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
@@ -313,6 +317,21 @@
    </property>
    <property name="toolTip">
     <string>Snap the tangent.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolRectangle">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_rectangle.svg</normaloff>:/icons/icons_svg/tool_rectangle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rectangle</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Rectangle (R)</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
