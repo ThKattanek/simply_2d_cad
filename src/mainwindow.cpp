@@ -34,6 +34,7 @@
 #include "./cad_tools/point_tool.h"
 #include "./cad_tools/line_tool.h"
 #include "./cad_tools/circle_tool.h"
+#include "./cad_tools/rectangle_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -99,12 +100,14 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
     m_toolManager->registerTool("actionToolCircle", std::make_shared<CircleTool>());
+    m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
     m_toolManager->bindAction(ui->actionToolLine);
     m_toolManager->bindAction(ui->actionToolPoint);
     m_toolManager->bindAction(ui->actionToolCircle);
+    m_toolManager->bindAction(ui->actionToolRectangle);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();

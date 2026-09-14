@@ -45,6 +45,7 @@ set(PROJECT_SOURCES
     # undo/redo command system
     src/undo_stack.h src/undo_stack.cpp
     src/commands/command.h
+    src/commands/macro_command.h
     src/commands/add_entity_command.h src/commands/add_entity_command.cpp
     src/commands/remove_entity_command.h src/commands/remove_entity_command.cpp
     # DXF import/export
@@ -63,6 +64,8 @@ set(PROJECT_SOURCES
     src/cad_tools/select_tool.h src/cad_tools/select_tool.cpp
     src/cad_tools/point_tool.h src/cad_tools/point_tool.cpp
     src/cad_tools/line_tool.h src/cad_tools/line_tool.cpp
+    src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
+    src/cad_tools/rectangle_tool.h src/cad_tools/rectangle_tool.cpp
 )
 
 qt_add_resources(MY_RESOURCES src/resources.qrc)
@@ -83,7 +86,6 @@ qt_add_executable(${PROJECT_NAME}
     WIN32 MACOSX_BUNDLE
     ${PROJECT_SOURCES}
     ${MY_RESOURCES}
-    src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
 )
 
 # Strenge Compiler-Regeln für dein Target
