@@ -33,7 +33,8 @@ public:
     void setScene(CadScene* scene) { m_scene = scene; }
 
     // Registers a new tool with the manager
-    void registerTool(const QString& actionName, std::shared_ptr<CadTool> tool);
+    // tool_mode can be used to specify different modes for the same tool, if needed
+    void registerTool(const QString& actionName, std::shared_ptr<CadTool> tool, uint32_t tool_mode = 0);
 
     // Link a QAction directly from the UI
     void bindAction(QAction* action);

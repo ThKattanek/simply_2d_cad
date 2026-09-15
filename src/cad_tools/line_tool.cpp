@@ -41,6 +41,18 @@ void LineTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 
     if (m_tempLine)
     {
+        switch(getToolMode())
+        {
+        case LineToolMode::Horizontal:
+            m_currentMousePos.setY(m_startPoint.y());
+            break;
+        case LineToolMode::Vertical:
+            m_currentMousePos.setX(m_startPoint.x());
+            break;
+        default:
+            break;
+        }
+
         m_tempLine->setLine(QLineF(m_startPoint, m_currentMousePos));
     }
 }
@@ -59,6 +71,21 @@ void LineTool::keyPressEvent(CadScene *scene, QKeyEvent *event)
 void LineTool::handlePointInput(CadScene *scene, const QPointF &point)
 {
     lineStateMachine(scene, point);
+}
+
+void LineTool::handleValueInput(CadScene *scene, double value)
+{
+    QPointF endPoint;
+
+    if (m_lineState == ToolState::Drawing)
+    {
+        if(getToolMode() == LineToolMode::Horizontal)
+            endPoint = QPointF(m_startPoint.x() + value, m_startPoint.y());
+        else if(getToolMode() == LineToolMode::Vertical)
+            endPoint = QPointF(m_startPoint.x(), m_startPoint.y() + value);
+    }
+
+    lineStateMachine(scene, endPoint);
 }
 
 void LineTool::activate(CadScene *scene)
@@ -99,6 +126,20 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
         m_lineState = ToolState::Drawing;
 
         m_startPoint = currentPos;
+
+        switch(getToolMode())
+        {
+            case LineToolMode::Horizontal:
+                m_currentMousePos.setY(m_startPoint.y());
+                break;
+            case LineToolMode::Vertical:
+                m_currentMousePos.setX(m_startPoint.x());
+                break;
+            default:
+                m_currentMousePos = m_startPoint;
+                break;
+        }
+
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
         emit promptTextChanged(promtMsg02);
@@ -110,6 +151,18 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
         if (m_tempLine)
         {
             m_endPoint = currentPos;
+
+            switch(getToolMode())
+            {
+                case LineToolMode::Horizontal:
+                    m_endPoint.setY(m_startPoint.y());
+                    break;
+                case LineToolMode::Vertical:
+                    m_endPoint.setX(m_startPoint.x());
+                    break;
+                default:
+                    break;
+            }
 
             scene->removeItem(m_tempLine);
             delete m_tempLine;
