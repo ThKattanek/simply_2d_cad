@@ -32,6 +32,7 @@
 
 #include "./cad_tools/select_tool.h"
 #include "./cad_tools/point_tool.h"
+#include "./cad_tools/guideline_tool.h"
 #include "./cad_tools/line_tool.h"
 #include "./cad_tools/circle_tool.h"
 #include "./cad_tools/rectangle_tool.h"
@@ -99,8 +100,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>(), LineToolMode::Normal);
-    m_toolManager->registerTool("actionToolHLine", std::make_shared<LineTool>(), LineToolMode::Horizontal);
-    m_toolManager->registerTool("actionToolVLine", std::make_shared<LineTool>(), LineToolMode::Vertical);
+    m_toolManager->registerTool("actionToolHLine", std::make_shared<GuidelineTool>(), GuidelineHorizontal);
+    m_toolManager->registerTool("actionToolVLine", std::make_shared<GuidelineTool>(), GuidelineVertical);
     m_toolManager->registerTool("actionToolCircle", std::make_shared<CircleTool>());
     m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
 

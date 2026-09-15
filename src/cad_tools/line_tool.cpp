@@ -17,17 +17,21 @@
 #include <QGraphicsLineItem>
 #include <QPen>
 #include <QKeyEvent>
+#include <QRectF>
 
 void LineTool::retranslate()
 {
     promtMsg01 = tr("Line: Click the first point on the line or enter the coordinates (x, y).");
     promtMsg02 = tr("Line: Click the second point on the line or enter the coordinates (x, y).");
 
-    promtMsg03 = tr("HLine: Click the first point on the line or enter the coordinates (x, y).");
-    promtMsg04 = tr("HLine: Click the second point on the line, or enter the coordinates (x, y) or the length.");
+    // For horizontal/vertical modes the tool also accepts a single numeric value:
+    // HLine: enter Y coordinate to place a horizontal guideline
+    // VLine: enter X coordinate to place a vertical guideline
+    promtMsg03 = tr("HLine: Click the first point on the line or enter the Y coordinate.");
+    promtMsg04 = tr("HLine: Click the second point on the line, or enter the Y coordinate.");
 
-    promtMsg05 = tr("VLine: Click the first point on the line or enter the coordinates (x, y).");
-    promtMsg06 = tr("VLine: Click the second point on the line, or enter the coordinates (x, y) or the length.");
+    promtMsg05 = tr("VLine: Click the first point on the line or enter the X coordinate.");
+    promtMsg06 = tr("VLine: Click the second point on the line, or enter the X coordinate.");
 }
 
 void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
@@ -81,6 +85,51 @@ void LineTool::handlePointInput(CadScene *scene, const QPointF &point)
 
 void LineTool::handleValueInput(CadScene *scene, double value)
 {
+    // If the tool is idle and in H/V mode, accept a single numeric coordinate
+    if (m_lineState == ToolState::Idle) {
+        QRectF rect = scene->sceneRect();
+        QPointF startPt, endPt;
+
+        switch(getToolMode()) {
+            case LineToolMode::Horizontal:
+                // value is Y coordinate
+                startPt = QPointF(rect.left(), value);
+                endPt   = QPointF(rect.right(), value);
+                break;
+            case LineToolMode::Vertical:
+                // value is X coordinate
+                startPt = QPointF(value, rect.top());
+                endPt   = QPointF(value, rect.bottom());
+                break;
+            default:
+                return; // Normal mode doesn't accept a single numeric coordinate
+        }
+
+        auto newLine = std::make_unique<CadLine>(startPt, endPt);
+        auto command = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(newLine), tr("Add Guideline"));
+
+        if (scene->getUndoStack()) {
+            scene->getUndoStack()->push(std::move(command));
+        } else {
+            command->execute();
+        }
+
+        // Update prompt back to initial H/V prompt
+        switch(getToolMode()) {
+            case LineToolMode::Horizontal:
+                emit promptTextChanged(promtMsg03);
+                break;
+            case LineToolMode::Vertical:
+                emit promptTextChanged(promtMsg05);
+                break;
+            default:
+                break;
+        }
+
+        return;
+    }
+
+    // Existing behavior: treat numeric input as length when already drawing
     QPointF endPoint;
 
     if (m_lineState == ToolState::Drawing)
