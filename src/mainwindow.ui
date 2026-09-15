@@ -353,6 +353,15 @@
    <property name="text">
     <string>ToolHLine</string>
    </property>
+   <property name="toolTip">
+    <string>Draw Horizontal Line (H)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a horizontal line by specifying its start and end points or its length.</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
@@ -364,6 +373,15 @@
    </property>
    <property name="text">
     <string>ToolVLine</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Vertical Line (V)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a vertical line by specifying its start and end points or its length.</string>
+   </property>
+   <property name="shortcut">
+    <string>V</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

@@ -46,5 +46,5 @@ private:
     QPointF m_startPoint;
     QPointF m_endPoint;
 
-    QString promtMsg01, promtMsg02;
+    QString promtMsg01, promtMsg02, promtMsg03, promtMsg04, promtMsg05, promtMsg06;
 };

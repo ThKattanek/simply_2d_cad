@@ -22,6 +22,12 @@ void LineTool::retranslate()
 {
     promtMsg01 = tr("Line: Click the first point on the line or enter the coordinates (x, y).");
     promtMsg02 = tr("Line: Click the second point on the line or enter the coordinates (x, y).");
+
+    promtMsg03 = tr("HLine: Click the first point on the line or enter the coordinates (x, y).");
+    promtMsg04 = tr("HLine: Click the second point on the line, or enter the coordinates (x, y) or the length.");
+
+    promtMsg05 = tr("VLine: Click the first point on the line or enter the coordinates (x, y).");
+    promtMsg06 = tr("VLine: Click the second point on the line, or enter the coordinates (x, y) or the length.");
 }
 
 void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
@@ -91,7 +97,18 @@ void LineTool::handleValueInput(CadScene *scene, double value)
 void LineTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(promtMsg01);
+
+    switch(getToolMode())
+    {
+    case LineToolMode::Horizontal:
+        emit promptTextChanged(promtMsg03);
+        break;
+    case LineToolMode::Vertical:
+        emit promptTextChanged(promtMsg05);
+        break;
+    default:
+        emit promptTextChanged(promtMsg01);
+    }
 }
 
 void LineTool::deactivate(CadScene* scene)
@@ -142,7 +159,17 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
 
         m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
 
-        emit promptTextChanged(promtMsg02);
+        switch(getToolMode())
+        {
+            case LineToolMode::Horizontal:
+                emit promptTextChanged(promtMsg04);
+                break;
+            case LineToolMode::Vertical:
+                emit promptTextChanged(promtMsg06);
+                break;
+            default:
+                emit promptTextChanged(promtMsg02);
+        }
 
     } else if(m_lineState == ToolState::Drawing)
     {
@@ -178,6 +205,16 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
             }
         }
 
-        emit promptTextChanged(promtMsg01);
+        switch(getToolMode())
+        {
+        case LineToolMode::Horizontal:
+            emit promptTextChanged(promtMsg03);
+            break;
+        case LineToolMode::Vertical:
+            emit promptTextChanged(promtMsg05);
+            break;
+        default:
+            emit promptTextChanged(promtMsg01);
+        }
     }
 }
