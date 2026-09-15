@@ -98,13 +98,17 @@ MainWindow::MainWindow(QWidget *parent)
     // Select Tool
     m_toolManager->registerTool("actionToolSelect", std::make_shared<SelectTool>());
     m_toolManager->registerTool("actionToolPoint", std::make_shared<PointTool>());
-    m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>());
+    m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>(), LineToolMode::Normal);
+    m_toolManager->registerTool("actionToolHLine", std::make_shared<LineTool>(), LineToolMode::Horizontal);
+    m_toolManager->registerTool("actionToolVLine", std::make_shared<LineTool>(), LineToolMode::Vertical);
     m_toolManager->registerTool("actionToolCircle", std::make_shared<CircleTool>());
     m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
     m_toolManager->bindAction(ui->actionToolLine);
+    m_toolManager->bindAction(ui->actionToolHLine);
+    m_toolManager->bindAction(ui->actionToolVLine);
     m_toolManager->bindAction(ui->actionToolPoint);
     m_toolManager->bindAction(ui->actionToolCircle);
     m_toolManager->bindAction(ui->actionToolRectangle);

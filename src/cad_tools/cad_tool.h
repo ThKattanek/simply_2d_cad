@@ -45,6 +45,9 @@ public:
 
     virtual void cancel(CadScene* ) {}
 
+    uint32_t getToolMode() const { return m_toolMode; }
+    void setToolMode(uint32_t mode) { m_toolMode = mode; }
+
     QPointF getLastPoint() const { return m_lastPoint; }
     void setLastPoint(const QPointF& pt) { m_lastPoint = pt; }
 
@@ -55,5 +58,6 @@ signals:
     void promptTextChanged(const QString& text);
 
 private:
-    QPointF m_lastPoint; // Stores the last point for relative coordinate input
+    uint32_t m_toolMode = 0;    // Tool mode for different behaviors
+    QPointF m_lastPoint;        // Stores the last point for relative coordinate input
 };

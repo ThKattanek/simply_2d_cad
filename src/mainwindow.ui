@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -71,6 +71,8 @@
    <addaction name="actionToolSelect"/>
    <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
+   <addaction name="actionToolHLine"/>
+   <addaction name="actionToolVLine"/>
    <addaction name="actionToolCircle"/>
    <addaction name="actionToolRectangle"/>
   </widget>
@@ -338,6 +340,48 @@
    </property>
    <property name="shortcut">
     <string>R</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolHLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_hline.svg</normaloff>:/icons/icons_svg/tool_hline.svg</iconset>
+   </property>
+   <property name="text">
+    <string>ToolHLine</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Horizontal Line (H)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a horizontal line by specifying its start and end points or its length.</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolVLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_vline.svg</normaloff>:/icons/icons_svg/tool_vline.svg</iconset>
+   </property>
+   <property name="text">
+    <string>ToolVLine</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Vertical Line (V)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a vertical line by specifying its start and end points or its length.</string>
+   </property>
+   <property name="shortcut">
+    <string>V</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
