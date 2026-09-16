@@ -24,6 +24,8 @@ void CircleTool::retranslate()
     promtMsg02 = tr("Circle: Click the second point or enter radius (x, y / R).");
     promtMsg03 = tr("Circle: Click on another center point or enter the center point (x, y).");
     promtMsg04 = tr("Circle: Click the second point or enter diameter (x, y / D).");
+    promtMsg05 = tr("Circle: Click the first point or enter the first point (x, y).");
+    promtMsg06 = tr("Circle: Click the second point or enter the second point (x, y).");
 }
 
 void CircleTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)
@@ -43,8 +45,18 @@ void CircleTool::mouseMoveEvent(CadScene *scene, QGraphicsSceneMouseEvent *event
 
     if (m_tempCircle)
     {
-        m_radius = QLineF(m_centerPoint, m_currentMousePos).length();
-        m_tempCircle->setRect(m_centerPoint.x() - m_radius, m_centerPoint.y() - m_radius, 2 * m_radius, 2 * m_radius);
+        if (getToolMode() == ToolMode::Normal || getToolMode() == CircleToolMode::CenterDiameter)
+        {
+            m_radius = QLineF(m_centerPoint, m_currentMousePos).length();
+            m_tempCircle->setRect(m_centerPoint.x() - m_radius, m_centerPoint.y() - m_radius, 2 * m_radius, 2 * m_radius);
+        }
+        else if (getToolMode() == CircleToolMode::Diameter)
+        {
+            // Update the temporary circle based on the two points on the circumference
+            m_radius = QLineF(m_firstPoint, m_currentMousePos).length() / 2.0;
+            QPointF center = (m_firstPoint + m_currentMousePos) / 2.0;
+            m_tempCircle->setRect(center.x() - m_radius, center.y() - m_radius, 2 * m_radius, 2 * m_radius);
+        }
     }
 }
 
@@ -82,13 +94,25 @@ void CircleTool::handleValueInput(CadScene *scene, double value)
     default:
         break;
     }
-
 }
 
 void CircleTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(promtMsg01);
+    switch (getToolMode())
+    {
+    case ToolMode::Normal:
+        emit promptTextChanged(promtMsg01);
+        break;
+    case CircleToolMode::CenterDiameter:
+        emit promptTextChanged(promtMsg01);
+        break;
+    case CircleToolMode::Diameter:
+        emit promptTextChanged(promtMsg05);
+        break;
+    default:
+        break;
+    }
 }
 
 void CircleTool::deactivate(CadScene *scene)
@@ -118,22 +142,24 @@ void CircleTool::circleStateMachine(CadScene *scene, const QPointF &point)
 {
     QPointF currentPos = scene->getSnapOrPosition(point);
 
-    switch(m_circleState)
+    if(getToolMode() == ToolMode::Normal || getToolMode() == CircleToolMode::CenterDiameter)
     {
-        case ToolState::Idle:
-        m_circleState = ToolState::Drawing;
+        switch(m_circleState)
+        {
+            case ToolState::Idle:
+            m_circleState = ToolState::Drawing;
 
-        m_centerPoint = currentPos;
-        m_radius = 0.0;
-        m_tempCircle = scene->addEllipse(m_centerPoint.x() - m_radius, m_centerPoint.y() - m_radius, 2.0 * m_radius, 2.0 * m_radius, QPen(Qt::gray, 0));
+            m_centerPoint = currentPos;
+            m_radius = 0.0;
+            m_tempCircle = scene->addEllipse(m_centerPoint.x() - m_radius, m_centerPoint.y() - m_radius, 2.0 * m_radius, 2.0 * m_radius, QPen(Qt::gray, 0));
 
-        if(getToolMode() == ToolMode::Normal)
-            emit promptTextChanged(promtMsg02);
-        else if(getToolMode() == CircleToolMode::CenterDiameter)
-            emit promptTextChanged(promtMsg04);
+            if(getToolMode() == ToolMode::Normal)
+                emit promptTextChanged(promtMsg02);
+            else if(getToolMode() == CircleToolMode::CenterDiameter)
+                emit promptTextChanged(promtMsg04);
+                break;
 
-            break;
-        case Drawing:
+            case Drawing:
             m_circleState = ToolState::Copy;
 
             if (m_tempCircle)
@@ -155,7 +181,8 @@ void CircleTool::circleStateMachine(CadScene *scene, const QPointF &point)
             }
             emit promptTextChanged(promtMsg03);
             break;
-        case Copy:
+
+            case Copy:
             m_centerPoint = currentPos;
 
             auto newCircle = std::make_unique<CadCircle>(m_centerPoint, m_radius);
@@ -169,4 +196,46 @@ void CircleTool::circleStateMachine(CadScene *scene, const QPointF &point)
 
             break;
         }
+    }
+    else if(getToolMode() == CircleToolMode::Diameter)
+    {
+        // Drawing the circle over 2 points on the circle none center point
+        switch (m_circleState)
+        {
+        case ToolState::Idle:
+            m_circleState = ToolState::Drawing;
+            m_firstPoint = currentPos;
+            m_tempCircle = scene->addEllipse(m_firstPoint.x(), m_firstPoint.y(), 0, 0, QPen(Qt::gray, 0));
+
+            emit promptTextChanged(promtMsg06);
+            break;
+
+        case ToolState::Drawing:
+            m_circleState = ToolState::Idle;
+
+            if (m_tempCircle)
+            {
+                m_radius = QLineF(m_firstPoint, point).length() / 2.0;
+                QPointF center = (m_firstPoint + point) / 2.0;
+
+                scene->removeItem(m_tempCircle);
+                delete m_tempCircle;
+                m_tempCircle = nullptr;
+
+                auto newCircle = std::make_unique<CadCircle>(center, m_radius);
+                auto command = std::make_unique<AddEntityCommand>(scene->getDocument(), std::move(newCircle), tr("Add Circle"));
+
+                if (scene->getUndoStack()) {
+                    scene->getUndoStack()->push(std::move(command));
+                } else {
+                    command->execute();
+                }
+            }
+            emit promptTextChanged(promtMsg05);
+            break;
+
+        default:
+            break;
+        }
+    }
 }
