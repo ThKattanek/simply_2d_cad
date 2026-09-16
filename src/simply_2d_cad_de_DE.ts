@@ -48,7 +48,13 @@
         <translation>Kreis: Klicken Sie auf den zweiten Punkt oder geben Sie den Radius ein (x, y / R).</translation>
     </message>
     <message>
-        <location filename="cad_tools/circle_tool.cpp" line="143"/>
+        <location filename="cad_tools/circle_tool.cpp" line="25"/>
+        <source>Circle: Click on another center point or enter the center point (x, y).</source>
+        <translation>Kreis: Klicken Sie auf einen weiteren Mittelpunkt oder geben Sie den Mittelpunkt (x, y) ein.</translation>
+    </message>
+    <message>
+        <location filename="cad_tools/circle_tool.cpp" line="131"/>
+        <location filename="cad_tools/circle_tool.cpp" line="145"/>
         <source>Add Circle</source>
         <translation>Kreis hinzufügen</translation>
     </message>
