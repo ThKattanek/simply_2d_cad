@@ -7,10 +7,12 @@
         <file>icons_svg/snap_endpoint.svg</file>
         <file>icons_svg/snap_midpoint.svg</file>
         <file>icons_svg/snap_intersection.svg</file>
-        <file>icons_svg/tool_circle.svg</file>
         <file>icons_svg/snap_tangent.svg</file>
         <file>icons_svg/tool_rectangle.svg</file>
         <file>icons_svg/tool_vline.svg</file>
         <file>icons_svg/tool_hline.svg</file>
+        <file>icons_svg/tool_circle_0.svg</file>
+        <file>icons_svg/tool_circle_1.svg</file>
+        <file>icons_svg/tool_circle_2.svg</file>
     </qresource>
 </RCC>

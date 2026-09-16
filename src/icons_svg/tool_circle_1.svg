@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
-   sodipodi:docname="tool_circle.svg"
+   sodipodi:docname="tool_circle_1.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -51,8 +51,8 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.988;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none"
-       d="M 15.550317,15.637353 H 29.301904"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 2.6110604,15.637353 H 29.301904"
        id="path4" />
     <rect
        style="fill:#ffffff;stroke:#000000;stroke-width:1.19634;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
@@ -68,12 +68,5 @@
        cy="16.130552"
        rx="13.309861"
        ry="13.425907" />
-    <rect
-       style="fill:#ffffff;stroke:#000000;stroke-width:1.14361;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
-       id="rect2"
-       width="4.027905"
-       height="4.0652256"
-       x="27.086308"
-       y="13.701035" />
   </g>
 </svg>

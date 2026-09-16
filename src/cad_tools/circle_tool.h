@@ -40,5 +40,5 @@ private:
     QPointF m_centerPoint;
     qreal m_radius;
 
-    QString promtMsg01, promtMsg02;
+    QString promtMsg01, promtMsg02, promtMsg03;
 };
