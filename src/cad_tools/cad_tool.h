@@ -24,7 +24,8 @@ class CadScene;
 enum ToolState
 {
     Idle,
-    Drawing
+    Drawing,
+    Copy
 };
 
 // Base class for CAD tools
