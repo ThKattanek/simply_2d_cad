@@ -15,6 +15,11 @@
 
 class QGraphicsEllipseItem;
 
+enum CircleToolMode {
+    CenterDiameter = 1,
+    Diameter
+};
+
 class CircleTool : public CadTool
 {
     Q_OBJECT
@@ -40,5 +45,5 @@ private:
     QPointF m_centerPoint;
     qreal m_radius;
 
-    QString promtMsg01, promtMsg02, promtMsg03;
+    QString promtMsg01, promtMsg02, promtMsg03, promtMsg04;
 };

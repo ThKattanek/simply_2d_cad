@@ -73,7 +73,8 @@
    <addaction name="actionToolLine"/>
    <addaction name="actionToolHLine"/>
    <addaction name="actionToolVLine"/>
-   <addaction name="actionToolCircle"/>
+   <addaction name="actionToolCircle0"/>
+   <addaction name="actionToolCircle1"/>
    <addaction name="actionToolRectangle"/>
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
@@ -288,16 +289,16 @@
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
-  <action name="actionToolCircle">
+  <action name="actionToolCircle0">
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/icons/icons_svg/tool_circle_0.svg</normaloff>:/icons/icons_svg/tool_circle_0.svg</iconset>
    </property>
    <property name="text">
-    <string>Circle</string>
+    <string>Circle: Center - Radius</string>
    </property>
    <property name="toolTip">
-    <string>Draw Circle (C)</string>
+    <string>Draw Circle: Center - Radius</string>
    </property>
    <property name="statusTip">
     <string>Draw a circle by specifying its center and radius.</string>
@@ -382,6 +383,27 @@
    </property>
    <property name="shortcut">
     <string>V</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolCircle1">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_circle_1.svg</normaloff>:/icons/icons_svg/tool_circle_1.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Circle: Center - Diameter (C)</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Circle: Center - Diameter</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a circle by specifying its center and diameter.</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

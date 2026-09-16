@@ -14,8 +14,7 @@
 #include <QPointF>
 
 enum LineToolMode {
-    Normal,
-    Horizontal,
+    Horizontal = 1,
     Vertical
 };
 

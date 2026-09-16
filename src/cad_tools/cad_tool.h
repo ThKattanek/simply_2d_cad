@@ -21,6 +21,11 @@ class QGraphicsSceneMouseEvent;
 class QKeyEvent;
 class CadScene;
 
+enum ToolMode
+{
+    Normal = 0
+};
+
 enum ToolState
 {
     Idle,

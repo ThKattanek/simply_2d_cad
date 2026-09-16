@@ -23,6 +23,7 @@ void CircleTool::retranslate()
     promtMsg01 = tr("Circle: Click the center of the circle or enter center point (x, y).");
     promtMsg02 = tr("Circle: Click the second point or enter radius (x, y / R).");
     promtMsg03 = tr("Circle: Click on another center point or enter the center point (x, y).");
+    promtMsg04 = tr("Circle: Click the second point or enter diameter (x, y / D).");
 }
 
 void CircleTool::mousePressEvent(CadScene *scene, QGraphicsSceneMouseEvent *event)
@@ -68,8 +69,20 @@ void CircleTool::handlePointInput(CadScene *scene, const QPointF &point)
 
 void CircleTool::handleValueInput(CadScene *scene, double value)
 {
-    if (m_circleState == ToolState::Drawing && value > 0.0)
-        circleStateMachine(scene, m_centerPoint + QPointF(value, 0));
+    switch (getToolMode())
+    {
+    case ToolMode::Normal:
+        if (m_circleState == ToolState::Drawing && value > 0.0)
+            circleStateMachine(scene, m_centerPoint + QPointF(value, 0));
+        break;
+    case CircleToolMode::CenterDiameter:
+        if (m_circleState == ToolState::Drawing && value > 0.0)
+            circleStateMachine(scene, m_centerPoint + QPointF(value / 2.0, 0));
+        break;
+    default:
+        break;
+    }
+
 }
 
 void CircleTool::activate(CadScene *scene)
@@ -114,7 +127,11 @@ void CircleTool::circleStateMachine(CadScene *scene, const QPointF &point)
         m_radius = 0.0;
         m_tempCircle = scene->addEllipse(m_centerPoint.x() - m_radius, m_centerPoint.y() - m_radius, 2.0 * m_radius, 2.0 * m_radius, QPen(Qt::gray, 0));
 
-        emit promptTextChanged(promtMsg02);
+        if(getToolMode() == ToolMode::Normal)
+            emit promptTextChanged(promtMsg02);
+        else if(getToolMode() == CircleToolMode::CenterDiameter)
+            emit promptTextChanged(promtMsg04);
+
             break;
         case Drawing:
             m_circleState = ToolState::Copy;
