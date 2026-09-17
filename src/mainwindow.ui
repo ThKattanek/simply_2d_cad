@@ -114,6 +114,19 @@
     <bool>true</bool>
    </attribute>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionToolConstructionLineH"/>
+   <addaction name="actionToolConstructionLineV"/>
+  </widget>
   <action name="action_Close">
    <property name="text">
     <string>&amp;Exit</string>
@@ -423,6 +436,25 @@
    </property>
    <property name="statusTip">
     <string>Draw a circle by specifying its diameter over two points.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolConstructionLineH">
+   <property name="text">
+    <string>Construction Line H</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolConstructionLineV">
+   <property name="text">
+    <string>Construction Line V</string>
+   </property>
+   <property name="toolTip">
+    <string>Construction Line V</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

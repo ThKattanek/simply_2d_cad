@@ -9,6 +9,7 @@
  */
 
 #include "mainwindow.h"
+#include "cad_document/cad_construction_hv_line.h"
 #include "ui_mainwindow.h"
 
 #include "app_settings_dialog.h"
@@ -35,6 +36,8 @@
 #include "./cad_tools/line_tool.h"
 #include "./cad_tools/circle_tool.h"
 #include "./cad_tools/rectangle_tool.h"
+
+#include "./cad_tools/construction_line_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -105,6 +108,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolCircle1", std::make_shared<CircleTool>(), CircleToolMode::CenterDiameter);
     m_toolManager->registerTool("actionToolCircle2", std::make_shared<CircleTool>(), CircleToolMode::Diameter);
     m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
+    m_toolManager->registerTool("actionToolConstructionLineH", std::make_shared<ConstructionLineTool>(), 0);
+    m_toolManager->registerTool("actionToolConstructionLineV", std::make_shared<ConstructionLineTool>(), 1);
+
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
@@ -116,6 +122,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolCircle1);
     m_toolManager->bindAction(ui->actionToolCircle2);
     m_toolManager->bindAction(ui->actionToolRectangle);
+    m_toolManager->bindAction(ui->actionToolConstructionLineH);
+    m_toolManager->bindAction(ui->actionToolConstructionLineV);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
