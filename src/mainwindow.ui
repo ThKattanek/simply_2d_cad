@@ -13,6 +13,15 @@
   <property name="windowTitle">
    <string>Simply2DCad by Thorsten Kattanek</string>
   </property>
+  <property name="animated">
+   <bool>true</bool>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
@@ -114,9 +123,9 @@
     <bool>true</bool>
    </attribute>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="tb_constructionTools">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Construction Tools Toolbar</string>
    </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
@@ -442,19 +451,36 @@
    </property>
   </action>
   <action name="actionToolConstructionLineH">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_h_construction_line.svg</normaloff>:/icons/icons_svg/tool_h_construction_line.svg</iconset>
+   </property>
    <property name="text">
     <string>Construction Line H</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Horizontal Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a horizontal construction line with a point.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
   <action name="actionToolConstructionLineV">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_v_construction_line.svg</normaloff>:/icons/icons_svg/tool_v_construction_line.svg</iconset>
+   </property>
    <property name="text">
     <string>Construction Line V</string>
    </property>
    <property name="toolTip">
-    <string>Construction Line V</string>
+    <string>Draw Vertical Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a vertical construction line with a point.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
