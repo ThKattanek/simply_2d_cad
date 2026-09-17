@@ -16,5 +16,6 @@
         <file>icons_svg/tool_circle_2.svg</file>
         <file>icons_svg/tool_h_construction_line.svg</file>
         <file>icons_svg/tool_v_construction_line.svg</file>
+        <file>icons_svg/snap_construction.svg</file>
     </qresource>
 </RCC>

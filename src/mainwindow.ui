@@ -491,8 +491,18 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_construction.svg</normaloff>:/icons/icons_svg/snap_construction.svg</iconset>
+   </property>
    <property name="text">
     <string>SnapConstructionLine</string>
+   </property>
+   <property name="toolTip">
+    <string>Sanp with construction lines.</string>
+   </property>
+   <property name="statusTip">
+    <string/>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
