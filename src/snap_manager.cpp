@@ -13,6 +13,7 @@
 #include "./cad_document/cad_line.h"
 #include "./cad_document/cad_point.h"
 #include "./cad_document/cad_circle.h"
+#include "./cad_document/cad_construction_hv_line.h"
 
 #include <QGraphicsItem>
 #include <vector>
@@ -75,11 +76,14 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
         // (Falls deine CadEntity das QGraphicsItem besitzt oder speichert):
         auto entityPtr = item->data(Qt::UserRole).value<CadEntity*>();
         if (entityPtr) {
+            if (!m_constructionLineSnapEnabled && entityPtr->type() == EntityType::ConstructionHvLine) {
+                continue;
+            }
             nearbyEntities.push_back(entityPtr);
         }
     }
 
-    // 3. DURCHGANG: Endpunkte, Mittelpunkte & Punkte im Umkreis
+    // 3. DURCHGANG: Endpunkte, Mittelpunkte, Tangenten & Lotpunkte
     if (m_endpointSnapEnabled || m_midpointSnapEnabled || m_pointSnapEnabled) {
         for (const CadEntity* entity : nearbyEntities) {
             switch (entity->type()) {
@@ -110,15 +114,25 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                     double dy = B.y() - A.y();
                     double lengthSq = dx * dx + dy * dy;
 
-                    if (lengthSq > 1e-9) { // Division durch Null verhindern
-                        // Skalarprodukt berechnen, um den Parameter t auf der Linie zu finden
+                    if (lengthSq > 1e-9) {
                         double t = ((lastPt.x() - A.x()) * dx + (lastPt.y() - A.y()) * dy) / lengthSq;
-
-                        // Fange nur dann, wenn der Lotpunkt tatsächlich auf dem gezeichneten Liniensegment liegt
                         if (t >= 0.0 && t <= 1.0) {
                             QPointF tangentPt(A.x() + t * dx, A.y() + t * dy);
                             checkPoint(tangentPt, SnapType::Tangent);
                         }
+                    }
+                }
+                break;
+            }
+            case EntityType::ConstructionHvLine: {
+                // Bei Hilfslinien: Lotfußpunkt/Perpendikular von der vorherigen Position fangen
+                if (m_tangentSnapEnabled) {
+                    auto* cline = static_cast<const CadConstructionHvLine*>(entity);
+                    QPointF lastPt = scene.getLastPoint();
+                    if (cline->getOrientation() == ConstructionLineOrientation::Horizontal) {
+                        checkPoint(QPointF(lastPt.x(), cline->getPosition().y()), SnapType::Tangent);
+                    } else {
+                        checkPoint(QPointF(cline->getPosition().x(), lastPt.y()), SnapType::Tangent);
                     }
                 }
                 break;
@@ -138,18 +152,14 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                     double dy = lastPt.y() - c.y();
                     double dist2 = dx * dx + dy * dy;
 
-                    // Nur berechnen, wenn der letzte Punkt außerhalb des Kreises liegt
                     if (dist2 >= r * r && dist2 > 1e-6) {
                         double L = std::sqrt(dist2 - r * r);
-
-                        // Erster Tangentenpunkt T1
                         QPointF t1(
                             c.x() + (r / dist2) * (r * dx - L * dy),
                             c.y() + (r / dist2) * (r * dy + L * dx)
                             );
                         checkPoint(t1, SnapType::Tangent);
 
-                        // Zweiter Tangentenpunkt T2
                         QPointF t2(
                             c.x() + (r / dist2) * (r * dx + L * dy),
                             c.y() + (r / dist2) * (r * dy - L * dx)
@@ -165,13 +175,38 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
         }
     }
 
-    // 4. DURCHGANG: Schnittpunkte (NUR zwischen den nahegelegenen Objekten!)
+    // 4. DURCHGANG: Schnittpunkte (inklusive Hilfslinien!)
     if (m_intersectionSnapEnabled && nearbyEntities.size() >= 2) {
 
-        auto getLineLineIntersection = [](const QPointF& p1, const QPointF& p2,
-                                          const QPointF& p3, const QPointF& p4,
-                                          QPointF& outPt) -> bool
-        {
+        // Helper: Holt Start- und Endpunkt/Richtung aus Line oder ConstructionHvLine
+        auto getGenericLineParams = [](const CadEntity* entity, QPointF& p1, QPointF& p2, bool& isInfinite) -> bool {
+            if (entity->type() == EntityType::Line) {
+                auto* line = static_cast<const CadLine*>(entity);
+                p1 = line->start();
+                p2 = line->end();
+                isInfinite = false;
+                return true;
+            } else if (entity->type() == EntityType::ConstructionHvLine) {
+                auto* cline = static_cast<const CadConstructionHvLine*>(entity);
+                p1 = cline->getPosition();
+                if (cline->getOrientation() == ConstructionLineOrientation::Horizontal) {
+                    p2 = QPointF(p1.x() + 1.0, p1.y());
+                } else {
+                    p2 = QPointF(p1.x(), p1.y() + 1.0);
+                }
+                isInfinite = true;
+                return true;
+            }
+            return false;
+        };
+
+        auto getLineLineIntersection = [&](const CadEntity* e1, const CadEntity* e2, QPointF& outPt) -> bool {
+            QPointF p1, p2, p3, p4;
+            bool inf1 = false, inf2 = false;
+
+            if (!getGenericLineParams(e1, p1, p2, inf1) || !getGenericLineParams(e2, p3, p4, inf2))
+                return false;
+
             double denominator = (p4.y() - p3.y()) * (p2.x() - p1.x()) -
                                  (p4.x() - p3.x()) * (p2.y() - p1.y());
 
@@ -182,7 +217,10 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
             double ub = ((p2.x() - p1.x()) * (p1.y() - p3.y()) -
                          (p2.y() - p1.y()) * (p1.x() - p3.x())) / denominator;
 
-            if (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0) {
+            bool validA = inf1 || (ua >= 0.0 && ua <= 1.0);
+            bool validB = inf2 || (ub >= 0.0 && ub <= 1.0);
+
+            if (validA && validB) {
                 outPt = QPointF(p1.x() + ua * (p2.x() - p1.x()),
                                 p1.y() + ua * (p2.y() - p1.y()));
                 return true;
@@ -190,16 +228,17 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
             return false;
         };
 
-        auto getLineCircleIntersections = [](const QPointF& p1, const QPointF& p2,
-                                             const QPointF& center, double radius,
-                                             std::vector<QPointF>& outPts)
-        {
+        auto getLineCircleIntersections = [&](const CadEntity* lineEntity, const CadCircle* circle, std::vector<QPointF>& outPts) {
+            QPointF p1, p2;
+            bool isInfinite = false;
+            if (!getGenericLineParams(lineEntity, p1, p2, isInfinite)) return;
+
             QPointF d = p2 - p1;
-            QPointF f = p1 - center;
+            QPointF f = p1 - circle->center();
 
             double a = d.x() * d.x() + d.y() * d.y();
             double b = 2 * (f.x() * d.x() + f.y() * d.y());
-            double c = (f.x() * f.x() + f.y() * f.y()) - radius * radius;
+            double c = (f.x() * f.x() + f.y() * f.y()) - circle->radius() * circle->radius();
 
             double discriminant = b * b - 4 * a * c;
             if (discriminant < 0 || std::abs(a) < 1e-9) return;
@@ -208,8 +247,8 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
             double t1 = (-b - discriminant) / (2 * a);
             double t2 = (-b + discriminant) / (2 * a);
 
-            if (t1 >= 0.0 && t1 <= 1.0) outPts.push_back(p1 + t1 * d);
-            if (t2 >= 0.0 && t2 <= 1.0) outPts.push_back(p1 + t2 * d);
+            if (isInfinite || (t1 >= 0.0 && t1 <= 1.0)) outPts.push_back(p1 + t1 * d);
+            if (isInfinite || (t2 >= 0.0 && t2 <= 1.0)) outPts.push_back(p1 + t2 * d);
         };
 
         auto getCircleCircleIntersections = [](const QPointF& c1, double r1,
@@ -238,20 +277,27 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                 auto type1 = nearbyEntities[i]->type();
                 auto type2 = nearbyEntities[j]->type();
 
-                if (type1 == EntityType::Line && type2 == EntityType::Line) {
-                    auto* line1 = static_cast<const CadLine*>(nearbyEntities[i]);
-                    auto* line2 = static_cast<const CadLine*>(nearbyEntities[j]);
+                bool isLineLike1 = (type1 == EntityType::Line || type1 == EntityType::ConstructionHvLine);
+                bool isLineLike2 = (type2 == EntityType::Line || type2 == EntityType::ConstructionHvLine);
+
+                if (isLineLike1 && isLineLike2) {
                     QPointF intersectPt;
-                    if (getLineLineIntersection(line1->start(), line1->end(), line2->start(), line2->end(), intersectPt)) {
+                    if (getLineLineIntersection(nearbyEntities[i], nearbyEntities[j], intersectPt)) {
                         checkPoint(intersectPt, SnapType::Intersection);
                     }
                 }
-                else if ((type1 == EntityType::Line && type2 == EntityType::Circle) ||
-                         (type1 == EntityType::Circle && type2 == EntityType::Line)) {
-                    const CadLine* line = static_cast<const CadLine*>((type1 == EntityType::Line) ? nearbyEntities[i] : nearbyEntities[j]);
-                    const CadCircle* circle = static_cast<const CadCircle*>((type1 == EntityType::Circle) ? nearbyEntities[i] : nearbyEntities[j]);
+                else if (isLineLike1 && type2 == EntityType::Circle) {
+                    auto* circle = static_cast<const CadCircle*>(nearbyEntities[j]);
                     std::vector<QPointF> intersects;
-                    getLineCircleIntersections(line->start(), line->end(), circle->center(), circle->radius(), intersects);
+                    getLineCircleIntersections(nearbyEntities[i], circle, intersects);
+                    for (const auto& pt : intersects) {
+                        checkPoint(pt, SnapType::Intersection);
+                    }
+                }
+                else if (type1 == EntityType::Circle && isLineLike2) {
+                    auto* circle = static_cast<const CadCircle*>(nearbyEntities[i]);
+                    std::vector<QPointF> intersects;
+                    getLineCircleIntersections(nearbyEntities[j], circle, intersects);
                     for (const auto& pt : intersects) {
                         checkPoint(pt, SnapType::Intersection);
                     }

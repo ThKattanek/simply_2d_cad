@@ -1,0 +1,28 @@
+/*
+ * Simply 2D CAD
+ * Copyright (C) 2026 Thorsten Kattanek
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+*/
+
+#pragma once
+
+#include "cad_tool.h"
+
+class ConstructionHvLineTool : public CadTool
+{
+    Q_OBJECT
+public:
+    void retranslate() override;
+    void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
+    void handlePointInput(CadScene* scene, const QPointF& point) override;
+    void handleValueInput(CadScene* scene, double value) override;
+    void activate(CadScene* scene) override;
+
+private:
+    void createLine(CadScene* scene, const QPointF& pos);
+    QString m_promptMsg01, m_promptMsg02;
+};

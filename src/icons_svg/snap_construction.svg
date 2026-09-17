@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="snap_construction.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:zoom="34.46875"
+     inkscape:cx="15.985494"
+     inkscape:cy="16"
+     inkscape:window-width="2560"
+     inkscape:window-height="1312"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <sodipodi:guide
+       position="-4.9457162,16.072303"
+       orientation="0,-1"
+       id="guide1"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="16.004193,21.959202"
+       orientation="1,0"
+       id="guide2"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ff0d0d;stroke:#e90000;stroke-width:1.903;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:1.903;stroke-dashoffset:0"
+       d="M 2.5397503e-4,15.985503 31.999864,15.927468"
+       id="path2" />
+    <path
+       style="fill:#ff0d0d;stroke:#e90000;stroke-width:1.9;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:1.9;stroke-dashoffset:0"
+       d="M 16.188576,-0.17407071 16.2466,31.709882"
+       id="path3" />
+    <path
+       style="fill:none;stroke:#d377e0;stroke-width:2.5;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
+       d="M 8.2322063,7.9834222 24.265638,23.925172"
+       id="path6" />
+    <path
+       style="fill:none;stroke:#d377e0;stroke-width:2.5;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:1"
+       d="M 24.265638,7.9834222 8.2322063,23.925172"
+       id="path7" />
+  </g>
+</svg>

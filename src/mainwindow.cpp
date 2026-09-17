@@ -36,6 +36,8 @@
 #include "./cad_tools/circle_tool.h"
 #include "./cad_tools/rectangle_tool.h"
 
+#include "./cad_tools/construction_hv_line_tool.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -105,6 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolCircle1", std::make_shared<CircleTool>(), CircleToolMode::CenterDiameter);
     m_toolManager->registerTool("actionToolCircle2", std::make_shared<CircleTool>(), CircleToolMode::Diameter);
     m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
+    m_toolManager->registerTool("actionToolConstructionLineH", std::make_shared<ConstructionHvLineTool>(), 0);
+    m_toolManager->registerTool("actionToolConstructionLineV", std::make_shared<ConstructionHvLineTool>(), 1);
+
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
@@ -116,6 +121,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolCircle1);
     m_toolManager->bindAction(ui->actionToolCircle2);
     m_toolManager->bindAction(ui->actionToolRectangle);
+    m_toolManager->bindAction(ui->actionToolConstructionLineH);
+    m_toolManager->bindAction(ui->actionToolConstructionLineV);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
@@ -257,7 +264,7 @@ void MainWindow::zoomToFitGeometry()
 
         // System-Items (Mittellinien, Fadenkreuz) überspringen
         QString itemType = item->data(Qt::UserRole + 1).toString();
-        if (itemType == "SystemItem") {
+        if (itemType == "SystemItem" || itemType == "ConstructionItem") {
             continue; // Mittellinien und Fadenkreuz ignorieren!
         }
 
@@ -514,6 +521,9 @@ void MainWindow::loadSnapSettingsToUi()
 
     const QSignalBlocker b4(ui->actionSnapTangent);
     ui->actionSnapTangent->setChecked(settings.value("Snap/TangentSnapEnabled", true).toBool());
+
+    const QSignalBlocker b5(ui->actionSnapConstructionLine);
+    ui->actionSnapConstructionLine->setChecked(settings.value("Snap/ConstructionLineSnapEnabled", true).toBool());
 }
 
 void MainWindow::connectSnapSettingsToUi()
@@ -550,6 +560,12 @@ void MainWindow::connectSnapSettingsToUi()
     connect(ui->actionSnapTangent, &QAction::toggled, this, [this](bool checked) {
         QSettings settings;
         settings.setValue("Snap/TangentSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapConstructionLine, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/ConstructionLineSnapEnabled", checked);
         m_cadScene->loadSettings();
     });
 }

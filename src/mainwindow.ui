@@ -13,6 +13,15 @@
   <property name="windowTitle">
    <string>Simply2DCad by Thorsten Kattanek</string>
   </property>
+  <property name="animated">
+   <bool>true</bool>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
@@ -102,6 +111,7 @@
    <addaction name="actionSnapMidpoint"/>
    <addaction name="actionSnapIntersection"/>
    <addaction name="actionSnapTangent"/>
+   <addaction name="actionSnapConstructionLine"/>
   </widget>
   <widget class="QToolBar" name="tb_commandLine">
    <property name="windowTitle">
@@ -113,6 +123,19 @@
    <attribute name="toolBarBreak">
     <bool>true</bool>
    </attribute>
+  </widget>
+  <widget class="QToolBar" name="tb_constructionTools">
+   <property name="windowTitle">
+    <string>Construction Tools Toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionToolConstructionLineH"/>
+   <addaction name="actionToolConstructionLineV"/>
   </widget>
   <action name="action_Close">
    <property name="text">
@@ -423,6 +446,63 @@
    </property>
    <property name="statusTip">
     <string>Draw a circle by specifying its diameter over two points.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolConstructionLineH">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_h_construction_line.svg</normaloff>:/icons/icons_svg/tool_h_construction_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Construction Line H</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Horizontal Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a horizontal construction line with a point.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolConstructionLineV">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_v_construction_line.svg</normaloff>:/icons/icons_svg/tool_v_construction_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Construction Line V</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Vertical Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a vertical construction line with a point.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapConstructionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_construction.svg</normaloff>:/icons/icons_svg/snap_construction.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapConstructionLine</string>
+   </property>
+   <property name="toolTip">
+    <string>Sanp with construction lines.</string>
+   </property>
+   <property name="statusTip">
+    <string/>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

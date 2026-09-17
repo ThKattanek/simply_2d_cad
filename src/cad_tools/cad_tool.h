@@ -23,7 +23,7 @@ class CadScene;
 
 enum ToolMode
 {
-    Normal = 0
+    Normal
 };
 
 enum ToolState
@@ -64,6 +64,6 @@ signals:
     void promptTextChanged(const QString& text);
 
 private:
-    uint32_t m_toolMode = 0;    // Tool mode for different behaviors
-    QPointF m_lastPoint;        // Stores the last point for relative coordinate input
+    uint32_t m_toolMode = 0;     // Tool mode for different behaviors
+    QPointF m_lastPoint;                        // Stores the last point for relative coordinate input
 };
