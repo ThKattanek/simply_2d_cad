@@ -62,6 +62,9 @@
    <property name="windowTitle">
     <string>Draw Tools Toolbar</string>
    </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
    <property name="allowedAreas">
     <set>Qt::ToolBarArea::AllToolBarAreas</set>
    </property>
@@ -92,7 +95,7 @@
     <string>Sanp Tools Toolbar</string>
    </property>
    <property name="movable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="iconSize">
     <size>
@@ -117,6 +120,9 @@
    <property name="windowTitle">
     <string>Commandline Toolbar</string>
    </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>BottomToolBarArea</enum>
    </attribute>
@@ -127,6 +133,12 @@
   <widget class="QToolBar" name="tb_constructionTools">
    <property name="windowTitle">
     <string>Construction Tools Toolbar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>true</bool>
    </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
