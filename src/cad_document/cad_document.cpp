@@ -11,6 +11,7 @@
 #include "./cad_document.h"
 #include "cad_circle.h"
 #include "cad_construction_hv_line.h"
+#include "cad_construction_line.h"
 #include "cad_line.h"
 #include "cad_point.h"
 
@@ -147,6 +148,9 @@ bool CadDocument::loadFromFile(const QString &filePath)
             break;
         case EntityType::ConstructionHvLine:
             newEntity = std::make_unique<CadConstructionHvLine>(QPointF(), ConstructionLineOrientation::Horizontal);
+            break;
+        case EntityType::ConstructionLine:
+            newEntity = std::make_unique<CadConstructionLine>(QPointF(), QPointF());
             break;
         default:
             return false; // Unbekannter Typ / Beschädigte Datei

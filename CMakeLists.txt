@@ -44,6 +44,7 @@ set(PROJECT_SOURCES
     src/cad_document/cad_circle.h
     # cad construction entities
     src/cad_document/cad_construction_hv_line.h
+    src/cad_document/cad_construction_line.h
     # undo/redo command system
     src/undo_stack.h src/undo_stack.cpp
     src/commands/command.h
@@ -69,6 +70,7 @@ set(PROJECT_SOURCES
     src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
     src/cad_tools/rectangle_tool.h src/cad_tools/rectangle_tool.cpp
     src/cad_tools/construction_hv_line_tool.h src/cad_tools/construction_hv_line_tool.cpp
+    src/cad_tools/construction_line_tool.h src/cad_tools/construction_line_tool.cpp
 )
 
 qt_add_resources(MY_RESOURCES src/resources.qrc)
