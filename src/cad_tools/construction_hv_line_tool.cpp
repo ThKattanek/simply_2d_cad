@@ -8,24 +8,29 @@
  * (at your option) any later version.
 */
 
-#include "construction_line_tool.h"
+#include "construction_hv_line_tool.h"
 #include "../cad_document/cad_construction_hv_line.h"
 #include "../commands/add_entity_command.h"
 #include "../undo_stack.h"
 #include <QGraphicsSceneMouseEvent>
 
-void ConstructionLineTool::retranslate()
+void ConstructionHvLineTool::retranslate()
 {
-    m_promptMsg = tr("Construction Line: Click a point or enter coordinates (x, y).");
+    m_promptMsg01 = tr("Construction Horizont Line: Click a point or enter y value.");
+    m_promptMsg02 = tr("Construction Vertical Line: Click a point or enter x value.");
 }
 
-void ConstructionLineTool::activate(CadScene* scene)
+void ConstructionHvLineTool::activate(CadScene* scene)
 {
     Q_UNUSED(scene);
-    emit promptTextChanged(m_promptMsg);
+    if(getToolMode() == 1) { // Vertical
+        emit promptTextChanged(m_promptMsg02);
+    } else { // Horizontal
+        emit promptTextChanged(m_promptMsg01);
+    }
 }
 
-void ConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
+void ConstructionHvLineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
         QPointF pos = scene->getSnapOrPosition(event->scenePos());
@@ -33,12 +38,12 @@ void ConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseE
     }
 }
 
-void ConstructionLineTool::handlePointInput(CadScene* scene, const QPointF& point)
+void ConstructionHvLineTool::handlePointInput(CadScene* scene, const QPointF& point)
 {
     createLine(scene, point);
 }
 
-void ConstructionLineTool::handleValueInput(CadScene *scene, double value)
+void ConstructionHvLineTool::handleValueInput(CadScene *scene, double value)
 {
     QPointF pos;
     if (getToolMode() == 1) { // Vertical
@@ -50,7 +55,7 @@ void ConstructionLineTool::handleValueInput(CadScene *scene, double value)
     createLine(scene, pos);
 }
 
-void ConstructionLineTool::createLine(CadScene* scene, const QPointF& pos)
+void ConstructionHvLineTool::createLine(CadScene* scene, const QPointF& pos)
 {
     auto orientation = (getToolMode() == 1) ? ConstructionLineOrientation::Vertical
                                             : ConstructionLineOrientation::Horizontal;

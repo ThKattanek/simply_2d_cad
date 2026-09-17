@@ -68,7 +68,7 @@ set(PROJECT_SOURCES
     src/cad_tools/line_tool.h src/cad_tools/line_tool.cpp
     src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
     src/cad_tools/rectangle_tool.h src/cad_tools/rectangle_tool.cpp
-    src/cad_tools/construction_line_tool.h src/cad_tools/construction_line_tool.cpp
+    src/cad_tools/construction_hv_line_tool.h src/cad_tools/construction_hv_line_tool.cpp
 )
 
 qt_add_resources(MY_RESOURCES src/resources.qrc)

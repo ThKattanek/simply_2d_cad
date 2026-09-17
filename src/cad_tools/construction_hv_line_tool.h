@@ -12,7 +12,7 @@
 
 #include "cad_tool.h"
 
-class ConstructionLineTool : public CadTool
+class ConstructionHvLineTool : public CadTool
 {
     Q_OBJECT
 public:
@@ -24,5 +24,5 @@ public:
 
 private:
     void createLine(CadScene* scene, const QPointF& pos);
-    QString m_promptMsg;
+    QString m_promptMsg01, m_promptMsg02;
 };
