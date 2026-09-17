@@ -521,6 +521,9 @@ void MainWindow::loadSnapSettingsToUi()
 
     const QSignalBlocker b4(ui->actionSnapTangent);
     ui->actionSnapTangent->setChecked(settings.value("Snap/TangentSnapEnabled", true).toBool());
+
+    const QSignalBlocker b5(ui->actionSnapConstructionLine);
+    ui->actionSnapConstructionLine->setChecked(settings.value("Snap/ConstructionLineSnapEnabled", true).toBool());
 }
 
 void MainWindow::connectSnapSettingsToUi()
@@ -557,6 +560,12 @@ void MainWindow::connectSnapSettingsToUi()
     connect(ui->actionSnapTangent, &QAction::toggled, this, [this](bool checked) {
         QSettings settings;
         settings.setValue("Snap/TangentSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapConstructionLine, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/ConstructionLineSnapEnabled", checked);
         m_cadScene->loadSettings();
     });
 }

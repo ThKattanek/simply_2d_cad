@@ -111,6 +111,7 @@
    <addaction name="actionSnapMidpoint"/>
    <addaction name="actionSnapIntersection"/>
    <addaction name="actionSnapTangent"/>
+   <addaction name="actionSnapConstructionLine"/>
   </widget>
   <widget class="QToolBar" name="tb_commandLine">
    <property name="windowTitle">
@@ -481,6 +482,17 @@
    </property>
    <property name="statusTip">
     <string>Draw a vertical construction line with a point.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapConstructionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SnapConstructionLine</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
