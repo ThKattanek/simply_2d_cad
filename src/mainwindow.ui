@@ -146,6 +146,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionToolConstructionLine2P"/>
    <addaction name="actionToolConstructionLineH"/>
    <addaction name="actionToolConstructionLineV"/>
   </widget>
@@ -511,10 +512,28 @@
     <string>SnapConstructionLine</string>
    </property>
    <property name="toolTip">
-    <string>Sanp with construction lines.</string>
+    <string>Snap with construction lines.</string>
    </property>
    <property name="statusTip">
     <string/>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolConstructionLine2P">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_construction_line.svg</normaloff>:/icons/icons_svg/tool_construction_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Construction Line 2 Points</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Construction Line with two Points</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a construction line with two points.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

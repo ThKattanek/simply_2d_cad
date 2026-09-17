@@ -14,6 +14,7 @@
 #include "./cad_document/cad_point.h"
 #include "./cad_document/cad_circle.h"
 #include "./cad_document/cad_construction_hv_line.h"
+#include "./cad_document/cad_construction_line.h"
 
 #include <QGraphicsItem>
 #include <vector>
@@ -76,7 +77,9 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
         // (Falls deine CadEntity das QGraphicsItem besitzt oder speichert):
         auto entityPtr = item->data(Qt::UserRole).value<CadEntity*>();
         if (entityPtr) {
-            if (!m_constructionLineSnapEnabled && entityPtr->type() == EntityType::ConstructionHvLine) {
+            if  (!m_constructionLineSnapEnabled &&
+                (entityPtr->type() == EntityType::ConstructionHvLine ||
+                 entityPtr->type() == EntityType::ConstructionLine)) {
                 continue;
             }
             nearbyEntities.push_back(entityPtr);
@@ -137,6 +140,25 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                 }
                 break;
             }
+            case EntityType::ConstructionLine: {
+                if (m_tangentSnapEnabled) {
+                    auto* cline = static_cast<const CadConstructionLine*>(entity);
+                    QPointF lastPt = scene.getLastPoint();
+                    QPointF A = cline->p1();
+                    QPointF B = cline->p2();
+
+                    double dx = B.x() - A.x();
+                    double dy = B.y() - A.y();
+                    double lengthSq = dx * dx + dy * dy;
+
+                    if (lengthSq > 1e-9) {
+                        double t = ((lastPt.x() - A.x()) * dx + (lastPt.y() - A.y()) * dy) / lengthSq;
+                        QPointF perpPt(A.x() + t * dx, A.y() + t * dy);
+                        checkPoint(perpPt, SnapType::Tangent);
+                    }
+                }
+                break;
+            }
             case EntityType::Circle: {
                 auto* circle = static_cast<const CadCircle*>(entity);
                 if (m_midpointSnapEnabled) {
@@ -178,7 +200,7 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
     // 4. DURCHGANG: Schnittpunkte (inklusive Hilfslinien!)
     if (m_intersectionSnapEnabled && nearbyEntities.size() >= 2) {
 
-        // Helper: Holt Start- und Endpunkt/Richtung aus Line oder ConstructionHvLine
+        // Helper: Holt Start- und Endpunkt/Richtung aus Line, ConstructionHvLine oder ConstructionLine
         auto getGenericLineParams = [](const CadEntity* entity, QPointF& p1, QPointF& p2, bool& isInfinite) -> bool {
             if (entity->type() == EntityType::Line) {
                 auto* line = static_cast<const CadLine*>(entity);
@@ -194,6 +216,12 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                 } else {
                     p2 = QPointF(p1.x(), p1.y() + 1.0);
                 }
+                isInfinite = true;
+                return true;
+            } else if (entity->type() == EntityType::ConstructionLine) {
+                auto* cline = static_cast<const CadConstructionLine*>(entity);
+                p1 = cline->p1();
+                p2 = cline->p2();
                 isInfinite = true;
                 return true;
             }
@@ -277,8 +305,12 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                 auto type1 = nearbyEntities[i]->type();
                 auto type2 = nearbyEntities[j]->type();
 
-                bool isLineLike1 = (type1 == EntityType::Line || type1 == EntityType::ConstructionHvLine);
-                bool isLineLike2 = (type2 == EntityType::Line || type2 == EntityType::ConstructionHvLine);
+                bool isLineLike1 = (type1 == EntityType::Line ||
+                                    type1 == EntityType::ConstructionHvLine ||
+                                    type1 == EntityType::ConstructionLine);
+                bool isLineLike2 = (type2 == EntityType::Line ||
+                                    type2 == EntityType::ConstructionHvLine ||
+                                    type2 == EntityType::ConstructionLine);
 
                 if (isLineLike1 && isLineLike2) {
                     QPointF intersectPt;
