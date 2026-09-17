@@ -19,6 +19,7 @@ public:
     void retranslate() override;
     void mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event) override;
     void handlePointInput(CadScene* scene, const QPointF& point) override;
+    void handleValueInput(CadScene* scene, double value) override;
     void activate(CadScene* scene) override;
 
 private:

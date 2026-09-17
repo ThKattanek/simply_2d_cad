@@ -9,7 +9,6 @@
  */
 
 #include "mainwindow.h"
-#include "cad_document/cad_construction_hv_line.h"
 #include "ui_mainwindow.h"
 
 #include "app_settings_dialog.h"
@@ -265,7 +264,7 @@ void MainWindow::zoomToFitGeometry()
 
         // System-Items (Mittellinien, Fadenkreuz) überspringen
         QString itemType = item->data(Qt::UserRole + 1).toString();
-        if (itemType == "SystemItem") {
+        if (itemType == "SystemItem" || itemType == "ConstructionItem") {
             continue; // Mittellinien und Fadenkreuz ignorieren!
         }
 

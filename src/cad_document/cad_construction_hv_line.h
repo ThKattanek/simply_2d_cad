@@ -25,10 +25,10 @@ public:
     CadConstructionHvLine(const QPointF& pos, ConstructionLineOrientation orientation)
         : m_pos(pos), m_orientation(orientation) {}
 
-    EntityType type() const override { return EntityType::Line; }
+    EntityType type() const override { return EntityType::ConstructionHvLine; }
 
     void serialize(QDataStream& stream) const override {
-        stream << static_cast<quint8>(EntityType::Line);
+        stream << static_cast<quint8>(EntityType::ConstructionHvLine);
         stream << m_pos << static_cast<quint8>(m_orientation) << m_layer;
     }
 
@@ -56,6 +56,7 @@ public:
         item->setPen(pen);
 
         item->setData(Qt::UserRole, QVariant::fromValue(static_cast<CadEntity*>(this)));
+        item->setData(Qt::UserRole + 1, "ConstructionItem");
         m_graphicsItem = item;
         return item;
     }

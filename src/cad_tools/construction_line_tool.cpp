@@ -38,6 +38,18 @@ void ConstructionLineTool::handlePointInput(CadScene* scene, const QPointF& poin
     createLine(scene, point);
 }
 
+void ConstructionLineTool::handleValueInput(CadScene *scene, double value)
+{
+    QPointF pos;
+    if (getToolMode() == 1) { // Vertical
+        pos = QPointF(value, 0); // y-coordinate will be ignored for vertical lines
+    } else { // Horizontal
+        pos = QPointF(0, value); // x-coordinate will be ignored for horizontal lines
+    }
+
+    createLine(scene, pos);
+}
+
 void ConstructionLineTool::createLine(CadScene* scene, const QPointF& pos)
 {
     auto orientation = (getToolMode() == 1) ? ConstructionLineOrientation::Vertical

@@ -19,7 +19,9 @@
 enum EntityType {
     Line,
     Point,
-    Circle
+    Circle,
+    ConstructionLine,
+    ConstructionHvLine
 };
 
 class CadEntity
