@@ -294,11 +294,13 @@ void ParallelConstructionLineTool::updatePreview(CadScene* scene, const QPointF&
 
     constexpr double maxDist = 1000000.0;
 
+    QPen previewPen(Qt::gray, 0, Qt::SolidLine);
+
     for (double dist : currentDistances) {
         QPointF offsetPt = m_basePoint + m_normalVector * (dist * side);
         QLineF previewLine(offsetPt - m_dirVector * maxDist, offsetPt + m_dirVector * maxDist);
 
-        auto* item = scene->addLine(previewLine, QPen(Qt::red, 0, Qt::DashLine));
+        auto* item = scene->addLine(previewLine, previewPen);
         m_previewItems.push_back(item);
     }
 }
