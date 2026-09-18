@@ -48,6 +48,7 @@ private:
     bool getEntityLineParams(const CadEntity* entity, QPointF& basePoint, QPointF& dirVector, QPointF& normalVector) const;
 
     State m_state = State::SelectBaseEntity;
+    QPointF m_currentMousePos;
 
     // Hover-Status
     CadEntity* m_hoveredEntity = nullptr;

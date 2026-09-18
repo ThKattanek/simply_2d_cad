@@ -22,6 +22,7 @@
 #include <QKeyEvent>
 #include <QPen>
 #include <cmath>
+#include <qgraphicsview.h>
 
 void ParallelConstructionLineTool::retranslate()
 {
@@ -54,7 +55,7 @@ void ParallelConstructionLineTool::cancel(CadScene* scene)
 void ParallelConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton) {
-        QPointF mousePos = event->scenePos();
+        QPointF mousePos = scene->getSnapOrPosition(event->scenePos());
 
         if (m_state == State::SelectBaseEntity) {
             if (m_hoveredEntity) {
@@ -114,12 +115,14 @@ void ParallelConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSce
 
 void ParallelConstructionLineTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
 {
-    QPointF mousePos = event->scenePos();
+    m_currentMousePos = event->scenePos();
 
     if (m_state == State::SelectBaseEntity) {
-        updateHoverEntity(scene, mousePos);
+        updateHoverEntity(scene, m_currentMousePos);
     } else if (m_state == State::PositionLines) {
-        updatePreview(scene, mousePos);
+        // Snapping der Szene nutzen, damit die freie Vorschau an Kreuzungen einrastet!
+        QPointF snappedMousePos = scene->getSnapOrPosition(m_currentMousePos);
+        updatePreview(scene, snappedMousePos);
     }
 }
 
@@ -143,7 +146,7 @@ void ParallelConstructionLineTool::handleValueInput(CadScene* scene, double valu
         if (m_distances.size() < 255) {
             m_distances.push_back(std::abs(value));
         }
-        updatePreview(scene, scene->getLastPoint());
+        updatePreview(scene, m_currentMousePos);
     }
 }
 
@@ -171,23 +174,43 @@ void ParallelConstructionLineTool::cancelDrawing(CadScene* scene)
 
 void ParallelConstructionLineTool::updateHoverEntity(CadScene* scene, const QPointF& mousePos)
 {
-    double tolerance = 10.0;
-    QRectF searchRect(mousePos.x() - tolerance, mousePos.y() - tolerance, tolerance * 2, tolerance * 2);
+    // 1. Zoom-Faktor aus der QGraphicsView der Szene ermitteln
+    double zoomFactor = 1.0;
+    if (!scene->views().isEmpty() && scene->views().first()) {
+        zoomFactor = scene->views().first()->transform().m11(); // Skalierung der X-Achse
+    }
+
+    // 2. Toleranz maßstabsunabhängig in Weltkoordinaten umrechnen (immer exakt 10 Pixel auf dem Schirm)
+    const double toleranceWorld = 10.0 / std::abs(zoomFactor);
+
+    QRectF searchRect(mousePos.x() - toleranceWorld,
+                      mousePos.y() - toleranceWorld,
+                      toleranceWorld * 2.0,
+                      toleranceWorld * 2.0);
 
     QList<QGraphicsItem*> items = scene->items(searchRect);
     CadEntity* newHover = nullptr;
 
     for (QGraphicsItem* item : items) {
+        // System-Items (Fadenkreuz, Snap-Marker) überspringen
+        if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
+            continue;
+        }
+
         auto entity = item->data(Qt::UserRole).value<CadEntity*>();
         if (entity) {
             auto type = entity->type();
-            if (type == EntityType::Line || type == EntityType::ConstructionHvLine || type == EntityType::ConstructionLine) {
+            if (type == EntityType::Line ||
+                type == EntityType::ConstructionHvLine ||
+                type == EntityType::ConstructionLine)
+            {
                 newHover = entity;
                 break;
             }
         }
     }
 
+    // 3. Wenn sich das gehoverte Element geändert hat, Farbe aktualisieren
     if (m_hoveredEntity != newHover) {
         clearHover();
         m_hoveredEntity = newHover;
@@ -195,8 +218,8 @@ void ParallelConstructionLineTool::updateHoverEntity(CadScene* scene, const QPoi
         if (m_hoveredEntity && m_hoveredEntity->getGraphicsItem()) {
             if (auto lineItem = dynamic_cast<QGraphicsLineItem*>(m_hoveredEntity->getGraphicsItem())) {
                 QPen pen = lineItem->pen();
-                pen.setColor(Qt::magenta);
-                pen.setWidth(2);
+                pen.setColor(Qt::magenta); // Lila-Hervorhebung
+                pen.setWidth(0);
                 lineItem->setPen(pen);
             }
         }
