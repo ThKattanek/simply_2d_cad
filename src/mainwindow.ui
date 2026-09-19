@@ -147,6 +147,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionToolConstructionLine2P"/>
+   <addaction name="actionToolParallelConstructionLine"/>
    <addaction name="actionToolConstructionLineH"/>
    <addaction name="actionToolConstructionLineV"/>
   </widget>
@@ -534,6 +535,24 @@
    </property>
    <property name="statusTip">
     <string>Draw a construction line with two points.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolParallelConstructionLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_parallel_construction_line.svg</normaloff>:/icons/icons_svg/tool_parallel_construction_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Parallel Construction Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Parallel Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a parallel construction line from a straight element.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

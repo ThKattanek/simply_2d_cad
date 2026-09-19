@@ -38,6 +38,7 @@
 
 #include "./cad_tools/construction_hv_line_tool.h"
 #include "./cad_tools/construction_line_tool.h"
+#include "./cad_tools/parallel_construction_line_tool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -111,6 +112,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolConstructionLineH", std::make_shared<ConstructionHvLineTool>(), 0);
     m_toolManager->registerTool("actionToolConstructionLineV", std::make_shared<ConstructionHvLineTool>(), 1);
     m_toolManager->registerTool("actionToolConstructionLine2P", std::make_shared<ConstructionLineTool>());
+    m_toolManager->registerTool("actionToolParallelConstructionLine", std::make_shared<ParallelConstructionLineTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
@@ -125,6 +127,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolConstructionLineH);
     m_toolManager->bindAction(ui->actionToolConstructionLineV);
     m_toolManager->bindAction(ui->actionToolConstructionLine2P);
+    m_toolManager->bindAction(ui->actionToolParallelConstructionLine);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();

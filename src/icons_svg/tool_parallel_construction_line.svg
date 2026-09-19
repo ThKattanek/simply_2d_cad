@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="tool_parallel_construction_line.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="17.234375"
+     inkscape:cx="13.867634"
+     inkscape:cy="12.67815"
+     inkscape:window-width="2560"
+     inkscape:window-height="1312"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="28.848368,28.891659"
+       orientation="0.70710678,-0.70710678"
+       id="guide2"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffffff;stroke:#e10bcc;stroke-width:1.9;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:1.9, 1.9;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 1.0089466,23.860865 23.939524,0.7333505"
+       id="path1" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.9;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:1.9, 1.9;stroke-dashoffset:0"
+       d="M 8.3219965,31.053726 31.337115,7.8409441"
+       id="path2" />
+  </g>
+</svg>
