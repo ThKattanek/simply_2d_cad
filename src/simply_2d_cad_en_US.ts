@@ -432,8 +432,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="545"/>
-        <source>Parallel</source>
+        <location filename="mainwindow.ui" line="549"/>
+        <source>Parallel Construction Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="552"/>
+        <source>Draw Parallel Construction Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="555"/>
+        <source>Draw a parallel construction line from a straight element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -623,7 +633,8 @@
     <name>ParallelConstructionLineTool</name>
     <message>
         <location filename="cad_tools/parallel_construction_line_tool.cpp" line="29"/>
-        <source>Parallel Construction Line: Select a line or construction line.</source>
+        <source>Parallel Construction Line: Select a straight element.</source>
+        <oldsource>Parallel Construction Line: Select a line or construction line.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -632,12 +643,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="82"/>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="31"/>
+        <source>Parallel Construction Line: Enter an another distance or move mouse to select side. Click to apply.</source>
+        <oldsource>Parallel Construction Line: Enter another distance</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="83"/>
         <source>Add Parallel Construction Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="100"/>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="101"/>
         <source>Add Parallel Construction Line</source>
         <translation type="unfinished"></translation>
     </message>

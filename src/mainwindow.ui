@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -147,9 +147,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionToolConstructionLine2P"/>
+   <addaction name="actionToolParallelConstructionLine"/>
    <addaction name="actionToolConstructionLineH"/>
    <addaction name="actionToolConstructionLineV"/>
-   <addaction name="actionToolParallelConstructionLine"/>
   </widget>
   <action name="action_Close">
    <property name="text">
@@ -541,8 +541,18 @@
    </property>
   </action>
   <action name="actionToolParallelConstructionLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_parallel_construction_line.svg</normaloff>:/icons/icons_svg/tool_parallel_construction_line.svg</iconset>
+   </property>
    <property name="text">
-    <string>Parallel</string>
+    <string>Parallel Construction Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Parallel Construction Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a parallel construction line from a straight element.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

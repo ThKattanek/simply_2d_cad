@@ -26,8 +26,9 @@
 
 void ParallelConstructionLineTool::retranslate()
 {
-    m_promptMsg01 = tr("Parallel Construction Line: Select a line or construction line.");
+    m_promptMsg01 = tr("Parallel Construction Line: Select a straight element.");
     m_promptMsg02 = tr("Parallel Construction Line: Enter distance (Return) or move mouse to set side/distance. Click to apply.");
+    m_promptMsg03 = tr("Parallel Construction Line: Enter an another distance or move mouse to select side. Click to apply.");
 }
 
 void ParallelConstructionLineTool::activate(CadScene* scene)
@@ -158,6 +159,7 @@ void ParallelConstructionLineTool::handleValueInput(CadScene* scene, double valu
 
         if (m_distances.size() < 255) {
             m_distances.push_back(std::abs(value));
+            emit promptTextChanged(m_promptMsg03);
         }
         updatePreview(scene, m_currentMousePos);
     }

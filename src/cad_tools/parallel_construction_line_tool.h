@@ -68,5 +68,5 @@ private:
     // Live-Vorschau-Items
     std::vector<QGraphicsLineItem*> m_previewItems;
 
-    QString m_promptMsg01, m_promptMsg02;
+    QString m_promptMsg01, m_promptMsg02, m_promptMsg03;
 };

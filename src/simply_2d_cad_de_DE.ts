@@ -422,9 +422,19 @@
         <translation>Zeichne eine Hilfslinie mit zwei Punkten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="545"/>
-        <source>Parallel</source>
-        <translation type="unfinished"></translation>
+        <location filename="mainwindow.ui" line="549"/>
+        <source>Parallel Construction Line</source>
+        <translation>Parallele Hilfslinie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="552"/>
+        <source>Draw Parallel Construction Line</source>
+        <translation>Parallele Hilfslinie zeichnen</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="555"/>
+        <source>Draw a parallel construction line from a straight element.</source>
+        <translation>Zeichne eine parallele Hilfslinie ausgehend von einem geraden Element.</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="342"/>
@@ -623,23 +633,30 @@
     <name>ParallelConstructionLineTool</name>
     <message>
         <location filename="cad_tools/parallel_construction_line_tool.cpp" line="29"/>
-        <source>Parallel Construction Line: Select a line or construction line.</source>
-        <translation type="unfinished"></translation>
+        <source>Parallel Construction Line: Select a straight element.</source>
+        <oldsource>Parallel Construction Line: Select a line or construction line.</oldsource>
+        <translation>Parallele Hilfslinie: Wählen Sie ein gerades Element aus.</translation>
     </message>
     <message>
         <location filename="cad_tools/parallel_construction_line_tool.cpp" line="30"/>
         <source>Parallel Construction Line: Enter distance (Return) or move mouse to set side/distance. Click to apply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Parallele Hilfslinie: Geben Sie den Abstand ein (Enter) oder bewegen Sie die Maus, um die Seite/den Abstand festzulegen. Klicken Sie, um die Einstellung zu übernehmen.</translation>
     </message>
     <message>
-        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="82"/>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="31"/>
+        <source>Parallel Construction Line: Enter an another distance or move mouse to select side. Click to apply.</source>
+        <oldsource>Parallel Construction Line: Enter another distance</oldsource>
+        <translation type="unfinished">Parallele Hilfslinie: Geben Sie einen weiteren Abstand ein oder bewegen Sie die Maus, um eine Seite auszuwählen. Klicken Sie, um die Einstellung zu übernehmen.</translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="83"/>
         <source>Add Parallel Construction Lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Parallele Konstruktionslinien hinzufügen</translation>
     </message>
     <message>
-        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="100"/>
+        <location filename="cad_tools/parallel_construction_line_tool.cpp" line="101"/>
         <source>Add Parallel Construction Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Parallele Konstruktionslinien hinzufügen</translation>
     </message>
 </context>
 <context>
