@@ -62,6 +62,7 @@ void CadScene::loadSettings()
     m_snapManager.setMidpointSnapEnabled(settings.value("Snap/MidpointSnapEnabled", true).toBool());
     m_snapManager.setIntersectionSnapEnabled(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
     m_snapManager.setTangentSnapEnabled(settings.value("Snap/TangentSnapEnabled", true).toBool());
+    m_snapManager.setPerpendicularSnapEnabled(settings.value("Snap/PerpendicularSnapEnabled", true).toBool());
     m_snapManager.setConstructionLineSnapEnabled(settings.value("Snap/ConstructionLineSnapEnabled", true).toBool());
 }
 
@@ -78,6 +79,8 @@ void CadScene::clearDocument()
     m_snapMarkerEndpoint = nullptr;
     m_snapMarkerIntersection = nullptr;
     m_snapMarkerMidpoint = nullptr;
+    m_snapMarkerTangent = nullptr;
+    m_snapMarkerPerpendicular = nullptr;
 
     if (m_document) {
         m_document->clear();
@@ -303,6 +306,14 @@ void CadScene::setupSystemItems()
     m_snapMarkerTangent->setColor(Qt::yellow);
     m_snapMarkerTangent->setVisible(false);
     addItem(m_snapMarkerTangent);
+
+    // Add the perpendicular snap marker to the scene
+    m_snapMarkerPerpendicular = new SnapMarkerPerpendicularItem();
+    m_snapMarkerPerpendicular->setData(Qt::UserRole + 1, "SystemItem");
+    m_snapMarkerPerpendicular->setZValue(1000); // over the crosshair
+    m_snapMarkerPerpendicular->setColor(Qt::green);
+    m_snapMarkerPerpendicular->setVisible(false);
+    addItem(m_snapMarkerPerpendicular);
 }
 
 double CadScene::getZoomFactorFromEvent(QGraphicsSceneMouseEvent* event) const
@@ -351,10 +362,15 @@ void CadScene::updateSnapMarkers(const SnapResult &snap, double zoomFactor)
             m_snapMarkerIntersection->setSize(markerSizeWorld);
             m_snapMarkerIntersection->setVisible(true);
             break;
-            case SnapType::Tangent:
+        case SnapType::Tangent:
             m_snapMarkerTangent->setPos(snap.point);
             m_snapMarkerTangent->setSize(markerSizeWorld);
             m_snapMarkerTangent->setVisible(true);
+            break;
+        case SnapType::Perpendicular:
+            m_snapMarkerPerpendicular->setPos(snap.point);
+            m_snapMarkerPerpendicular->setSize(markerSizeWorld);
+            m_snapMarkerPerpendicular->setVisible(true);
             break;
         default:
             break;
@@ -371,4 +387,5 @@ void CadScene::setVisibleAllSnapMarker(bool visible)
     m_snapMarkerIntersection->setVisible(visible);
     m_snapMarkerMidpoint->setVisible(visible);
     m_snapMarkerTangent->setVisible(visible);
+    m_snapMarkerPerpendicular->setVisible(visible);
 }
