@@ -47,7 +47,7 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                       maxDistWorld * 2.0);
 
     // Qt findet blitzschnell über den BSP-Tree NUR die Items im Fang-Bereich!
-    QList<QGraphicsItem*> nearbyGraphicsItems = scene.items(searchRect);
+    const QList<QGraphicsItem*> nearbyGraphicsItems = scene.items(searchRect);
 
     // Filtere relevante CadEntities heraus (System-Items wie Fadenkreuz/Grid ignorieren)
     std::vector<const CadEntity*> nearbyEntities;
@@ -108,7 +108,7 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                     checkPoint(midPoint, SnapType::Midpoint);
                 }
 
-                if (m_tangentSnapEnabled) {
+                if (m_perpendicularSnapEnabled) {
                     QPointF lastPt = scene.getLastPoint();
                     QPointF A = line->start();
                     QPointF B = line->end();
@@ -121,7 +121,7 @@ SnapResult SnapManager::findSnapPoint(const QPointF& mouseWorldPos, CadScene &sc
                         double t = ((lastPt.x() - A.x()) * dx + (lastPt.y() - A.y()) * dy) / lengthSq;
                         if (t >= 0.0 && t <= 1.0) {
                             QPointF tangentPt(A.x() + t * dx, A.y() + t * dy);
-                            checkPoint(tangentPt, SnapType::Tangent);
+                            checkPoint(tangentPt, SnapType::Perpendicular);
                         }
                     }
                 }

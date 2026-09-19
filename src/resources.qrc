@@ -19,5 +19,6 @@
         <file>icons_svg/snap_construction.svg</file>
         <file>icons_svg/tool_construction_line.svg</file>
         <file>icons_svg/tool_parallel_construction_line.svg</file>
+        <file>icons_svg/snap_perpendicular.svg</file>
     </qresource>
 </RCC>

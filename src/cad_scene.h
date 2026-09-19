@@ -18,6 +18,7 @@
 #include "./snap_marker_intersection_item.h"
 #include "./snap_marker_midpoint_item.h"
 #include "./snap_marker_tangent_item.h"
+#include "./snap_marker_perpendicular_item.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
@@ -93,6 +94,7 @@ private:
     SnapMarkerIntersectionItem* m_snapMarkerIntersection = nullptr;
     SnapMarkerMidpointItem* m_snapMarkerMidpoint = nullptr;
     SnapMarkerTangentItem* m_snapMarkerTangent = nullptr;
+    SnapMarkerPerpendicularItem* m_snapMarkerPerpendicular = nullptr;
     QPointF m_activeSnapPoint;
     bool m_hasActiveSnapPoint = false;
 };

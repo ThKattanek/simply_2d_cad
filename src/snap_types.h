@@ -19,7 +19,8 @@ enum class SnapType
     Endpoint,           // Snap to endpoints of lines
     Midpoint,           // Snap to midpoints of lines
     Intersection,       // Snap to intersection points of lines
-    Tangent             // Snap to tangent points of curves
+    Tangent,            // Snap to tangent points of curves
+    Perpendicular       // Snap to perpendicular points on lines
 };
 
 struct SnapResult
