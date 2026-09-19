@@ -58,15 +58,20 @@ void ParallelConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSce
         QPointF mousePos = scene->getSnapOrPosition(event->scenePos());
 
         if (m_state == State::SelectBaseEntity) {
-            if (m_hoveredEntity) {
-                m_selectedEntity = m_hoveredEntity;
+            if (m_hoveredEntity || m_hoveredSystemLine) {
+                // Welches Element wurde gehovered?
+                if (m_hoveredEntity) {
+                    m_selectedEntity = m_hoveredEntity;
+                    m_selectedSystemLine = nullptr;
+                } else {
+                    m_selectedEntity = nullptr;
+                    m_selectedSystemLine = m_hoveredSystemLine;
+                }
 
                 if (getEntityLineParams(m_selectedEntity, m_basePoint, m_dirVector, m_normalVector)) {
                     m_state = State::PositionLines;
                     clearHover();
                     emit promptTextChanged(m_promptMsg02);
-
-                    // Direkt die Vorschau mit den evtl. bereits vorhandenen Abständen zeichnen
                     updatePreview(scene, mousePos);
                 }
             }
@@ -155,6 +160,7 @@ void ParallelConstructionLineTool::resetForNextEntity(CadScene* scene)
     // Setzt den Status für das nächste Element zurück, behält aber m_distances!
     m_state = State::SelectBaseEntity;
     m_selectedEntity = nullptr;
+    m_selectedSystemLine = nullptr;
 
     clearHover();
 
@@ -174,13 +180,13 @@ void ParallelConstructionLineTool::cancelDrawing(CadScene* scene)
 
 void ParallelConstructionLineTool::updateHoverEntity(CadScene* scene, const QPointF& mousePos)
 {
-    // 1. Zoom-Faktor aus der QGraphicsView der Szene ermitteln
     double zoomFactor = 1.0;
-    if (!scene->views().isEmpty() && scene->views().first()) {
-        zoomFactor = scene->views().first()->transform().m11(); // Skalierung der X-Achse
+
+    const auto views = scene->views();
+    if (!views.isEmpty() && views.first()) {
+        zoomFactor = views.first()->transform().m11();
     }
 
-    // 2. Toleranz maßstabsunabhängig in Weltkoordinaten umrechnen (immer exakt 10 Pixel auf dem Schirm)
     const double toleranceWorld = 10.0 / std::abs(zoomFactor);
 
     QRectF searchRect(mousePos.x() - toleranceWorld,
@@ -188,15 +194,17 @@ void ParallelConstructionLineTool::updateHoverEntity(CadScene* scene, const QPoi
                       toleranceWorld * 2.0,
                       toleranceWorld * 2.0);
 
-    QList<QGraphicsItem*> items = scene->items(searchRect);
-    CadEntity* newHover = nullptr;
+    const QList<QGraphicsItem*> items = scene->items(searchRect);
+    CadEntity* newHoverEntity = nullptr;
+    QGraphicsLineItem* newHoverSystemLine = nullptr;
 
     for (QGraphicsItem* item : items) {
-        // System-Items (Fadenkreuz, Snap-Marker) überspringen
-        if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
+        // Fadenkreuz und Marker ignorieren
+        if (item == scene->getCrosshairItem()) {
             continue;
         }
 
+        // 1. Reguläre CAD-Entities prüfen
         auto entity = item->data(Qt::UserRole).value<CadEntity*>();
         if (entity) {
             auto type = entity->type();
@@ -204,24 +212,37 @@ void ParallelConstructionLineTool::updateHoverEntity(CadScene* scene, const QPoi
                 type == EntityType::ConstructionHvLine ||
                 type == EntityType::ConstructionLine)
             {
-                newHover = entity;
+                newHoverEntity = entity;
+                break;
+            }
+        }
+        // 2. NEU: SystemItems prüfen (Hauptachsen/Mittellinien)
+        else if (item->data(Qt::UserRole + 1).toString() == "SystemItem") {
+            if (auto* lineItem = dynamic_cast<QGraphicsLineItem*>(item)) {
+                newHoverSystemLine = lineItem;
                 break;
             }
         }
     }
 
-    // 3. Wenn sich das gehoverte Element geändert hat, Farbe aktualisieren
-    if (m_hoveredEntity != newHover) {
+    // Hover-Status aktualisieren
+    if (m_hoveredEntity != newHoverEntity || m_hoveredSystemLine != newHoverSystemLine) {
         clearHover();
-        m_hoveredEntity = newHover;
+        m_hoveredEntity = newHoverEntity;
+        m_hoveredSystemLine = newHoverSystemLine;
 
-        if (m_hoveredEntity && m_hoveredEntity->getGraphicsItem()) {
-            if (auto lineItem = dynamic_cast<QGraphicsLineItem*>(m_hoveredEntity->getGraphicsItem())) {
-                QPen pen = lineItem->pen();
-                pen.setColor(Qt::magenta); // Lila-Hervorhebung
-                pen.setWidth(0);
-                lineItem->setPen(pen);
-            }
+        QGraphicsLineItem* targetItem = nullptr;
+        if (m_hoveredEntity) {
+            targetItem = dynamic_cast<QGraphicsLineItem*>(m_hoveredEntity->getGraphicsItem());
+        } else if (m_hoveredSystemLine) {
+            targetItem = m_hoveredSystemLine;
+        }
+
+        if (targetItem) {
+            QPen pen = targetItem->pen();
+            pen.setColor(Qt::magenta); // Lila-Hervorhebung
+            pen.setWidth(0);
+            targetItem->setPen(pen);
         }
     }
 }
@@ -237,28 +258,47 @@ void ParallelConstructionLineTool::clearHover()
             }
         }
     }
+    else if (m_hoveredSystemLine) {
+        // Hauptachse auf die Strich-Punkt-Punkt-Formatierung zurücksetzen
+        QList<qreal> pattern;
+        pattern << 9.0 << 3.0 << 3.0 << 3.0 << 3.0 << 3.0;
+        QPen redPen(Qt::red, 0);
+        redPen.setDashPattern(pattern);
+        m_hoveredSystemLine->setPen(redPen);
+    }
+
     m_hoveredEntity = nullptr;
+    m_hoveredSystemLine = nullptr;
 }
 
 bool ParallelConstructionLineTool::getEntityLineParams(const CadEntity* entity, QPointF& basePoint, QPointF& dirVector, QPointF& normalVector) const
 {
-    if (!entity) return false;
-
     QPointF p1, p2;
-    if (entity->type() == EntityType::Line) {
-        auto* line = static_cast<const CadLine*>(entity);
-        p1 = line->start();
-        p2 = line->end();
-    } else if (entity->type() == EntityType::ConstructionLine) {
-        auto* cline = static_cast<const CadConstructionLine*>(entity);
-        p1 = cline->p1();
-        p2 = cline->p2();
-    } else if (entity->type() == EntityType::ConstructionHvLine) {
-        auto* cline = static_cast<const CadConstructionHvLine*>(entity);
-        p1 = cline->getPosition();
-        p2 = (cline->getOrientation() == ConstructionLineOrientation::Horizontal)
-                 ? QPointF(p1.x() + 1.0, p1.y())
-                 : QPointF(p1.x(), p1.y() + 1.0);
+
+    if (entity) {
+        if (entity->type() == EntityType::Line) {
+            auto* line = static_cast<const CadLine*>(entity);
+            p1 = line->start();
+            p2 = line->end();
+        } else if (entity->type() == EntityType::ConstructionLine) {
+            auto* cline = static_cast<const CadConstructionLine*>(entity);
+            p1 = cline->p1();
+            p2 = cline->p2();
+        } else if (entity->type() == EntityType::ConstructionHvLine) {
+            auto* cline = static_cast<const CadConstructionHvLine*>(entity);
+            p1 = cline->getPosition();
+            p2 = (cline->getOrientation() == ConstructionLineOrientation::Horizontal)
+                     ? QPointF(p1.x() + 1.0, p1.y())
+                     : QPointF(p1.x(), p1.y() + 1.0);
+        } else {
+            return false;
+        }
+    }
+    // NEU: Falls eine System-Hauptachse gewählt wurde
+    else if (m_selectedSystemLine) {
+        QLineF line = m_selectedSystemLine->line();
+        p1 = line.p1();
+        p2 = line.p2();
     } else {
         return false;
     }
@@ -281,7 +321,7 @@ void ParallelConstructionLineTool::updatePreview(CadScene* scene, const QPointF&
     }
     m_previewItems.clear();
 
-    if (!m_selectedEntity) return;
+    if (!m_selectedEntity && !m_selectedSystemLine) return;
 
     QPointF mouseVector = mousePos - m_basePoint;
     double projection = mouseVector.x() * m_normalVector.x() + mouseVector.y() * m_normalVector.y();

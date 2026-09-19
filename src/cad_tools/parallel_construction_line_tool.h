@@ -49,9 +49,11 @@ private:
 
     State m_state = State::SelectBaseEntity;
     QPointF m_currentMousePos;
+    QGraphicsLineItem* m_selectedSystemLine = nullptr;
 
     // Hover-Status
     CadEntity* m_hoveredEntity = nullptr;
+    QGraphicsLineItem* m_hoveredSystemLine = nullptr;
 
     // Ausgewähltes Basiselement
     const CadEntity* m_selectedEntity = nullptr;
