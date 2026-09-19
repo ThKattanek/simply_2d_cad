@@ -50,6 +50,7 @@ private:
     State m_state = State::SelectBaseEntity;
     QPointF m_currentMousePos;
     QGraphicsLineItem* m_selectedSystemLine = nullptr;
+    bool m_hasEnteredNewDistanceInCurrentCycle = false;
 
     // Hover-Status
     CadEntity* m_hoveredEntity = nullptr;

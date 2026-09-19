@@ -148,6 +148,14 @@ void ParallelConstructionLineTool::handlePointInput(CadScene* scene, const QPoin
 void ParallelConstructionLineTool::handleValueInput(CadScene* scene, double value)
 {
     if (m_state == State::PositionLines) {
+
+        // Wenn in diesem Durchgang noch kein neuer Wert eingegeben wurde:
+        // Alte Abstände verwerfen!
+        if (!m_hasEnteredNewDistanceInCurrentCycle) {
+            m_distances.clear();
+            m_hasEnteredNewDistanceInCurrentCycle = true;
+        }
+
         if (m_distances.size() < 255) {
             m_distances.push_back(std::abs(value));
         }
@@ -161,6 +169,10 @@ void ParallelConstructionLineTool::resetForNextEntity(CadScene* scene)
     m_state = State::SelectBaseEntity;
     m_selectedEntity = nullptr;
     m_selectedSystemLine = nullptr;
+
+    // Flag zurücksetzen, damit die behaltenen m_distances beim nächsten Element
+    // wieder überschrieben werden können, sobald man eine Zahl eintippt:
+    m_hasEnteredNewDistanceInCurrentCycle = false;
 
     clearHover();
 
