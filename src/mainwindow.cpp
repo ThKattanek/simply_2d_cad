@@ -516,10 +516,8 @@ void MainWindow::loadSnapSettingsToUi()
     const QSignalBlocker b1(ui->actionSnapEndpoint);
     ui->actionSnapEndpoint->setChecked(settings.value("Snap/EndpointSnapEnabled", true).toBool());
 
-
     const QSignalBlocker b2(ui->actionSnapMidpoint);
     ui->actionSnapMidpoint->setChecked(settings.value("Snap/MidpointSnapEnabled", true).toBool());
-
 
     const QSignalBlocker b3(ui->actionSnapIntersection);
     ui->actionSnapIntersection->setChecked(settings.value("Snap/IntersectionSnapEnabled", true).toBool());
@@ -529,6 +527,9 @@ void MainWindow::loadSnapSettingsToUi()
 
     const QSignalBlocker b5(ui->actionSnapConstructionLine);
     ui->actionSnapConstructionLine->setChecked(settings.value("Snap/ConstructionLineSnapEnabled", true).toBool());
+
+    const QSignalBlocker b6(ui->actionSnapPerpendicular);
+    ui->actionSnapPerpendicular->setChecked(settings.value("Snap/PerpendicularSnapEnabled", true).toBool());
 }
 
 void MainWindow::connectSnapSettingsToUi()
@@ -571,6 +572,12 @@ void MainWindow::connectSnapSettingsToUi()
     connect(ui->actionSnapConstructionLine, &QAction::toggled, this, [this](bool checked) {
         QSettings settings;
         settings.setValue("Snap/ConstructionLineSnapEnabled", checked);
+        m_cadScene->loadSettings();
+    });
+
+    connect(ui->actionSnapPerpendicular, &QAction::toggled, this, [this](bool checked) {
+        QSettings settings;
+        settings.setValue("Snap/PerpendicularSnapEnabled", checked);
         m_cadScene->loadSettings();
     });
 }

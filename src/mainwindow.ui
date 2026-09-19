@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -114,6 +114,7 @@
    <addaction name="actionSnapMidpoint"/>
    <addaction name="actionSnapIntersection"/>
    <addaction name="actionSnapTangent"/>
+   <addaction name="actionSnapPerpendicular"/>
    <addaction name="actionSnapConstructionLine"/>
   </widget>
   <widget class="QToolBar" name="tb_commandLine">
@@ -553,6 +554,24 @@
    </property>
    <property name="statusTip">
     <string>Draw a parallel construction line from a straight element.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionSnapPerpendicular">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/snap_perpendicular.svg</normaloff>:/icons/icons_svg/snap_perpendicular.svg</iconset>
+   </property>
+   <property name="text">
+    <string>SnapPerpendicular</string>
+   </property>
+   <property name="toolTip">
+    <string>Snap at the Perpendicular.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
