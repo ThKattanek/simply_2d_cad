@@ -151,6 +151,7 @@
    <addaction name="actionToolParallelConstructionLine"/>
    <addaction name="actionToolConstructionLineH"/>
    <addaction name="actionToolConstructionLineV"/>
+   <addaction name="actionDeleteAllConstructionLines"/>
   </widget>
   <action name="action_Close">
    <property name="text">
@@ -572,6 +573,24 @@
    </property>
    <property name="toolTip">
     <string>Snap at the Perpendicular.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionDeleteAllConstructionLines">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/delete.svg</normaloff>:/icons/icons_svg/delete.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Delete All Construction Lines</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete all construction lines from the scene</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete all construction lines from the scene.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

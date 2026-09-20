@@ -27,6 +27,7 @@ public:
     bool removeEntity(CadEntity* entity);
     std::unique_ptr<CadEntity> takeEntity(CadEntity* entity);
     std::unique_ptr<CadEntity> removeLastEntity();
+    std::vector<CadEntity*> getConstructionEntities() const;
 
     // Zugriff auf alle Objekte (z. B. für DXF-Export)
     const std::vector<std::unique_ptr<CadEntity>>& getEntities() const { return m_entities; }
