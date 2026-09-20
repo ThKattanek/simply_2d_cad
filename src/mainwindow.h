@@ -54,6 +54,8 @@ private slots:
     void on_commandSubmitted();
     void on_actionNew_triggered();
 
+    void on_actionDeleteAllConstructionLines_triggered();
+
 private:
     void saveLayoutSettings();
     void loadLayoutSettings();

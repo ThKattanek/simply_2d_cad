@@ -67,6 +67,18 @@ std::unique_ptr<CadEntity> CadDocument::removeLastEntity()
     return entity;
 }
 
+std::vector<CadEntity *> CadDocument::getConstructionEntities() const
+{
+    std::vector<CadEntity*> result;
+    for (const auto& entity : m_entities) {
+        if (entity && (entity->type() == EntityType::ConstructionHvLine ||
+                       entity->type() == EntityType::ConstructionLine)) {
+            result.push_back(entity.get());
+        }
+    }
+    return result;
+}
+
 void CadDocument::clear() {
     m_entities.clear();
     emit documentCleared();

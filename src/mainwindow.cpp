@@ -40,6 +40,9 @@
 #include "./cad_tools/construction_line_tool.h"
 #include "./cad_tools/parallel_construction_line_tool.h"
 
+#include "./commands/remove_entity_command.h"
+#include "./commands/macro_command.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -634,6 +637,35 @@ void MainWindow::on_actionNew_triggered()
     if (result == QMessageBox::Yes) {
         m_cadScene->clearDocument();
         m_undoStack->clear(); // Undo-Speicher leeren
+    }
+}
+
+
+void MainWindow::on_actionDeleteAllConstructionLines_triggered()
+{
+    if (!m_cadDocument) return;
+
+    // Alle aktuellen Hilfslinien im Dokument suchen
+    auto constructionEntities = m_cadDocument->getConstructionEntities();
+
+    if (constructionEntities.empty()) {
+        return; // Keine Hilfslinien vorhanden, nichts zu tun
+    }
+
+    // Makro-Command erstellen, um alle Entfernungen in einer Undo-Aktion zu bündeln
+    auto macroCmd = std::make_unique<MacroCommand>(tr("Delete All Construction Lines"));
+
+    for (CadEntity* entity : constructionEntities) {
+        auto removeCmd = std::make_unique<RemoveEntityCommand>(
+            m_cadDocument, entity, tr("Remove Construction Line"));
+        macroCmd->addCommand(std::move(removeCmd));
+    }
+
+    // Über den UndoStack ausführen
+    if (m_undoStack) {
+        m_undoStack->push(std::move(macroCmd));
+    } else {
+        macroCmd->execute();
     }
 }
 
