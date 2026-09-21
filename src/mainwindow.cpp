@@ -110,6 +110,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolLine", std::make_shared<LineTool>(), ToolMode::Normal);
     m_toolManager->registerTool("actionToolHLine", std::make_shared<LineTool>(), LineToolMode::Horizontal);
     m_toolManager->registerTool("actionToolVLine", std::make_shared<LineTool>(), LineToolMode::Vertical);
+    m_toolManager->registerTool("actionToolPolyline", std::make_shared<LineTool>(), LineToolMode::Polyline);
     m_toolManager->registerTool("actionToolCircle0", std::make_shared<CircleTool>(), ToolMode::Normal);
     m_toolManager->registerTool("actionToolCircle1", std::make_shared<CircleTool>(), CircleToolMode::CenterDiameter);
     m_toolManager->registerTool("actionToolCircle2", std::make_shared<CircleTool>(), CircleToolMode::Diameter);
@@ -125,6 +126,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolLine);
     m_toolManager->bindAction(ui->actionToolHLine);
     m_toolManager->bindAction(ui->actionToolVLine);
+    m_toolManager->bindAction(ui->actionToolPolyline);
     m_toolManager->bindAction(ui->actionToolPoint);
     m_toolManager->bindAction(ui->actionToolCircle0);
     m_toolManager->bindAction(ui->actionToolCircle1);

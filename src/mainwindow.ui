@@ -85,6 +85,7 @@
    <addaction name="actionToolLine"/>
    <addaction name="actionToolHLine"/>
    <addaction name="actionToolVLine"/>
+   <addaction name="actionToolPolyline"/>
    <addaction name="actionToolCircle0"/>
    <addaction name="actionToolCircle1"/>
    <addaction name="actionToolCircle2"/>
@@ -610,6 +611,24 @@
    </property>
    <property name="statusTip">
     <string>Draw a Perpendicular Construction Line (90°).</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolPolyline">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_polyline.svg</normaloff>:/icons/icons_svg/tool_polyline.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Polyline</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Polyline</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a polyline.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
