@@ -203,6 +203,14 @@ void LineTool::lineStateMachine(CadScene *scene, const QPointF &point)
             } else {
                 command->execute();
             }
+
+            if(getToolMode() == LineToolMode::Polyline)
+            {
+                m_lineState = ToolState::Drawing;
+                m_startPoint = m_endPoint;
+
+                m_tempLine = scene->addLine(QLineF(m_startPoint, m_currentMousePos), QPen(Qt::gray, 0));
+            }
         }
 
         switch(getToolMode())

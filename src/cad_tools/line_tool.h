@@ -15,7 +15,8 @@
 
 enum LineToolMode {
     Horizontal = 1,
-    Vertical
+    Vertical,
+    Polyline
 };
 
 class QGraphicsLineItem;

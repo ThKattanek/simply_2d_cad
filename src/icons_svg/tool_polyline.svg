@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="tool_polyline.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="17.234375"
+     inkscape:cx="13.867634"
+     inkscape:cy="12.67815"
+     inkscape:window-width="2560"
+     inkscape:window-height="1312"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:2.001;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 17.924066,29.518162 8.0414838,2.3657904"
+       id="path2"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:2.001;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 17.633948,29.17002 28.117639,4.5126627"
+       id="path3"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.44402;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       id="rect2"
+       width="5.062037"
+       height="5.1573811"
+       x="25.147669"
+       y="2.6526906" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:2.001;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 3.8243381,28.241643 8.3316017,2.1917198"
+       id="path4"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.4;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       id="rect3"
+       width="4.9218345"
+       height="5.0378819"
+       x="1.7935126"
+       y="25.524704" />
+  </g>
+</svg>
