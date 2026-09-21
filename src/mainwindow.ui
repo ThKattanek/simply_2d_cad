@@ -31,7 +31,7 @@
      <x>0</x>
      <y>0</y>
      <width>1222</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -151,6 +151,7 @@
    <addaction name="actionToolParallelConstructionLine"/>
    <addaction name="actionToolConstructionLineH"/>
    <addaction name="actionToolConstructionLineV"/>
+   <addaction name="actionToolPerpendicularConstructionLine"/>
    <addaction name="actionDeleteAllConstructionLines"/>
   </widget>
   <action name="action_Close">
@@ -591,6 +592,24 @@
    </property>
    <property name="statusTip">
     <string>Delete all construction lines from the scene.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolPerpendicularConstructionLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_perpendicular_construction_line.svg</normaloff>:/icons/icons_svg/tool_perpendicular_construction_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Perpendicular Construction Line (90°)</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Perpendicular Construction Line (90°)</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a Perpendicular Construction Line (90°).</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
