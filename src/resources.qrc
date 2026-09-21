@@ -21,5 +21,6 @@
         <file>icons_svg/tool_parallel_construction_line.svg</file>
         <file>icons_svg/snap_perpendicular.svg</file>
         <file>icons_svg/delete.svg</file>
+        <file>icons_svg/tool_perpendicular_construction_line.svg</file>
     </qresource>
 </RCC>

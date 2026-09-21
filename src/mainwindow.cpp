@@ -36,9 +36,11 @@
 #include "./cad_tools/circle_tool.h"
 #include "./cad_tools/rectangle_tool.h"
 
+// construction line tools
 #include "./cad_tools/construction_hv_line_tool.h"
 #include "./cad_tools/construction_line_tool.h"
 #include "./cad_tools/parallel_construction_line_tool.h"
+#include "./cad_tools/perpendicular_construction_line_tool.h"
 
 #include "./commands/remove_entity_command.h"
 #include "./commands/macro_command.h"
@@ -116,6 +118,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolConstructionLineV", std::make_shared<ConstructionHvLineTool>(), 1);
     m_toolManager->registerTool("actionToolConstructionLine2P", std::make_shared<ConstructionLineTool>());
     m_toolManager->registerTool("actionToolParallelConstructionLine", std::make_shared<ParallelConstructionLineTool>());
+    m_toolManager->registerTool("actionToolPerpendicularConstructionLine", std::make_shared<PerpendicularConstructionLineTool>());
 
     // Automatically bind UI actions
     m_toolManager->bindAction(ui->actionToolSelect);
@@ -131,6 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolConstructionLineV);
     m_toolManager->bindAction(ui->actionToolConstructionLine2P);
     m_toolManager->bindAction(ui->actionToolParallelConstructionLine);
+    m_toolManager->bindAction(ui->actionToolPerpendicularConstructionLine);
 
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
