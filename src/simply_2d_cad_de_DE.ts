@@ -174,518 +174,533 @@
         <translation>Symbolleiste „Zeichenwerkzeuge“</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.ui" line="97"/>
         <source>Sanp Tools Toolbar</source>
         <translation>Symbolleiste &quot;Snap Tools&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="123"/>
+        <location filename="mainwindow.ui" line="124"/>
         <source>Commandline Toolbar</source>
         <translation>Kommandozeile</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="137"/>
+        <location filename="mainwindow.ui" line="138"/>
         <source>Construction Tools Toolbar</source>
         <translation>Symbolleiste &quot;Hilfslinien Tools&quot;</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="160"/>
+        <location filename="mainwindow.ui" line="161"/>
         <source>&amp;Exit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="172"/>
+        <location filename="mainwindow.ui" line="173"/>
         <source>Draw Line (L)</source>
         <translation>Linie zeichnen (L)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="175"/>
+        <location filename="mainwindow.ui" line="176"/>
         <source>Draw a line by specifying its start and end points.</source>
         <translation>Zeichne eine Linie. Klicken Sie für den Startpunkt und erneut für den Endpunkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="178"/>
+        <location filename="mainwindow.ui" line="179"/>
         <source>L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="193"/>
+        <location filename="mainwindow.ui" line="194"/>
         <source>Select (S)</source>
         <translation>Auswählen (S)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="196"/>
+        <location filename="mainwindow.ui" line="197"/>
         <source>Select objects or points by clicking or dragging a selection box.</source>
         <translation>Objekte durch Anklicken oder mit einem Auswahlrahmen auswählen.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="199"/>
+        <location filename="mainwindow.ui" line="200"/>
         <source>S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="211"/>
+        <location filename="mainwindow.ui" line="212"/>
         <source>Point</source>
         <translation>Punkt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="214"/>
+        <location filename="mainwindow.ui" line="215"/>
         <source>Draw Point (P)</source>
         <translation>Punkt zeichnen (P)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="217"/>
+        <location filename="mainwindow.ui" line="218"/>
         <source>Place a single point at the specified coordinates.</source>
         <translation>Platziert einen Punkt an den gewählten Koordinaten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="220"/>
+        <location filename="mainwindow.ui" line="221"/>
         <source>P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="228"/>
+        <location filename="mainwindow.ui" line="229"/>
         <source>Open...</source>
         <translation>Öffnen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="231"/>
+        <location filename="mainwindow.ui" line="232"/>
         <source>Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="236"/>
+        <location filename="mainwindow.ui" line="237"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="241"/>
+        <location filename="mainwindow.ui" line="242"/>
         <source>DXF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="246"/>
+        <location filename="mainwindow.ui" line="247"/>
         <source>Import</source>
         <translation>Importieren</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="251"/>
+        <location filename="mainwindow.ui" line="252"/>
         <source>Options...</source>
         <translation>Einstellungen...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="263"/>
+        <location filename="mainwindow.ui" line="264"/>
         <source>SnapPoint</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="266"/>
+        <location filename="mainwindow.ui" line="267"/>
         <source>Snap the dots.</source>
         <translation>Einrasten am Punkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="281"/>
+        <location filename="mainwindow.ui" line="282"/>
         <source>SnapEndpoint</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="284"/>
+        <location filename="mainwindow.ui" line="285"/>
         <source>Snap the endpoints.</source>
         <translation>Einrasten am Enpunkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="299"/>
+        <location filename="mainwindow.ui" line="300"/>
         <source>SnapMidpoint</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="302"/>
+        <location filename="mainwindow.ui" line="303"/>
         <source>Snap the midpoints.</source>
         <translation>Einrasten an Linienmitte.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="317"/>
+        <location filename="mainwindow.ui" line="318"/>
         <source>SnapIntersection</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="320"/>
+        <location filename="mainwindow.ui" line="321"/>
         <source>Snap the intersections.</source>
         <translation>Einrasten am Schnittpunkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="328"/>
+        <location filename="mainwindow.ui" line="329"/>
         <source>New...</source>
         <translation>Neu...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="340"/>
+        <location filename="mainwindow.ui" line="341"/>
         <source>Circle: Center - Radius</source>
         <translation>Kreis: Mittelpunkt – Radius</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="343"/>
+        <location filename="mainwindow.ui" line="344"/>
         <source>Draw Circle: Center - Radius</source>
         <translation>Kreis zeichnen: Mittelpunkt – Radius</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="439"/>
+        <location filename="mainwindow.ui" line="398"/>
+        <source>Horizontal Line</source>
+        <translation>Waagerechte Linie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="419"/>
+        <source>Vertical Line</source>
+        <translation>Senkrechte Linie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="440"/>
         <source>Circle: Center - Diameter (C)</source>
         <translation>Kreis: Mittelpunkt – Durchmesser (C)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="442"/>
+        <location filename="mainwindow.ui" line="443"/>
         <source>Draw Circle: Center - Diameter</source>
         <translation>Kreis zeichnen: Mittelpunkt – Durchmesser</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="445"/>
+        <location filename="mainwindow.ui" line="446"/>
         <source>Draw a circle by specifying its center and diameter.</source>
         <translation>Zeichne einen Kreis, indem du dessen Mittelpunkt und Durchmesser angibst.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="448"/>
+        <location filename="mainwindow.ui" line="449"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="460"/>
+        <location filename="mainwindow.ui" line="461"/>
         <source>Circle: Diameter</source>
         <translation>Kreis: Durchmesser</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="463"/>
+        <location filename="mainwindow.ui" line="464"/>
         <source>Draw Circle: Diameter over two points</source>
         <translation>Kreis zeichnen: Durchmesser über zwei Punkte</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="466"/>
+        <location filename="mainwindow.ui" line="467"/>
         <source>Draw a circle by specifying its diameter over two points.</source>
         <translation>Zeichne einen Kreis, indem du seinen Durchmesser über zwei Punkte angibst.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="478"/>
+        <location filename="mainwindow.ui" line="479"/>
         <source>Construction Line H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="481"/>
+        <location filename="mainwindow.ui" line="482"/>
         <source>Draw Horizontal Construction Line</source>
         <translation>Horizontale Hilfslinie zeichnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="484"/>
+        <location filename="mainwindow.ui" line="485"/>
         <source>Draw a horizontal construction line with a point.</source>
         <oldsource>Draw a horizontal construction line with a dot.</oldsource>
         <translation>Zeichne eine waagerechte Hilfslinie mit einem Punkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="496"/>
+        <location filename="mainwindow.ui" line="497"/>
         <source>Construction Line V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="499"/>
+        <location filename="mainwindow.ui" line="500"/>
         <source>Draw Vertical Construction Line</source>
         <translation>Senkrechte Hilfslinie zeichnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="502"/>
+        <location filename="mainwindow.ui" line="503"/>
         <source>Draw a vertical construction line with a point.</source>
         <oldsource>Draw a vertical construction line with a dot.</oldsource>
         <translation>Zeichne eine senkrechte Hilfslinie mit einem Punkt.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="517"/>
+        <location filename="mainwindow.ui" line="518"/>
         <source>SnapConstructionLine</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="520"/>
+        <location filename="mainwindow.ui" line="521"/>
         <source>Snap with construction lines.</source>
         <oldsource>Sanp with construction lines.</oldsource>
         <translation>An Hilfslinien einrasten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="535"/>
+        <location filename="mainwindow.ui" line="536"/>
         <source>Construction Line 2 Points</source>
         <translation>Hilfslinie 2 Punkte</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="538"/>
+        <location filename="mainwindow.ui" line="539"/>
         <source>Draw Construction Line with two Points</source>
         <translation>Hilfslinie mit zwei Punkten zeichnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="541"/>
+        <location filename="mainwindow.ui" line="542"/>
         <source>Draw a construction line with two points.</source>
         <translation>Zeichne eine Hilfslinie mit zwei Punkten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="553"/>
+        <location filename="mainwindow.ui" line="554"/>
         <source>Parallel Construction Line</source>
         <translation>Parallele Hilfslinie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="556"/>
+        <location filename="mainwindow.ui" line="557"/>
         <source>Draw Parallel Construction Line</source>
         <translation>Parallele Hilfslinie zeichnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="559"/>
+        <location filename="mainwindow.ui" line="560"/>
         <source>Draw a parallel construction line from a straight element.</source>
         <translation>Zeichne eine parallele Hilfslinie ausgehend von einem geraden Element.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="574"/>
+        <location filename="mainwindow.ui" line="575"/>
         <source>SnapPerpendicular</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="577"/>
+        <location filename="mainwindow.ui" line="578"/>
         <source>Snap at the Perpendicular.</source>
         <translation>An der Senkrechten einrasten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="589"/>
-        <location filename="mainwindow.cpp" line="662"/>
+        <location filename="mainwindow.ui" line="590"/>
+        <location filename="mainwindow.cpp" line="665"/>
         <source>Delete All Construction Lines</source>
         <translation>Alle Hilfslinien löschen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="592"/>
+        <location filename="mainwindow.ui" line="593"/>
         <source>Delete all construction lines from the scene</source>
         <translation>Alle Hilfslinien aus der Szene löschen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="595"/>
+        <location filename="mainwindow.ui" line="596"/>
         <source>Delete all construction lines from the scene.</source>
         <translation>Lösche alle Hilfslinien aus der Szene.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="607"/>
+        <location filename="mainwindow.ui" line="608"/>
         <source>Perpendicular Construction Line (90°)</source>
         <translation>Senkrechte Hilfslinie (90°)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="610"/>
+        <location filename="mainwindow.ui" line="611"/>
         <source>Draw Perpendicular Construction Line (90°)</source>
         <translation>Senkrechte Hilfslinie zeichnen (90°)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="613"/>
+        <location filename="mainwindow.ui" line="614"/>
         <source>Draw a Perpendicular Construction Line (90°).</source>
         <translation>Zeichne eine senkrechte Hilfsslinie (90°).</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="625"/>
+        <location filename="mainwindow.ui" line="626"/>
         <source>Polyline</source>
         <translation>Polylinie</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="628"/>
+        <location filename="mainwindow.ui" line="629"/>
         <source>Draw Polyline</source>
         <translation>Polylinie zeichnen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="631"/>
+        <location filename="mainwindow.ui" line="632"/>
         <source>Draw a polyline.</source>
         <translation>Zeichnen Sie eine Polylinie.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="346"/>
+        <location filename="mainwindow.ui" line="644"/>
+        <source>Parallel Line</source>
+        <translation>Parallele Linie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="647"/>
+        <source>Draw Parallel Line</source>
+        <translation>Zeichne eine parallele Linie</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="650"/>
+        <source>Create a Parallel Line.</source>
+        <translation>Erzeuge eine parallel Linie.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="347"/>
         <source>Draw a circle by specifying its center and radius.</source>
         <translation>Zeichne einen Kreis, indem du dessen Mittelpunkt und Radius angibst.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="361"/>
+        <location filename="mainwindow.ui" line="362"/>
         <source>SnapTangent</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="364"/>
+        <location filename="mainwindow.ui" line="365"/>
         <source>Snap the tangent.</source>
         <translation>Einrasten an einer Tangente.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="376"/>
+        <location filename="mainwindow.ui" line="377"/>
         <source>Rectangle</source>
         <translation>Rechteck</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="379"/>
+        <location filename="mainwindow.ui" line="380"/>
         <source>Draw Rectangle (R)</source>
         <translation>Rechteck zeichnen (R)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="382"/>
+        <location filename="mainwindow.ui" line="383"/>
         <source>Draw a rectangle with 2 points.</source>
         <translation>Zeichne ein Rechteck mit zwei Punkten.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="385"/>
+        <location filename="mainwindow.ui" line="386"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="397"/>
-        <source>ToolHLine</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="400"/>
+        <location filename="mainwindow.ui" line="401"/>
         <source>Draw Horizontal Line (H)</source>
         <translation>Horizontale Linie zeichnen (H)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="403"/>
+        <location filename="mainwindow.ui" line="404"/>
         <source>Draw a horizontal line by specifying its start and end points or its length.</source>
         <translation>Zeichnen Sie eine horizontale Linie, indem Sie deren Start- und Endpunkt oder deren Länge angeben.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="406"/>
+        <location filename="mainwindow.ui" line="407"/>
         <source>H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="418"/>
-        <source>ToolVLine</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="421"/>
+        <location filename="mainwindow.ui" line="422"/>
         <source>Draw Vertical Line (V)</source>
         <translation>Vertikale Linie zeichnen (V)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="424"/>
+        <location filename="mainwindow.ui" line="425"/>
         <source>Draw a vertical line by specifying its start and end points or its length.</source>
         <translation>Zeichnen Sie eine vertikale Linie, indem Sie deren Start- und Endpunkt oder deren Länge angeben.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="427"/>
+        <location filename="mainwindow.ui" line="428"/>
         <source>V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="173"/>
-        <location filename="mainwindow.cpp" line="347"/>
+        <location filename="mainwindow.cpp" line="176"/>
+        <location filename="mainwindow.cpp" line="350"/>
         <source>&amp;Language</source>
         <translation>&amp;Sprache</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="248"/>
+        <location filename="mainwindow.cpp" line="251"/>
         <source>TEST TSET</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="350"/>
-        <location filename="mainwindow.cpp" line="596"/>
+        <location filename="mainwindow.cpp" line="353"/>
+        <location filename="mainwindow.cpp" line="599"/>
         <source>&amp;Edit</source>
         <translation>Berarbeiten</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="379"/>
+        <location filename="mainwindow.cpp" line="382"/>
         <source>Save Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei speichern</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="379"/>
-        <location filename="mainwindow.cpp" line="390"/>
+        <location filename="mainwindow.cpp" line="382"/>
+        <location filename="mainwindow.cpp" line="393"/>
         <source>Simply 2D CAD File (*.s2dcad)</source>
         <translation>Simply 2D CAD Datei (*.s2dcad)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="382"/>
-        <location filename="mainwindow.cpp" line="395"/>
-        <location filename="mainwindow.cpp" line="407"/>
-        <location filename="mainwindow.cpp" line="415"/>
+        <location filename="mainwindow.cpp" line="385"/>
+        <location filename="mainwindow.cpp" line="398"/>
+        <location filename="mainwindow.cpp" line="410"/>
+        <location filename="mainwindow.cpp" line="418"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="382"/>
+        <location filename="mainwindow.cpp" line="385"/>
         <source>The file could not be saved.</source>
         <translation>Die Datei konnte nicht gespeichert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="390"/>
+        <location filename="mainwindow.cpp" line="393"/>
         <source>Open Simply 2D CAD File</source>
         <translation>Simply 2D CAD Datei laden</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="395"/>
+        <location filename="mainwindow.cpp" line="398"/>
         <source>The file could not be loaded.</source>
         <translation>Die Datei konnte nicht geladen werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="405"/>
+        <location filename="mainwindow.cpp" line="408"/>
         <source>Export as DXF</source>
         <translation>Exportieren als DXF</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="405"/>
-        <location filename="mainwindow.cpp" line="413"/>
+        <location filename="mainwindow.cpp" line="408"/>
+        <location filename="mainwindow.cpp" line="416"/>
         <source>DXF File (*.dxf)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="407"/>
+        <location filename="mainwindow.cpp" line="410"/>
         <source>The DXF file could not be exported.</source>
         <translation>Die DXF-Datei konnte nicht exportiert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="413"/>
+        <location filename="mainwindow.cpp" line="416"/>
         <source>Import DXF</source>
         <translation>DXF importieren</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="415"/>
+        <location filename="mainwindow.cpp" line="418"/>
         <source>The DXF file could not be imported.</source>
         <translation>Die DXF-Datei konnte nicht importiert werden.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="625"/>
+        <location filename="mainwindow.cpp" line="628"/>
         <source>Undo</source>
         <translation>Rückgängig</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="625"/>
+        <location filename="mainwindow.cpp" line="628"/>
         <source>Undo: %1</source>
         <translation>Rückgängig: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="629"/>
+        <location filename="mainwindow.cpp" line="632"/>
         <source>Redo</source>
         <translation>Wiederherstellen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="629"/>
+        <location filename="mainwindow.cpp" line="632"/>
         <source>Redo: %1</source>
         <translation>Wiederherstellen: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="638"/>
+        <location filename="mainwindow.cpp" line="641"/>
         <source>New Document</source>
         <translation>Neues Dokument</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="639"/>
+        <location filename="mainwindow.cpp" line="642"/>
         <source>Are you sure you want to reset the current document? All unsaved data will be lost.</source>
         <translation>Möchten Sie das aktuelle Dokument wirklich zurücksetzen? Alle nicht gespeicherten Daten gehen dabei verloren.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="666"/>
+        <location filename="mainwindow.cpp" line="669"/>
         <source>Remove Construction Line</source>
         <translation>Hilfslinie entfernen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="190"/>
+        <location filename="mainwindow.ui" line="191"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="169"/>
+        <location filename="mainwindow.ui" line="170"/>
         <source>Line</source>
         <translation>Linie</translation>
     </message>
@@ -718,6 +733,34 @@
         <location filename="cad_tools/parallel_construction_line_tool.cpp" line="101"/>
         <source>Add Parallel Construction Line</source>
         <translation>Parallele Konstruktionslinien hinzufügen</translation>
+    </message>
+</context>
+<context>
+    <name>ParallelLineTool</name>
+    <message>
+        <location filename="cad_tools/parallel_line_tool.cpp" line="28"/>
+        <source>Parallel Line: Select a straight element.</source>
+        <translation>Parallele Linie: Wählen Sie ein gerades Element aus.</translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_line_tool.cpp" line="29"/>
+        <source>Parallel Line: Enter distance (Return) or move mouse to set side/distance. Click to apply.</source>
+        <translation>Parallele Linie: Geben Sie den Abstand ein (Enter) oder bewegen Sie die Maus, um die Seite/den Abstand festzulegen. Klicken Sie, um die Einstellung zu übernehmen.</translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_line_tool.cpp" line="30"/>
+        <source>Parallel Line: Enter another distance or move mouse to select side. Click to apply.</source>
+        <translation>Parallele Linie: Geben Sie einen anderen Abstand ein oder bewegen Sie die Maus, um eine Seite auszuwählen. Klicken Sie, um die Einstellung zu übernehmen.</translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_line_tool.cpp" line="76"/>
+        <source>Add Parallel Lines</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cad_tools/parallel_line_tool.cpp" line="93"/>
+        <source>Add Parallel Line</source>
+        <translation></translation>
     </message>
 </context>
 <context>

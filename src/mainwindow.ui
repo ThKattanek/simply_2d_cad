@@ -83,6 +83,7 @@
    <addaction name="actionToolSelect"/>
    <addaction name="actionToolPoint"/>
    <addaction name="actionToolLine"/>
+   <addaction name="actionToolParallelLine"/>
    <addaction name="actionToolHLine"/>
    <addaction name="actionToolVLine"/>
    <addaction name="actionToolPolyline"/>
@@ -394,7 +395,7 @@
      <normaloff>:/icons/icons_svg/tool_hline.svg</normaloff>:/icons/icons_svg/tool_hline.svg</iconset>
    </property>
    <property name="text">
-    <string>ToolHLine</string>
+    <string>Horizontal Line</string>
    </property>
    <property name="toolTip">
     <string>Draw Horizontal Line (H)</string>
@@ -415,7 +416,7 @@
      <normaloff>:/icons/icons_svg/tool_vline.svg</normaloff>:/icons/icons_svg/tool_vline.svg</iconset>
    </property>
    <property name="text">
-    <string>ToolVLine</string>
+    <string>Vertical Line</string>
    </property>
    <property name="toolTip">
     <string>Draw Vertical Line (V)</string>
@@ -629,6 +630,24 @@
    </property>
    <property name="statusTip">
     <string>Draw a polyline.</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolParallelLine">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_parallel_line.svg</normaloff>:/icons/icons_svg/tool_parallel_line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Parallel Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Parallel Line</string>
+   </property>
+   <property name="statusTip">
+    <string>Create a Parallel Line.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

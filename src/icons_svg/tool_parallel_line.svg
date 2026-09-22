@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   sodipodi:docname="tool_parallel_line.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="17.234375"
+     inkscape:cx="24.079782"
+     inkscape:cy="12.67815"
+     inkscape:window-width="2560"
+     inkscape:window-height="1312"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="27.503173,33.160471"
+       orientation="0.70710678,-0.70710678"
+       id="guide1"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="37.425204,30.607434"
+       orientation="0.70710678,-0.70710678"
+       id="guide2"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="31.81845,31.667951"
+       orientation="0.70710678,-0.70710678"
+       id="guide3"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:2.001;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 1.3873476,25.166394 25.100414,1.2633426"
+       id="path1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:2.001;stroke-linejoin:bevel;stroke-miterlimit:0;stroke-dasharray:none"
+       d="M 8.2921527,30.678633 30.844748,7.9360533"
+       id="path2"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
