@@ -68,8 +68,10 @@ set(PROJECT_SOURCES
     src/cad_tools/select_tool.h src/cad_tools/select_tool.cpp
     src/cad_tools/point_tool.h src/cad_tools/point_tool.cpp
     src/cad_tools/line_tool.h src/cad_tools/line_tool.cpp
+    src/cad_tools/parallel_line_tool.h src/cad_tools/parallel_line_tool.cpp
     src/cad_tools/circle_tool.h src/cad_tools/circle_tool.cpp
     src/cad_tools/rectangle_tool.h src/cad_tools/rectangle_tool.cpp
+    # all construction tools (construction line, construction hv line, etc.)
     src/cad_tools/construction_hv_line_tool.h src/cad_tools/construction_hv_line_tool.cpp
     src/cad_tools/construction_line_tool.h src/cad_tools/construction_line_tool.cpp
     src/cad_tools/parallel_construction_line_tool.h src/cad_tools/parallel_construction_line_tool.cpp
