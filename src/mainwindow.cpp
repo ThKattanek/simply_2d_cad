@@ -419,23 +419,36 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    Q_UNUSED(event);
-    saveLayoutSettings();
-
-    if(m_undoStack && !m_undoStack->isClean()) {
-        auto result = QMessageBox::question(
+    // 1. Nur fragen, wenn es überhaupt ungespeicherte Änderungen gibt
+    if (m_undoStack && !m_undoStack->isClean()) {
+        auto result = QMessageBox::warning(
             this,
-            tr("Unsaved Changes"),
-            tr("You have unsaved changes. Do you want to save before exiting?"),
-            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
-        );
+            tr("Simply 2D CAD"),
+            tr("The document has been modified.\nDo you want to save your changes?"),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+            QMessageBox::Yes
+            );
 
         if (result == QMessageBox::Yes) {
             on_actionSave_triggered();
-        } else if (result == QMessageBox::Cancel) {
-            event->ignore(); // Cancel the close event
-            return;
+
+            // Wenn nach dem Speichern der Stack sauber ist, war das Speichern erfolgreich
+            if (m_undoStack && m_undoStack->isClean()) {
+                saveLayoutSettings();
+                event->accept();
+            } else {
+                event->ignore(); // Speichern abgebrochen oder fehlgeschlagen
+            }
+        } else if (result == QMessageBox::No) {
+            saveLayoutSettings();
+            event->accept(); // Änderungen verwerfen und beenden
+        } else {
+            event->ignore(); // Abbrechen gedrückt
         }
+    } else {
+        // keine Änderungen vorhanden -> direkt beenden
+        saveLayoutSettings();
+        event->accept();
     }
 }
 
