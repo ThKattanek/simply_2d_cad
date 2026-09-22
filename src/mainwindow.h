@@ -47,6 +47,7 @@ private slots:
 
     void on_action_Close_triggered();
     void on_actionSave_triggered();
+    void on_actionSaveAs_triggered();
     void on_actionLoad_triggered();
     void on_actionExportAsDxf_triggered();
     void on_actionImport_triggered();
@@ -74,7 +75,12 @@ private:
     bool exportDxf(const QString &fileName);
     bool importDxf(const QString &fileName);
 
+    QString getDefaultSavePath() const;
+    bool saveDocument(const QString &filePath);
+    void updateWindowTitle();
+
     Ui::MainWindow *ui;
+    QString m_currentFilePath;
     QSettings m_settings;
     QTranslator m_translator;
     QTranslator m_translatorQtBase;

@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QDirIterator>
 #include <QLibraryInfo>
+#include <qevent.h>
 
 #include "./cad_tools/cad_tool_manager.h"
 #include "./dxf_manager.h"
@@ -97,12 +98,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
+    // Connect the promtTextChanged signal from CadToolManager to update the command prompt label
     connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
         m_commandPromt->setText(text);
     });
 
+    // Connect UndoStack signals to update the Undo/Redo actions in the Edit menu
     setupUndoRedoActions();
     connect(m_cadDocument, &CadDocument::documentCleared, m_undoStack, &UndoStack::clear);
+
+    connect(m_undoStack, &UndoStack::stackChanged, this, &MainWindow::updateWindowTitle);
 
     // Register tools under the objectNames from the UI (MainWindow.ui)
     // Select Tool
@@ -152,6 +157,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     createLanguageMenu();
     ui->retranslateUi(this);
+
+    // Update the window title based on the current file path
+    updateWindowTitle();
 }
 
 MainWindow::~MainWindow()
@@ -336,6 +344,56 @@ bool MainWindow::importDxf(const QString &fileName)
     return true;
 }
 
+QString MainWindow::getDefaultSavePath() const
+{
+    QSettings settings;
+    QString fallbackPath = QDir::homePath() + "/Simply2dCad";
+
+    // Gespeicherten Pfad aus der INI-Datei auslesen (Fallback: ~/Simply2dCad)
+    QString path = settings.value("General/DefaultSavePath", fallbackPath).toString();
+
+    // Sicherstellen, dass der Ordner tatsächlich auf der Festplatte existiert
+    QDir dir(path);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    return path;
+}
+
+bool MainWindow::saveDocument(const QString &filePath)
+{
+    if (!m_cadDocument) return false;
+
+    if (m_cadDocument->saveToFile(filePath)) {
+        m_currentFilePath = filePath;
+        if (m_undoStack) {
+            m_undoStack->setClean(); // <--- UndoStack auf gespeicherten Stand setzen
+        }
+        updateWindowTitle();
+        return true;
+    }
+    return false;
+}
+
+void MainWindow::updateWindowTitle()
+{
+    QString title = "Simply 2D CAD";
+
+    if (!m_currentFilePath.isEmpty()) {
+        QFileInfo fi(m_currentFilePath);
+        title += QString(" - [%1]").arg(fi.fileName());
+    } else {
+        title += QString(" - [%1]").arg(tr("Unsaved Document"));
+    }
+
+    // Stern hinzufügen, wenn Änderungen vorliegen
+    if (m_undoStack && !m_undoStack->isClean()) {
+        title += " *";
+    }
+
+    setWindowTitle(title);
+}
+
 void MainWindow::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
@@ -361,8 +419,37 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    Q_UNUSED(event);
-    saveLayoutSettings();
+    // 1. Nur fragen, wenn es überhaupt ungespeicherte Änderungen gibt
+    if (m_undoStack && !m_undoStack->isClean()) {
+        auto result = QMessageBox::warning(
+            this,
+            tr("Simply 2D CAD"),
+            tr("The document has been modified.\nDo you want to save your changes?"),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+            QMessageBox::Yes
+            );
+
+        if (result == QMessageBox::Yes) {
+            on_actionSave_triggered();
+
+            // Wenn nach dem Speichern der Stack sauber ist, war das Speichern erfolgreich
+            if (m_undoStack && m_undoStack->isClean()) {
+                saveLayoutSettings();
+                event->accept();
+            } else {
+                event->ignore(); // Speichern abgebrochen oder fehlgeschlagen
+            }
+        } else if (result == QMessageBox::No) {
+            saveLayoutSettings();
+            event->accept(); // Änderungen verwerfen und beenden
+        } else {
+            event->ignore(); // Abbrechen gedrückt
+        }
+    } else {
+        // keine Änderungen vorhanden -> direkt beenden
+        saveLayoutSettings();
+        event->accept();
+    }
 }
 
 void MainWindow::updateCursorPosition(const QPointF &position)
@@ -379,9 +466,37 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    // Wenn noch kein Pfad existiert (neues Dokument), wie "Speichern unter..." verhalten
+    if (m_currentFilePath.isEmpty()) {
+        on_actionSaveAs_triggered();
+    } else {
+        if (!saveDocument(m_currentFilePath)) {
+            QMessageBox::warning(this, tr("Error"), tr("The file could not be saved."));
+        }
+    }
+}
+
+void MainWindow::on_actionSaveAs_triggered()
+{
+    // Startverzeichnis: Ordner der aktuellen Datei oder ~/Simply2dCad
+    QString defaultDir = m_currentFilePath.isEmpty()
+                             ? getDefaultSavePath()
+                             : QFileInfo(m_currentFilePath).absolutePath();
+
+    QString fileName = QFileDialog::getSaveFileName(
+        this,
+        tr("Save Simply 2D CAD File"),
+        defaultDir,
+        tr("Simply 2D CAD File (*.s2dcad)")
+        );
+
     if (!fileName.isEmpty()) {
-        if (!m_cadDocument->saveToFile(fileName)) {
+        // Endung .s2dcad automatisch anhängen, falls vom Benutzer vergessen
+        if (!fileName.endsWith(".s2dcad", Qt::CaseInsensitive)) {
+            fileName += ".s2dcad";
+        }
+
+        if (!saveDocument(fileName)) {
             QMessageBox::warning(this, tr("Error"), tr("The file could not be saved."));
         }
     }
@@ -390,14 +505,24 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionLoad_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Simply 2D CAD File"), "", tr("Simply 2D CAD File (*.s2dcad)"));
+    QString defaultDir = m_currentFilePath.isEmpty()
+    ? getDefaultSavePath()
+    : QFileInfo(m_currentFilePath).absolutePath();
+
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        tr("Open Simply 2D CAD File"),
+        defaultDir,
+        tr("Simply 2D CAD File (*.s2dcad)")
+        );
+
     if (!fileName.isEmpty()) {
-        if (!m_cadDocument->loadFromFile(fileName))
-        {
+        if (!m_cadDocument->loadFromFile(fileName)) {
             m_cadView->centerOn(0, 0);
             QMessageBox::warning(this, tr("Error"), tr("The file could not be loaded."));
-        } else
-        {
+        } else {
+            m_currentFilePath = fileName;
+            updateWindowTitle();
             zoomToFitGeometry();
         }
     }
@@ -635,7 +760,6 @@ void MainWindow::updateUndoRedoActions()
 
 void MainWindow::on_actionNew_triggered()
 {
-    // Sicherheitsabfrage (falls ungespeicherte Änderungen vorliegen)
     auto result = QMessageBox::question(
         this,
         tr("New Document"),
@@ -645,7 +769,9 @@ void MainWindow::on_actionNew_triggered()
 
     if (result == QMessageBox::Yes) {
         m_cadScene->clearDocument();
-        m_undoStack->clear(); // Undo-Speicher leeren
+        m_undoStack->clear();
+        m_currentFilePath.clear(); // Aktuellen Pfad zurücksetzen
+        updateWindowTitle();
     }
 }
 
