@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "dl_creationadapter.h"
-#include "./cad_document//cad_entity.h"
+#include "./cad_document/cad_entity.h"
 
 // Hilfstruktur für Kreise
 struct DxfCircle {

@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::updateCursorPosition);
 
     // Connect the promtTextChanged signal from CadToolManager to update the command prompt label
-    connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
+    connect(m_toolManager, &CadToolManager::promptTextChanged, this, [this](const QString& text) {
         m_commandPromt->setText(text);
     });
 
@@ -165,18 +165,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-
-    if(m_cadView != nullptr)
-        delete m_cadView;
-
-    if(m_cadScene != nullptr)
-        delete m_cadScene;
-
-    if(m_toolManager != nullptr)
-        delete m_toolManager;
-
-    if(m_cadDocument != nullptr)
-        delete m_cadDocument;
 }
 
 void MainWindow::createLanguageMenu()
@@ -580,7 +568,7 @@ void MainWindow::on_commandSubmitted()
             if (okLen && okAngle) {
                 // Grad in Radian umrechnen (Standard CAD: 0° = Rechts, 90° = Oben)
                 double angleRad = qDegreesToRadians(angleDeg);
-                parsedPoint = QPointF(length * std::cos(angleRad), -length * std::sin(angleRad));
+                parsedPoint = QPointF(length * std::cos(angleRad), length * std::sin(angleRad));
                 validParse = true;
             }
         }

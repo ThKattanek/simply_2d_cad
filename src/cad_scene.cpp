@@ -34,15 +34,6 @@ CadScene::CadScene(CadToolManager* toolManager, QObject* parent)
 
 CadScene::~CadScene()
 {
-    if(m_centerHLine != nullptr)
-        delete m_centerHLine;
-
-    if(m_centerVLine != nullptr)
-        delete m_centerVLine;
-
-    if(m_crosshair != nullptr)
-        delete m_crosshair;
-
     if(m_dashDotDotPenRed != nullptr)
         delete m_dashDotDotPenRed;
 

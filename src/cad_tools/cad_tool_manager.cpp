@@ -30,11 +30,9 @@ void CadToolManager::retranslateAllTools()
 
 void CadToolManager::registerTool(const QString& actionName, std::shared_ptr<CadTool> tool, uint32_t tool_mode)
 {
-    Q_UNUSED(tool_mode);
-
     m_tools[actionName] = tool;
     tool.get()->setToolMode(tool_mode);
-    connect(tool.get(), &CadTool::promptTextChanged, this, &::CadToolManager::promtTextChanged);
+    connect(tool.get(), &CadTool::promptTextChanged, this, &::CadToolManager::promptTextChanged);
 }
 
 void CadToolManager::bindAction(QAction* action)
