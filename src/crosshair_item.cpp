@@ -48,24 +48,18 @@ void CrosshairItem::setPosition(const QPointF &pos) {
 
 const QBitmap &CrosshairItem::getPatternBitmap()
 {
-    static std::unique_ptr<QBitmap> s_bitmap = nullptr;
+    static QBitmap* s_bitmap = nullptr;
 
     if (!s_bitmap) {
+        s_bitmap = new QBitmap(CROSSHAIR_SIZE, CROSSHAIR_SIZE);
+        s_bitmap->fill(Qt::color0);
 
-        // Create a 11x11 bitmap with transparent background
-        auto bitmap = std::make_unique<QBitmap>(CROSSHAIR_SIZE, CROSSHAIR_SIZE);
-        bitmap->fill(Qt::color0); // Fill with transparent color
-
-        // Draw a simple pattern (cross) on the image
-        QPainter p(bitmap.get());
+        QPainter p(s_bitmap);
         p.setPen(QPen(Qt::color1, 1));
 
-        int center = (CROSSHAIR_SIZE - 1) / 2; // Pixel 12 bei Größe 25
+        int center = (CROSSHAIR_SIZE - 1) / 2;
         p.drawLine(0, center, CROSSHAIR_SIZE - 1, center);
         p.drawLine(center, 0, center, CROSSHAIR_SIZE - 1);
-
-        // Create the pixmap from the image and store it in the static unique_ptr
-        s_bitmap = std::move(bitmap);
     }
 
     return *s_bitmap;

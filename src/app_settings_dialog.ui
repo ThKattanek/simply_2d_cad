@@ -78,7 +78,7 @@
             </spacer>
            </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="lbDefaufltDocFolder">
+            <widget class="QLabel" name="lbDefaultDocFolder">
              <property name="text">
               <string>Default Document Folder</string>
              </property>

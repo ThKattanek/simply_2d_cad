@@ -95,7 +95,7 @@
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
    <property name="windowTitle">
-    <string>Sanp Tools Toolbar</string>
+    <string>Snap Tools Toolbar</string>
    </property>
    <property name="movable">
     <bool>false</bool>

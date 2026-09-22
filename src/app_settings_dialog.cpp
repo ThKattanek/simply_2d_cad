@@ -59,6 +59,7 @@ void AppSettingsDialog::onApply()
 
 void AppSettingsDialog::onAbort()
 {
+    reject(); // Close the dialog with QDialog::Rejected result
 }
 
 void AppSettingsDialog::onDefault()

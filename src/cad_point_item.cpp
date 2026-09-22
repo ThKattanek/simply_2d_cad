@@ -10,18 +10,12 @@
 
 #include "cad_point_item.h"
 #include <QPainter>
-#include <qbitmap.h>
+#include <QBitmap>
 
 CadPointItem::CadPointItem(QGraphicsItem *parent) : QGraphicsItem(parent)
 {
     // Set the point to be always not affected by transformations (like scaling or rotation)
     setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
-
-    // Set the point to be selectable
-    //setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-    // Set the point to be movable
-    //setAcceptHoverEvents(true);
 
     // Set the point to be movable
     m_pen = QPen(Qt::white, 0); // Set the pen color to red and width to 0 (cosmetic pen)
@@ -66,25 +60,18 @@ void CadPointItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 const QBitmap &CadPointItem::getPatternBitmap()
 {
-    static std::unique_ptr<QBitmap> s_bitmap = nullptr;
+    static QBitmap* s_bitmap = nullptr;
 
     if (!s_bitmap) {
+        s_bitmap = new QBitmap(11, 11);
+        s_bitmap->fill(Qt::color0);
 
-        // Create a 11x11 bitmap with transparent background
-        auto bitmap = std::make_unique<QBitmap>(11, 11);
-        bitmap->fill(Qt::color0); // Fill with transparent color
-
-        // Draw a simple pattern (cross) on the image
-        QPainter p(bitmap.get());
+        QPainter p(s_bitmap);
         p.setPen(QPen(Qt::color1, 1));
-
         p.drawLine(1, 1, 9, 9);
         p.drawLine(1, 9, 9, 1);
         p.drawLine(0, 5, 10, 5);
         p.drawLine(5, 0, 5, 10);
-
-        // Create the pixmap from the image and store it in the static unique_ptr
-        s_bitmap = std::move(bitmap);
     }
 
     return *s_bitmap;
