@@ -28,6 +28,9 @@ public:
     QString redoText() const;
     void clear();
 
+    void setClean();        // Marks the current state as clean (no unsaved changes).
+    bool isClean() const;   // Returns true if the current state is clean (no unsaved changes), false otherwise.
+
 public slots:
     void undo();
     void redo();
@@ -36,10 +39,14 @@ signals:
     void stackChanged();
     void canUndoChanged(bool canUndo);
     void canRedoChanged(bool canRedo);
+    void cleanChanged(bool isClean);
 
 private:
     void emitStackSignals();
 
     std::vector<CommandPtr> m_undoStack;
     std::vector<CommandPtr> m_redoStack;
+
+    size_t m_cleanIndex = 0;        // Index of the last clean state in the undo stack
+    bool m_hasCleanState = true;    // Flag to indicate if a clean state has been set
 };

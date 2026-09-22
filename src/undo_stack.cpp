@@ -22,6 +22,11 @@ void UndoStack::push(CommandPtr command)
     }
 
     command->execute();
+
+    if(m_hasCleanState && m_undoStack.size() < m_cleanIndex) {
+        m_hasCleanState = false; // The clean state is no longer valid
+    }
+
     m_undoStack.push_back(std::move(command));
     m_redoStack.clear();
     emitStackSignals();
@@ -83,7 +88,21 @@ void UndoStack::clear()
 {
     m_undoStack.clear();
     m_redoStack.clear();
+    m_cleanIndex = 0;
+    m_hasCleanState = true;
     emitStackSignals();
+}
+
+void UndoStack::setClean()
+{
+    m_cleanIndex = m_undoStack.size();
+    m_hasCleanState = true;
+    emitStackSignals();
+}
+
+bool UndoStack::isClean() const
+{
+    return m_hasCleanState && (m_undoStack.size() == m_cleanIndex);
 }
 
 void UndoStack::emitStackSignals()
@@ -91,4 +110,5 @@ void UndoStack::emitStackSignals()
     emit stackChanged();
     emit canUndoChanged(canUndo());
     emit canRedoChanged(canRedo());
+    emit cleanChanged(isClean());
 }

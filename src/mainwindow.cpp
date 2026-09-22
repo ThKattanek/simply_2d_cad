@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QDirIterator>
 #include <QLibraryInfo>
+#include <qevent.h>
 
 #include "./cad_tools/cad_tool_manager.h"
 #include "./dxf_manager.h"
@@ -97,12 +98,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_cadScene, &CadScene::cursorPositionChanged,
             this, &MainWindow::updateCursorPosition);
 
+    // Connect the promtTextChanged signal from CadToolManager to update the command prompt label
     connect(m_toolManager, &CadToolManager::promtTextChanged, this, [this](const QString& text) {
         m_commandPromt->setText(text);
     });
 
+    // Connect UndoStack signals to update the Undo/Redo actions in the Edit menu
     setupUndoRedoActions();
     connect(m_cadDocument, &CadDocument::documentCleared, m_undoStack, &UndoStack::clear);
+
+    connect(m_undoStack, &UndoStack::stackChanged, this, &MainWindow::updateWindowTitle);
 
     // Register tools under the objectNames from the UI (MainWindow.ui)
     // Select Tool
@@ -361,6 +366,9 @@ bool MainWindow::saveDocument(const QString &filePath)
 
     if (m_cadDocument->saveToFile(filePath)) {
         m_currentFilePath = filePath;
+        if (m_undoStack) {
+            m_undoStack->setClean(); // <--- UndoStack auf gespeicherten Stand setzen
+        }
         updateWindowTitle();
         return true;
     }
@@ -370,10 +378,19 @@ bool MainWindow::saveDocument(const QString &filePath)
 void MainWindow::updateWindowTitle()
 {
     QString title = "Simply 2D CAD";
+
     if (!m_currentFilePath.isEmpty()) {
         QFileInfo fi(m_currentFilePath);
         title += QString(" - [%1]").arg(fi.fileName());
+    } else {
+        title += QString(" - [%1]").arg(tr("Unsaved Document"));
     }
+
+    // Stern hinzufügen, wenn Änderungen vorliegen
+    if (m_undoStack && !m_undoStack->isClean()) {
+        title += " *";
+    }
+
     setWindowTitle(title);
 }
 
@@ -404,6 +421,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     saveLayoutSettings();
+
+    if(m_undoStack && !m_undoStack->isClean()) {
+        auto result = QMessageBox::question(
+            this,
+            tr("Unsaved Changes"),
+            tr("You have unsaved changes. Do you want to save before exiting?"),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
+        );
+
+        if (result == QMessageBox::Yes) {
+            on_actionSave_triggered();
+        } else if (result == QMessageBox::Cancel) {
+            event->ignore(); // Cancel the close event
+            return;
+        }
+    }
 }
 
 void MainWindow::updateCursorPosition(const QPointF &position)
