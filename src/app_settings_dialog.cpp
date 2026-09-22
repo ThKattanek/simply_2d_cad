@@ -13,6 +13,8 @@
 
 #include <QSettings>
 #include <QPushButton>
+#include <QFileDialog>
+#include <QStandardPaths>
 
 AppSettingsDialog::AppSettingsDialog(QWidget *parent)
     : QDialog(parent)
@@ -28,11 +30,12 @@ AppSettingsDialog::AppSettingsDialog(QWidget *parent)
     ui->buttonBox->button(QDialogButtonBox::Abort)->setDefault(false);
     ui->buttonBox->button(QDialogButtonBox::Abort)->setAutoDefault(false);
 
-    ui->listSettingGroups->setCurrentRow(1); // Select the first group by default
+    ui->listSettingGroups->setCurrentRow(0); // Select the first group by default
 
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &AppSettingsDialog::onApply);
     connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &AppSettingsDialog::onDefault);
     connect(ui->buttonBox->button(QDialogButtonBox::Abort), &QPushButton::clicked, this, &AppSettingsDialog::onAbort);
+    connect(ui->btnBrowseSavePath, &QPushButton::clicked, this, &AppSettingsDialog::onBrowseButtonClicked);
 }
 
 AppSettingsDialog::~AppSettingsDialog()
@@ -63,7 +66,7 @@ void AppSettingsDialog::onDefault()
     // Reset settings to default values
     switch (ui->listSettingGroups->currentRow()) {
     case 0: // General Settings
-
+        ui->txtDefaultSavePath->setText(QDir::homePath() + "/Simply2dCad");
         break;
 
     case 1: // Snap Settings
@@ -72,6 +75,24 @@ void AppSettingsDialog::onDefault()
         break;
     default:
         break;
+    }
+}
+
+void AppSettingsDialog::onBrowseButtonClicked()
+{
+    QString current = ui->txtDefaultSavePath->text();
+    if (current.isEmpty()) {
+        current = QDir::homePath() + "/Simply2dCad";
+    }
+
+    QString dir = QFileDialog::getExistingDirectory(
+        this,
+        tr("Select Default Save Directory"),
+        current
+        );
+
+    if (!dir.isEmpty()) {
+        ui->txtDefaultSavePath->setText(dir);
     }
 }
 
@@ -84,7 +105,9 @@ void AppSettingsDialog::loadSettingsToUi()
 {
     // Load settings from the application settings to the UI elements
     QSettings settings;
+    QString defaultPath = QDir::homePath() + "/Simply2dCad";
 
+    ui->txtDefaultSavePath->setText(settings.value("General/DefaultSavePath", defaultPath).toString());
     ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 12).toInt());
     ui->spinSnapTolerance->setValue(settings.value("Snap/TolerancePixels", 10.0).toDouble());
 }
@@ -97,6 +120,7 @@ void AppSettingsDialog::saveSettingsFromUi()
     // Save settings from the UI elements to the application settings
     QSettings settings;
 
+    settings.setValue("General/DefaultSavePath", ui->txtDefaultSavePath->text().trimmed());
     settings.setValue("Snap/MarkerSize", ui->spinSnapMarkerSize->value());
     settings.setValue("Snap/TolerancePixels", ui->spinSnapTolerance->value());
 

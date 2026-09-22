@@ -31,6 +31,7 @@ private slots:
     void onApply();
     void onAbort();
     void onDefault();
+    void onBrowseButtonClicked();
 
 signals:
     void settingsChanged();
