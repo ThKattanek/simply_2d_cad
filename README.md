@@ -35,6 +35,7 @@ Die Zeichenwerkzeuge werden über den `CadToolManager` gesteuert und bieten inte
   * **Zentrum – Radius:** Kreis über Mittelpunkt und Außenpunkt/Radius.
   * **Zentrum – Durchmesser:** Kreis über Mittelpunkt und Durchmesser.
   * **2-Punkte-Durchmesser:** Kreis über zwei gegenüberliegende Punkte auf dem Umfang.
+  * **3-Punkte-Kreis:** Kreisberechnung über drei Umfangspunkte.
 * **Rechteck (`RectangleTool`):** Erstellt 4 verknüpfte Linien über zwei Eckpunkte.
 * **Konstruktionswerkzeuge:**
   * **H/V Hilfslinie (`ConstructionHvLineTool`):** Horizontale oder vertikale Hilfslinie an einer Koordinate.
@@ -71,7 +72,7 @@ Unterhalb der Zeichenfläche befindet sich eine interaktive Befehlszeile (`QLine
 * **Kartesische Koordinaten:** Eingabe von `X,Y` (z. B. `10,20`).
 * **Relativkoordinaten:** Eingabe mit `@` (z. B. `@50,0` für 50 Einheiten nach rechts vom letzten Punkt).
 * **Polarkoordinaten:** Eingabe von `Länge<Winkel` (z. B. `100<45`).
-* **Direkte Werte:** Eingabe einzelner Zahlen z. B. für Radien, Durchmeser oder Parallelenabstände.
+* **Direkte Werte:** Eingabe einzelner Zahlen z. B. für Radien, Durchmesser oder Parallelenabstände.
 * **Dynamisches Tippen:** Buchstabeneingaben auf der Zeichenfläche fokussieren automatisch die Befehlszeile.
 
 ---
@@ -79,6 +80,7 @@ Unterhalb der Zeichenfläche befindet sich eine interaktive Befehlszeile (`QLine
 ## 5. Grafik-Engine & Viewport (Qt GraphicsView)
 
 * **CAD-Koordinatensystem:** Y-Achse ist klassisch nach oben ausgerichtet (invertierter Qt-Standard).
+* **Render-Optionen:** Konfigurierbare **Kantenglättung (Anti-Aliasing)** für eine saubere Vektordarstellung (standardmäßig deaktiviert für scharfe CAD-Linien, optional aktivierbar).
 * **Navigation:**
   * **Pan:** Mittlere Maustaste gedrückt halten.
   * **Zoom:** Rechte Maustaste ziehen oder Mausrad (Zoom um den Mauszeiger).
@@ -109,8 +111,9 @@ Unterhalb der Zeichenfläche befindet sich eine interaktive Befehlszeile (`QLine
   * Automatische Erkennung installierter `.qm`-Übersetzungsdateien.
 * **Layout & Einstellungen (`AppSettingsDialog`):**
   * Speicherung der Fenstergeometrie, Toolbar-Positionen und Einstellungen über `QSettings` (INI-Format).
-  * Konfigurierbare Parameter: Standard-Speicherpfad, Fanggrenzen-Toleranz (Pixel) und Fangmarker-Größe.
-```
+  * Event-getriebenes Signal (`settingsChanged()`) für sofortiges Anwenden von Änderungen (z. B. Anwenden-Button).
+  * Konfigurierbare Parameter: Standard-Speicherpfad, Fanggrenzen-Toleranz (Pixel), Fangmarker-Größe und **Kantenglättung (Anti-Aliasing)**.
+
 ---
 ## Build
 ### Update all translation files (*.ts)
@@ -125,5 +128,3 @@ This project is licensed under the GNU General Public License version 2 - see th
 *   A very special thanks to **The Qt Company** for developing and maintaining the excellent **Qt Framework**. Their powerful platform made developing this CAD application a smooth and enjoyable experience.
 *   Thanks to **RibbonSoft** for providing the **dxflib**, enabling standard-compliant DXF support.
 *   Thanks to the open-source community for countless libraries, tutorials, and inspiration.
-
-eof
