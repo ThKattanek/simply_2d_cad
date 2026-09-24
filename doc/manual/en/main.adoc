@@ -1,0 +1,28 @@
+= Simply 2D CAD – User Manual
+Thorsten Kattanek
+v1.0, {docdate}
+:doctype: book
+:toc: left
+:toclevels: 2
+:toc-title: Table of Contents
+:icons: font
+:experimental:
+:imagesdir: ../images
+
+== Introduction
+Welcome to the *Simply 2D CAD* user manual.
+
+== Basic Navigation
+* *Pan:* Press and hold the middle mouse button and move the mouse.
+* *Zoom:* Press and hold the right mouse button and move the mouse up (zoom in) or down (zoom out).
+
+== Keyboard Shortcuts & Tools
+You can activate tools directly from the drawing area using keyboard shortcuts:
+
+* kbd:[L] – Draw Line
+* kbd:[C] – Circle (Center & Diameter)
+* kbd:[S] – Select Tool
+
+[NOTE]
+.Pro Tip
+Simply type a number or coordinate (e.g., `10,20` or `100<45`) to enter values directly into the command line.

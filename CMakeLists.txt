@@ -131,6 +131,25 @@ qt_add_translations(
         -extensions cpp,h,ui
 )
 
+# --- Handbuch-Target (Asciidoctor + Python) ---
+find_package(Python3 COMPONENTS Interpreter)
+
+if(Python3_FOUND)
+    add_custom_target(generate_docs
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/scripts/build_docs.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Generiere deutsche und englische Handbuch-PDFs..."
+    )
+endif()
+
+# Installation der erzeugten PDFs zusammen mit der Anwendung
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/bin/doc/manual_de.pdf
+    ${CMAKE_CURRENT_BINARY_DIR}/bin/doc/manual_en.pdf
+    DESTINATION ${CMAKE_INSTALL_BINDIR}/doc
+    OPTIONAL
+)
+
 # Installation & Deployment
 install(TARGETS ${PROJECT_NAME}
     BUNDLE  DESTINATION .
