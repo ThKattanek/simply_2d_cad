@@ -57,6 +57,8 @@ private slots:
 
     void on_actionDeleteAllConstructionLines_triggered();
 
+    void on_actionHelpManual_triggered();
+
 private:
     void saveLayoutSettings();
     void loadLayoutSettings();
@@ -80,6 +82,8 @@ private:
     QString getDefaultSavePath() const;
     bool saveDocument(const QString &filePath);
     void updateWindowTitle();
+
+    QString getManualPath(const QString& lang);
 
     Ui::MainWindow *ui;
     QString m_currentFilePath;

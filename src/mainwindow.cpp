@@ -25,6 +25,7 @@
 #include <QMessageBox>
 #include <QDirIterator>
 #include <QLibraryInfo>
+#include <QDesktopServices>
 #include <qevent.h>
 
 #include "./cad_tools/cad_tool_manager.h"
@@ -385,6 +386,43 @@ void MainWindow::updateWindowTitle()
     }
 
     setWindowTitle(title);
+}
+
+QString MainWindow::getManualPath(const QString &lang)
+{
+    QString fileName = QString("simply_2d_cad_manual_%1.pdf").arg(lang);
+
+    // 1. Prüfen im Build-Verzeichnis (während der Entwicklung)
+#ifdef DOC_DIR_BUILD
+    QString buildPath = QString("%1/%2").arg(DOC_DIR_BUILD, fileName);
+    if (QFile::exists(buildPath)) {
+        return buildPath;
+    }
+#endif
+
+    // 2. Prüfen im festen Installationspfad aus CMake (z.B. /usr/share/doc/simply_2d_cad/...)
+#ifdef DOC_DIR_INSTALL
+    QString installPath = QString("%1/%2").arg(DOC_DIR_INSTALL, fileName);
+    if (QFile::exists(installPath)) {
+        return installPath;
+    }
+#endif
+
+    // 3. Relativ zum Executable-Verzeichnis (z.B. AppDir/doc/ oder AppDir/../share/doc/...)
+    QString appDir = QCoreApplication::applicationDirPath();
+    QStringList relativePaths = {
+        appDir + "/doc/" + fileName,
+        appDir + "/../share/doc/simply_2d_cad/" + fileName,
+        appDir + "/../Resources/doc/" + fileName // macOS Fallback
+    };
+
+    for (const QString &path : relativePaths) {
+        if (QFile::exists(path)) {
+            return path;
+        }
+    }
+
+    return QString(); // Nicht gefunden
 }
 
 void MainWindow::changeEvent(QEvent *event)
@@ -804,6 +842,22 @@ void MainWindow::on_actionDeleteAllConstructionLines_triggered()
         m_undoStack->push(std::move(macroCmd));
     } else {
         macroCmd->execute();
+    }
+}
+
+
+void MainWindow::on_actionHelpManual_triggered()
+{
+    QString langCode = m_settings.value("Ui/Language", QLocale::system().name()).toString();
+    QString pdfFileName = getManualPath(langCode.startsWith("de", Qt::CaseInsensitive) ? "de" : "en");
+
+    if(!pdfFileName.isEmpty()) {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfFileName));
+    } else {
+        QMessageBox::warning(
+        this,
+        tr("Help"),
+        tr("The manual file could not be found."));
     }
 }
 

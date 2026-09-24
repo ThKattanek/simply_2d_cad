@@ -1,0 +1,102 @@
+# ==============================================================================
+# Asciidoctor PDF Theme für Simply 2D CAD
+# ==============================================================================
+page:
+  size: A4
+  margin: [20mm, 20mm, 20mm, 20mm]  # [Oben, Rechts, Unten, Links]
+  bg_color: FFFFFF
+
+# --- Schriftarten & Basisfarben ---
+base:
+  font_color: 222222                 # Dunkelgrau statt hartem Schwarz
+  font_family: Helvetica             # Standard-Schriftart (keine externen Fonts nötig)
+  font_size: 10.5
+  line_height_length: 14
+  link_font_color: 0066CC            # Blau für Hyperlinks
+
+# --- Überschriften ---
+heading:
+  font_style: bold
+  font_color: 111111
+  h1_font_size: 22
+  h2_font_size: 16
+  h3_font_size: 13
+  h4_font_size: 11
+  line_height: 1.2
+
+# --- Titelblatt (Cover Page) ---
+title_page:
+  align: center
+  title:
+    font_color: 003366               # Dunkelblau für den Buchtitel
+    font_size: 28
+    font_style: bold
+    top: 30%                         # Abstand von oben
+  subtitle:
+    font_color: 666666
+    font_size: 14
+    font_style: italic
+  authors:
+    font_color: 444444
+    font_size: 11
+
+# --- Hinweisfelder (NOTE, TIP, WARNING) ---
+admonition:
+  border_color: EEEEEE
+  border_width: 1
+  padding: [8, 12, 8, 12]
+  icon:
+    tip:
+      font_color: 008800
+    warning:
+      font_color: CC0000
+
+# --- Tastenkombinationen (kbd:[...]) ---
+kbd:
+  font_family: Courier
+  font_size: 9
+  font_style: bold
+  font_color: 333333
+  bg_color: F5F5F5
+  border_color: CCCCCC
+  border_width: 0.5
+  border_radius: 2
+  padding: [2, 4, 1, 4]
+
+# --- Quellcode- & Befehlsblöcke ---
+code:
+  font_family: Courier
+  font_size: 9.5
+  font_color: 222222
+  bg_color: F8F8F8
+  border_color: E1E1E8
+  border_width: 0.5
+
+# --- Tabellen ---
+table:
+  background_color: FFFFFF
+  head:
+    font_style: bold
+    font_color: FFFFFF
+    background_color: 003366         # Dunkelblaue Tabellenköpfe
+  grid_color: DDDDDD
+  grid_width: 0.5
+
+# --- Kopf- und Fußzeilen ---
+header:
+  height: 14mm
+  font_size: 9
+  font_color: 888888
+  recto:
+    right:
+      content: '{doc-title}'         # Buchtitel oben rechts
+
+footer:
+  height: 14mm
+  font_size: 9
+  font_color: 888888
+  recto:
+    left:
+      content: 'Simply 2D CAD'
+    right:
+      content: '{page-number} / {page-count}'  # Seitenzahl unten rechts

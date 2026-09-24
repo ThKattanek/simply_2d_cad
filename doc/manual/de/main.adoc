@@ -1,0 +1,28 @@
+= Simply 2D CAD – Benutzerhandbuch
+Thorsten Kattanek
+v1.0, {docdate}
+:doctype: book
+:toc: left
+:toclevels: 2
+:toc-title: Inhaltsverzeichnis
+:icons: font
+:experimental:
+:imagesdir: ../images
+
+== Einführung
+Willkommen im Benutzerhandbuch von *Simply 2D CAD*.
+
+== Grundlegende Navigation
+* *Pan (Verschieben):* Halte die mittlere Maustaste gedrückt und bewege die Maus.
+* *Zoom:* Halte die rechte Maustaste gedrückt und bewege die Maus nach oben (rein zoome) oder unten (raus zoomen).
+
+== Tastenkombinationen & Werkzeuge
+Im Zeichenfenster kannst du Werkzeuge direkt über Tastenkürzel aufrufen:
+
+* kbd:[L] – Linie zeichnen
+* kbd:[C] – Kreis (Zentrum & Durchmesser)
+* kbd:[S] – Auswahl-Werkzeug
+
+[NOTE]
+.Pro-Tipp
+Tippe einfach eine Zahl oder Koordinate (z. B. `10,20` oder `100<45`), um direkt Werte in die Befehlszeile einzugeben.
