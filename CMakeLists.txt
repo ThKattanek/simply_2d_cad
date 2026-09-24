@@ -156,7 +156,7 @@ endif()
 # Definiere den relativen oder absoluten Pfad für den Quell-/Buildcode
 target_compile_definitions(simply_2d_cad PRIVATE
     DOC_DIR_BUILD="${CMAKE_BINARY_DIR}/bin/doc"
-    DOC_DIR_INSTALL="${DOC_INSTALL_DIR}"
+    DOC_DIR_INSTALL="${DOC_INSTALL_VAL}"
 )
 
 # Installation der erzeugten PDFs
