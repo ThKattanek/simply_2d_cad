@@ -22,10 +22,6 @@ void RectangleTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* e
         QPointF currentPosition = scene->getSnapOrPosition(event->scenePos());
         rectangleStateMachine(scene, currentPosition);
     }
-    else if (event->button() == Qt::RightButton && m_rectState == ToolState::Drawing)
-    {
-        cancelDrawing(scene);
-    }
 }
 
 void RectangleTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
@@ -53,6 +49,7 @@ void RectangleTool::handlePointInput(CadScene* scene, const QPointF& point)
 void RectangleTool::activate(CadScene* scene)
 {
     Q_UNUSED(scene);
+    cancelDrawing(scene);
     emit promptTextChanged(promptMsg01);
 }
 
