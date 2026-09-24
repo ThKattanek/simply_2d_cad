@@ -16,8 +16,9 @@ if(CMAKE_POLICY_DEFAULT_CMP0020)
     set(dummy_cmp0020 ${CMAKE_POLICY_DEFAULT_CMP0020})
 endif()
 
-# --- Hier wird der Projektname ZENTRAL definiert ---
 project(simply_2d_cad LANGUAGES CXX)
+
+include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -91,14 +92,12 @@ target_include_directories(dxflib SYSTEM PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dxflib
 )
 
-# Verwendet automatisch "simply_2d_cad"
 qt_add_executable(${PROJECT_NAME}
     WIN32 MACOSX_BUNDLE
     ${PROJECT_SOURCES}
     ${MY_RESOURCES}
 )
 
-# Strenge Compiler-Regeln für dein Target
 target_compile_options(${PROJECT_NAME} PRIVATE
     -O2
     -Wall
@@ -107,12 +106,10 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     -pedantic
 )
 
-# Optional: Übergibt den Projektnamen als C++ Macro an deinen Quellcode
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     APP_NAME="${PROJECT_NAME}"
 )
 
-# Bibliotheken verlinken
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Qt::Core
@@ -136,30 +133,71 @@ find_package(Python3 COMPONENTS Interpreter)
 
 if(Python3_FOUND)
     add_custom_target(generate_docs
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/scripts/build_docs.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Generiere deutsche und englische Handbuch-PDFs..."
+        COMMAND Python3::Interpreter ${CMAKE_SOURCE_DIR}/doc/scripts/build_docs.py "${CMAKE_BINARY_DIR}/bin/doc"
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Generiere Dokumentation (PDFs) im Build-Verzeichnis..."
     )
+    add_dependencies(${PROJECT_NAME} generate_docs)
 endif()
 
-# Installation der erzeugten PDFs zusammen mit der Anwendung
+# Platformspezifischer Installationspfad für die Dokumentation
+if(WIN32)
+    set(DOC_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}/doc")
+    set(DOC_DIR_INSTALL_VAL "${CMAKE_INSTALL_PREFIX}/${DOC_INSTALL_DIR}")
+elseif(APPLE)
+    set(DOC_INSTALL_DIR "${PROJECT_NAME}.app/Contents/Resources/doc")
+    set(DOC_DIR_INSTALL_VAL "${DOC_INSTALL_DIR}")
+else() # Linux / UNIX FHS Standard
+    set(DOC_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/doc/${PROJECT_NAME}")
+    # CMAKE_INSTALL_FULL_DOCDIR liefert den ABSOLUTEN Pfad (z.B. /usr/local/share/doc/simply_2d_cad)
+    set(DOC_DIR_INSTALL_VAL "${CMAKE_INSTALL_FULL_DOCDIR}")
+endif()
+
+# Definiere den relativen oder absoluten Pfad für den Quell-/Buildcode
+target_compile_definitions(simply_2d_cad PRIVATE
+    DOC_DIR_BUILD="${CMAKE_BINARY_DIR}/bin/doc"
+    DOC_DIR_INSTALL="${DOC_INSTALL_DIR}"
+)
+
+# Installation der erzeugten PDFs
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/bin/doc/manual_de.pdf
-    ${CMAKE_CURRENT_BINARY_DIR}/bin/doc/manual_en.pdf
-    DESTINATION ${CMAKE_INSTALL_BINDIR}/doc
+    ${CMAKE_BINARY_DIR}/bin/doc/simply_2d_cad_manual_de.pdf
+    ${CMAKE_BINARY_DIR}/bin/doc/simply_2d_cad_manual_en.pdf
+    DESTINATION ${DOC_INSTALL_DIR}
     OPTIONAL
 )
 
-# Installation & Deployment
+# Installation der Hauptanwendung (Standard FHS)
 install(TARGETS ${PROJECT_NAME}
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-qt_generate_deploy_app_script(
-    TARGET ${PROJECT_NAME}
-    OUTPUT_SCRIPT deploy_script
-    NO_UNSUPPORTED_PLATFORM_ERROR
-)
-install(SCRIPT ${deploy_script})
+# Deployment-Skript NUR für Windows (MXE) oder macOS aktivieren,
+# da Linux bei System-Installationen die Qt-Bibliotheken vom System nutzt.
+if(WIN32 OR APPLE)
+    qt_generate_deploy_app_script(
+        TARGET ${PROJECT_NAME}
+        OUTPUT_SCRIPT deploy_script
+        NO_UNSUPPORTED_PLATFORM_ERROR
+    )
+    install(SCRIPT ${deploy_script})
+endif()
+
+# --- CPack Konfiguration (Erstellt ZIP oder NSIS Installer unter Linux) ---
+set(CPACK_PACKAGE_NAME "Simply2DCAD")
+set(CPACK_PACKAGE_VENDOR "Thorsten Kattanek")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+    set(CPACK_NSIS_DISPLAY_NAME "Simply 2D CAD")
+    set(CPACK_NSIS_PACKAGE_NAME "Simply 2D CAD")
+else()
+    set(CPACK_GENERATOR "TGZ;DEB")
+endif()
+
+include(CPack)

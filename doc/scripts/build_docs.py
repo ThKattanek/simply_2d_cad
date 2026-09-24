@@ -11,8 +11,13 @@ DE_MAIN = os.path.join(DOC_DIR, "de", "main.adoc")
 EN_MAIN = os.path.join(DOC_DIR, "en", "main.adoc")
 THEME_PATH = os.path.join(DOC_DIR, "pdf-theme.yml")
 
-# Zielordner für die generierten PDFs (z.B. bin/doc)
-OUT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "../../bin/doc"))
+# Zielordner ermitteln:
+# Falls beim Aufruf ein Zielordner übergeben wurde, verwende diesen.
+# Andernfalls erstelle 'bin/doc' im aktuellen Arbeitsverzeichnis.
+if len(sys.argv) > 1:
+    OUT_DIR = os.path.abspath(sys.argv[1])
+else:
+    OUT_DIR = os.path.abspath(os.path.join(os.getcwd(), "bin/doc"))
 
 def generate_pdf(src_file, out_pdf, lang):
     """Ruft asciidoctor-pdf für eine Hauptdatei auf."""
