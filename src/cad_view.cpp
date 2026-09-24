@@ -33,9 +33,9 @@ CadView::CadView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // Hide the default cursor, as we will use a custom crosshair cursor in the Cad application
     this->setCursor(Qt::BlankCursor);
 
-    // Antialiasing aktivieren, damit Linien und Texte glatter aussehen
-    // setRenderHint(QPainter::Antialiasing);
-    // setRenderHint(QPainter::TextAntialiasing);
+    // Antialiasing standardmäßig deaktivieren, da es in CAD-Anwendungen oft zu unscharfen Linien führen kann
+    // Kann aber der User in den Einstellungen aktivieren, falls gewünscht
+    setEnableAntialiasing(false);
 
     // Set the background color to black for a classic Cad look
     setBackgroundBrush(QColor(0,0,0));
@@ -47,6 +47,16 @@ CadView::CadView(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
     // deactivate scrollbars
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
+void CadView::setEnableAntialiasing(bool enable) {
+    if (enable) {
+        setRenderHint(QPainter::Antialiasing);
+        setRenderHint(QPainter::TextAntialiasing);
+    } else {
+        setRenderHint(QPainter::Antialiasing, false);
+        setRenderHint(QPainter::TextAntialiasing, false);
+    }
 }
 
 void CadView::showEvent(QShowEvent *event)
