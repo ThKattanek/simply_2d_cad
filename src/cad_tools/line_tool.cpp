@@ -37,8 +37,6 @@ void LineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
         QPointF currentPosition = scene->getSnapOrPosition(event->scenePos());
         lineStateMachine(scene, currentPosition);
     }
-    else if (event->button() == Qt::RightButton && m_lineState == ToolState::Drawing)
-        cancelDrawing(scene);
 }
 
 void LineTool::mouseMoveEvent(CadScene* scene, QGraphicsSceneMouseEvent* event)
@@ -97,6 +95,8 @@ void LineTool::handleValueInput(CadScene *scene, double value)
 void LineTool::activate(CadScene *scene)
 {
     Q_UNUSED(scene);
+
+    cancelDrawing(scene);
 
     switch(getToolMode())
     {

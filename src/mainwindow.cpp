@@ -121,6 +121,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->registerTool("actionToolCircle0", std::make_shared<CircleTool>(), ToolMode::Normal);
     m_toolManager->registerTool("actionToolCircle1", std::make_shared<CircleTool>(), CircleToolMode::CenterDiameter);
     m_toolManager->registerTool("actionToolCircle2", std::make_shared<CircleTool>(), CircleToolMode::Diameter);
+    m_toolManager->registerTool("actionToolCircle3", std::make_shared<CircleTool>(), CircleToolMode::ThreePoints);
     m_toolManager->registerTool("actionToolRectangle", std::make_shared<RectangleTool>());
     m_toolManager->registerTool("actionToolConstructionLineH", std::make_shared<ConstructionHvLineTool>(), 0);
     m_toolManager->registerTool("actionToolConstructionLineV", std::make_shared<ConstructionHvLineTool>(), 1);
@@ -139,6 +140,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_toolManager->bindAction(ui->actionToolCircle0);
     m_toolManager->bindAction(ui->actionToolCircle1);
     m_toolManager->bindAction(ui->actionToolCircle2);
+    m_toolManager->bindAction(ui->actionToolCircle3);
     m_toolManager->bindAction(ui->actionToolRectangle);
     m_toolManager->bindAction(ui->actionToolConstructionLineH);
     m_toolManager->bindAction(ui->actionToolConstructionLineV);

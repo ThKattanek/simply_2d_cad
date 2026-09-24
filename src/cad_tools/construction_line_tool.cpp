@@ -25,6 +25,7 @@ void ConstructionLineTool::retranslate()
 void ConstructionLineTool::activate(CadScene* scene)
 {
     Q_UNUSED(scene);
+    cancelDrawing(scene);
     emit promptTextChanged(m_promptMsg01);
 }
 
@@ -43,8 +44,6 @@ void ConstructionLineTool::mousePressEvent(CadScene* scene, QGraphicsSceneMouseE
     if (event->button() == Qt::LeftButton) {
         QPointF pos = scene->getSnapOrPosition(event->scenePos());
         stateMachine(scene, pos);
-    } else if (event->button() == Qt::RightButton && m_state == ToolState::Drawing) {
-        cancelDrawing(scene);
     }
 }
 

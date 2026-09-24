@@ -17,7 +17,8 @@ class QGraphicsEllipseItem;
 
 enum CircleToolMode {
     CenterDiameter = 1,
-    Diameter
+    Diameter,
+    ThreePoints,
 };
 
 class CircleTool : public CadTool
@@ -39,6 +40,9 @@ private:
     void cancelDrawing(CadScene* scene);
     void circleStateMachine(CadScene* scene, const QPointF& point);
 
+    // New function to calculate circle from three points
+    static bool calculateCircle3P(const QPointF& p1, const QPointF& p2, const QPointF& p3, QPointF& center, qreal& radius);
+
     QGraphicsEllipseItem* m_tempCircle = nullptr;
     ToolState m_circleState = Idle;
     QPointF m_currentMousePos;
@@ -46,5 +50,9 @@ private:
     qreal m_radius;
     QPointF m_firstPoint;
 
+    QPointF m_p1, m_p2, m_p3; // Neu für ThreePoints
+    int m_pointCount = 0; // Neu für ThreePoints
+
     QString promtMsg01, promtMsg02, promtMsg03, promtMsg04, promtMsg05, promtMsg06;
+    QString promtMsg07, promtMsg08, promtMsg09; // Neu für ThreePoints
 };
