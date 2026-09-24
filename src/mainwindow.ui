@@ -448,7 +448,7 @@
     <string>Circle: Center - Diameter (C)</string>
    </property>
    <property name="toolTip">
-    <string>Draw Circle: Center - Diameter</string>
+    <string>Draw Circle: Center - Diameter (C)</string>
    </property>
    <property name="statusTip">
     <string>Draw a circle by specifying its center and diameter.</string>
