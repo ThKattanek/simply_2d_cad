@@ -91,6 +91,7 @@
    <addaction name="actionToolCircle0"/>
    <addaction name="actionToolCircle1"/>
    <addaction name="actionToolCircle2"/>
+   <addaction name="actionToolCircle3"/>
    <addaction name="actionToolRectangle"/>
   </widget>
   <widget class="QToolBar" name="tb_snapTools">
@@ -666,6 +667,24 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionToolCircle3">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/icons_svg/tool_circle_3.svg</normaloff>:/icons/icons_svg/tool_circle_3.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Circle: 3 Points</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Circle over 3 Points</string>
+   </property>
+   <property name="statusTip">
+    <string>Draw a circle by specifying three points on its circumference.</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>
