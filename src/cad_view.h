@@ -21,6 +21,7 @@ class CadView : public QGraphicsView
 public:
     CadView(QGraphicsScene *scene, QWidget *parent = nullptr);
     void setCommandInput(QLineEdit *commandInput) {m_commandInput = commandInput;}
+    void setEnableAntialiasing(bool enable);
 
 protected:
     void showEvent(QShowEvent *event) override;

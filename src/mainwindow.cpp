@@ -151,6 +151,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Set the default tool to SelectTool
     ui->actionToolSelect->trigger();
 
+    // Load application settings from QSettings
+    loadSettings();
+
     // Load all Settings from QSettings
     m_cadScene->loadSettings();
 
@@ -542,6 +545,7 @@ void MainWindow::on_actionOptions_triggered()
     AppSettingsDialog settingsDialog(this);
     if (settingsDialog.exec() == QDialog::Accepted) {
         m_cadScene->loadSettings(); // Reload settings after changes
+        loadSettings();             // Reload other settings if necessary
     }
 }
 
@@ -707,6 +711,15 @@ void MainWindow::connectSnapSettingsToUi()
         settings.setValue("Snap/PerpendicularSnapEnabled", checked);
         m_cadScene->loadSettings();
     });
+}
+
+void MainWindow::loadSettings()
+{
+    QSettings settings;
+
+    bool enableAA = settings.value("General/EnableAntialiasing", true).toBool();
+    if(m_cadView)
+        m_cadView->setEnableAntialiasing(enableAA);
 }
 
 void MainWindow::setupUndoRedoActions()

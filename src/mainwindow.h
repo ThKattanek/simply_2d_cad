@@ -64,6 +64,8 @@ private:
     void loadSnapSettingsToUi();
     void connectSnapSettingsToUi();
 
+    void loadSettings();
+
     void createLanguageMenu();
     void switchLanguage(const QString &qmFileName);
 

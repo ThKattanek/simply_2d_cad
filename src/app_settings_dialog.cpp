@@ -68,6 +68,7 @@ void AppSettingsDialog::onDefault()
     switch (ui->listSettingGroups->currentRow()) {
     case 0: // General Settings
         ui->txtDefaultSavePath->setText(QDir::homePath() + "/Simply2dCad");
+        ui->checkBoxEnableAntialiasing->setChecked(false);
         break;
 
     case 1: // Snap Settings
@@ -111,6 +112,7 @@ void AppSettingsDialog::loadSettingsToUi()
     ui->txtDefaultSavePath->setText(settings.value("General/DefaultSavePath", defaultPath).toString());
     ui->spinSnapMarkerSize->setValue(settings.value("Snap/MarkerSize", 12).toInt());
     ui->spinSnapTolerance->setValue(settings.value("Snap/TolerancePixels", 10.0).toDouble());
+    ui->checkBoxEnableAntialiasing->setChecked(settings.value("General/EnableAntialiasing", false).toBool());
 }
 
 void AppSettingsDialog::saveSettingsFromUi()
@@ -124,6 +126,7 @@ void AppSettingsDialog::saveSettingsFromUi()
     settings.setValue("General/DefaultSavePath", ui->txtDefaultSavePath->text().trimmed());
     settings.setValue("Snap/MarkerSize", ui->spinSnapMarkerSize->value());
     settings.setValue("Snap/TolerancePixels", ui->spinSnapTolerance->value());
+    settings.setValue("General/EnableAntialiasing", ui->checkBoxEnableAntialiasing->isChecked());
 
     emit settingsChanged();
 }
