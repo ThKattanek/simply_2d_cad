@@ -100,3 +100,10 @@ footer:
       content: 'Simply 2D CAD'
     right:
       content: '{page-number} / {page-count}'  # Seitenzahl unten rechts
+
+# --- Bilder ---
+image:
+  border_color: #AAAAAA    # Farbe des Rahmens (z. B. Hellgrau)
+  border_width: 1          # Breite der Linie in Pt
+  border_radius: 2         # Abgerundete Ecken (optional)
+  padding: 3               # Innenabstand zwischen Bild und Rahmen

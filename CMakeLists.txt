@@ -128,18 +128,6 @@ qt_add_translations(
         -extensions cpp,h,ui
 )
 
-# --- Handbuch-Target (Asciidoctor + Python) ---
-find_package(Python3 COMPONENTS Interpreter)
-
-if(Python3_FOUND)
-    add_custom_target(generate_docs
-        COMMAND Python3::Interpreter ${CMAKE_SOURCE_DIR}/doc/scripts/build_docs.py "${CMAKE_BINARY_DIR}/bin/doc"
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Generiere Dokumentation (PDFs) im Build-Verzeichnis..."
-    )
-    add_dependencies(${PROJECT_NAME} generate_docs)
-endif()
-
 # Platformspezifischer Installationspfad für die Dokumentation
 if(WIN32)
     set(DOC_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}/doc")
@@ -153,18 +141,13 @@ else() # Linux / UNIX FHS Standard
     set(DOC_DIR_INSTALL_VAL "${CMAKE_INSTALL_FULL_DOCDIR}")
 endif()
 
+# Unterverzeichnis für die Dokumentation hinzufügen (CMakeLists.txt in doc/manual)
+add_subdirectory(doc)
+
 # Definiere den relativen oder absoluten Pfad für den Quell-/Buildcode
 target_compile_definitions(simply_2d_cad PRIVATE
     DOC_DIR_BUILD="${CMAKE_BINARY_DIR}/bin/doc"
     DOC_DIR_INSTALL="${DOC_INSTALL_VAL}"
-)
-
-# Installation der erzeugten PDFs
-install(FILES
-    ${CMAKE_BINARY_DIR}/bin/doc/simply_2d_cad_manual_de.pdf
-    ${CMAKE_BINARY_DIR}/bin/doc/simply_2d_cad_manual_en.pdf
-    DESTINATION ${DOC_INSTALL_DIR}
-    OPTIONAL
 )
 
 # Installation der Hauptanwendung (Standard FHS)
