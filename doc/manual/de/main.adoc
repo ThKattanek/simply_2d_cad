@@ -1,3 +1,11 @@
+// Simply 2D CAD
+// Copyright (C) 2026 Thorsten Kattanek
+
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+
 = Simply 2D CAD – Benutzerhandbuch
 Thorsten Kattanek
 v1.0, {docdate}
@@ -8,9 +16,11 @@ v1.0, {docdate}
 :icons: font
 :experimental:
 :imagesdir: ../images
+:icon-dir: ../../../src/icons_svg
 
 == Einführung
 Willkommen im Benutzerhandbuch von *Simply 2D CAD*.
+Es freut mich, dass du dich für diese Software entschieden hast. Dieses Handbuch soll dir helfen, die grundlegenden Funktionen und Werkzeuge von Simply 2D CAD zu verstehen und effektiv zu nutzen.
 
 == Grundlegende Navigation
 * *Pan (Verschieben):* Halte die mittlere Maustaste gedrückt und bewege die Maus.
@@ -26,3 +36,5 @@ Im Zeichenfenster kannst du Werkzeuge direkt über Tastenkürzel aufrufen:
 [NOTE]
 .Pro-Tipp
 Tippe einfach eine Zahl oder Koordinate (z. B. `10,20` oder `100<45`), um direkt Werte in die Befehlszeile einzugeben.
+
+include::tools/line_2points.adoc[]

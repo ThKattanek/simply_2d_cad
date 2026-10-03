@@ -161,8 +161,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Load the layout settings (window size, position, toolbar positions) from QSettings
     loadLayoutSettings();
 
+    // Create the language menu and populate it with available translations
     createLanguageMenu();
     ui->retranslateUi(this);
+
+    // Create the help menu
+    createHelpMenu();
 
     // Update the window title based on the current file path
     updateWindowTitle();
@@ -223,6 +227,28 @@ void MainWindow::createLanguageMenu()
     }
 }
 
+void MainWindow::createHelpMenu()
+{
+    m_helpMenu = menuBar()->addMenu(tr("&Help"));
+    m_actionManual = new QAction(tr("Manual"), this);
+
+    connect(m_actionManual, &QAction::triggered, this, [this]() {
+        QString langCode = m_settings.value("Ui/Language", QLocale::system().name()).toString();
+        QString pdfFileName = getManualPath(langCode.startsWith("de", Qt::CaseInsensitive) ? "de" : "en");
+
+        if(!pdfFileName.isEmpty()) {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(pdfFileName));
+        } else {
+            QMessageBox::warning(
+                this,
+                tr("Help"),
+                tr("The manual file could not be found."));
+        }
+    });
+
+    m_helpMenu->addAction(m_actionManual);
+}
+
 void MainWindow::switchLanguage(const QString &qmFileName)
 {
     qApp->removeTranslator(&m_translator);
@@ -238,6 +264,22 @@ void MainWindow::switchLanguage(const QString &qmFileName)
 
     if (m_translatorQtBase.load("qtbase_" + langCode, qtTranslationsPath)) {
         qApp->installTranslator(&m_translatorQtBase);
+    }
+}
+
+void MainWindow::updateTextsForCurrentLanguage()
+{
+    if (m_langMenu) {
+        m_langMenu->setTitle(tr("&Language"));
+    }
+    if (m_editMenu) {
+        m_editMenu->setTitle(tr("&Edit"));
+    }
+    if (m_helpMenu) {
+        m_helpMenu->setTitle(tr("&Help"));
+    }
+    if (m_actionManual) {
+        m_actionManual->setText(tr("Manual"));
     }
 }
 
@@ -435,12 +477,8 @@ void MainWindow::changeEvent(QEvent *event)
             m_toolManager->retranslateAllTools();
 
         // Texte, die du in C++ gesetzt hast, müssen hier neu aufgerufen werden:
-        if (m_langMenu) {
-            m_langMenu->setTitle(tr("&Language"));
-        }
-        if (m_editMenu) {
-            m_editMenu->setTitle(tr("&Edit"));
-        }
+        updateTextsForCurrentLanguage();
+
         updateUndoRedoActions();
     }
 
@@ -816,7 +854,6 @@ void MainWindow::on_actionNew_triggered()
     }
 }
 
-
 void MainWindow::on_actionDeleteAllConstructionLines_triggered()
 {
     if (!m_cadDocument) return;
@@ -842,22 +879,6 @@ void MainWindow::on_actionDeleteAllConstructionLines_triggered()
         m_undoStack->push(std::move(macroCmd));
     } else {
         macroCmd->execute();
-    }
-}
-
-
-void MainWindow::on_actionHelpManual_triggered()
-{
-    QString langCode = m_settings.value("Ui/Language", QLocale::system().name()).toString();
-    QString pdfFileName = getManualPath(langCode.startsWith("de", Qt::CaseInsensitive) ? "de" : "en");
-
-    if(!pdfFileName.isEmpty()) {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(pdfFileName));
-    } else {
-        QMessageBox::warning(
-        this,
-        tr("Help"),
-        tr("The manual file could not be found."));
     }
 }
 

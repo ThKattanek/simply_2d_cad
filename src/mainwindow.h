@@ -54,10 +54,7 @@ private slots:
     void on_actionOptions_triggered();
     void on_commandSubmitted();
     void on_actionNew_triggered();
-
     void on_actionDeleteAllConstructionLines_triggered();
-
-    void on_actionHelpManual_triggered();
 
 private:
     void saveLayoutSettings();
@@ -69,7 +66,9 @@ private:
     void loadSettings();
 
     void createLanguageMenu();
+    void createHelpMenu();
     void switchLanguage(const QString &qmFileName);
+    void updateTextsForCurrentLanguage();
 
     void initializeCommandToolbar();
     void setupUndoRedoActions();
@@ -92,6 +91,7 @@ private:
     QTranslator m_translatorQtBase;
     QMenu *m_langMenu = nullptr;
     QMenu *m_editMenu = nullptr;
+    QMenu *m_helpMenu = nullptr;
     QToolBar *toolBar = nullptr;
     QLabel *m_coordLabel = nullptr;
 
@@ -104,6 +104,7 @@ private:
 
     QAction *m_actionUndo = nullptr;
     QAction *m_actionRedo = nullptr;
+    QAction *m_actionManual = nullptr;
 
     QLabel *m_commandPromt = nullptr;
     QLineEdit *m_commandInput = nullptr;
