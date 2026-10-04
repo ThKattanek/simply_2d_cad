@@ -51,6 +51,18 @@ admonition:
     warning:
       font_color: CC0000
 
+# --- Vertikale Abstände (Margins) ---
+block:
+  margin_bottom: 12      # Abstand nach normalen Absätzen (Standard ist oft ~6-8)
+
+image:
+  margin_top: 6
+  margin_bottom: 12      # Abstand unter Bildern/Icons
+
+list:
+  margin_top: 6
+  margin_bottom: 12      # Abstand unter Listen
+
 # --- Tastenkombinationen (kbd:[...]) ---
 kbd:
   font_family: Courier

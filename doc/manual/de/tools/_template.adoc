@@ -1,0 +1,19 @@
+// doc/manual/de/tools/_template.adoc
+
+[#tool-{tool-id}]
+=== {tool-name}
+
+image::{icon-dir}/{tool-icon}[role="thumb", 24]
+
+{tool-description}
+
+&#160;
+
+.Vorgehensweise:
+1. Wähle das Werkzeug über das Icon oder die Taste keybin:{tool-shortcut}[].
+{tool-steps}
+
+.Optionen & Eingaben:
+{tool-options}
+
+NOTE: {tool-tip}

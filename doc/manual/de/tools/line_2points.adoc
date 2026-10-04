@@ -7,4 +7,25 @@
 // (at your option) any later version.
 
 === Linie mit 2 Punkten zeichnen
-image::{icon-dir}/tool_line.svg[32, role="frame"]
+//image::{icon-dir}/tool_line.svg[32, role="frame"]
+// doc/manual/de/tools/tool_line.adoc
+:tool-id: line
+:tool-name: Linien-Werkzeug
+:tool-icon: tool_line.svg
+:tool-shortcut: L
+:tool-description: Das Linien-Werkzeug dient zum Erstellen von geraden Strecken zwischen zwei Punkten.
+
+:tool-steps: pass:a[ \
+2. Klicke in die Zeichenfläche, um den **Startpunkt** festzulegen. \
+3. Klicke erneut, um den **Endpunkt** festzulegen. \
+]
+
+:tool-options: pass:a[ \
+* **Koordinateneingabe:** Alternativ können x,y-Koordinaten in der Befehlszeile eingegeben werden. \
+* **Längeneingabe:** Nach dem Startpunkt kann direkt eine Länge eingetippt werden. \
+]
+
+:tool-tip: Das Werkzeug bleibt nach dem Zeichnen aktiv, um direkt weitere Linien zu erstellen.
+
+// Hier wird das Template inklusive aller Leerzeilen-Abstände geladen:
+include::_template.adoc[]
