@@ -4,6 +4,9 @@
 set(DOC_SOURCES
     manual/pdf-theme.yml
     manual/de/main.adoc manual/en/main.adoc
+    # Hier werden alle Tools beschrieben
+    manual/de/tools/_template.adoc
+    manual/de/tools/point.adoc # manual/en/tools/point.adoc
     manual/de/tools/line_2points.adoc # manual/en/tools/line_2points.adoc
 )
 

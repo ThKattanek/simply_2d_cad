@@ -27,15 +27,22 @@ heading:
 # --- Titelblatt (Cover Page) ---
 title_page:
   align: center
+  logo:
+    align: center
+    top: 10%                         # Abstand des Logos von oben
+    width: 2.5in                     # Festgelegte Breite (verhindert 100% Seitenbreite)
+    margin_bottom: 20                # Abstand zwischen Logo und Haupttitel
   title:
     font_color: 003366               # Dunkelblau für den Buchtitel
-    font_size: 28
+    font_size: 26
     font_style: bold
-    top: 30%                         # Abstand von oben
+    margin_top: 0                    # Direkt unter dem Logo anschließen
+    margin_bottom: 12
   subtitle:
     font_color: 666666
     font_size: 14
     font_style: italic
+    margin_bottom: 20
   authors:
     font_color: 444444
     font_size: 11
@@ -50,6 +57,18 @@ admonition:
       font_color: 008800
     warning:
       font_color: CC0000
+
+# --- Vertikale Abstände (Margins) ---
+block:
+  margin_bottom: 12      # Abstand nach normalen Absätzen (Standard ist oft ~6-8)
+
+image:
+  margin_top: 6
+  margin_bottom: 12      # Abstand unter Bildern/Icons
+
+list:
+  margin_top: 6
+  margin_bottom: 12      # Abstand unter Listen
 
 # --- Tastenkombinationen (kbd:[...]) ---
 kbd:
@@ -106,4 +125,13 @@ image:
   border_color: #AAAAAA    # Farbe des Rahmens (z. B. Hellgrau)
   border_width: 1          # Breite der Linie in Pt
   border_radius: 2         # Abgerundete Ecken (optional)
-  padding: 3               # Innenabstand zwischen Bild und Rahmen
+  padding: [5,5,5,5]       # Innenabstand zwischen Bild und Rahmen
+
+# --- Einrücken beim Inhaltsverzeichnis ---
+extends: default
+toc:
+  indent: 20
+  h3:
+    indent: 20
+  h4:
+    indent: 40
