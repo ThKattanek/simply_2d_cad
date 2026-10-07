@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Hintergrund-Verlauf -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hintergrund (App-Icon Form) -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+
+  <!-- Konstruktions-Raster (dezent im Hintergrund) -->
+  <g stroke="#334155" stroke-width="1.5" stroke-dasharray="4,6">
+    <line x1="80" y1="180" x2="432" y2="180"/>
+    <line x1="80" y1="256" x2="432" y2="256"/>
+    <line x1="80" y1="332" x2="432" y2="332"/>
+  </g>
+
+  <!-- S2D Monogramm / Polyline-Geometrie -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- Das "S" -->
+    <path d="M 170 180 
+             L 120 180 
+             A 38 38 0 0 0 120 256 
+             L 160 256 
+             A 38 38 0 0 1 160 332 
+             L 110 332" 
+          stroke="#38bdf8" 
+          stroke-width="24"/>
+
+    <!-- Die "2" -->
+    <path d="M 215 195 
+             A 35 35 0 0 1 285 205 
+             C 285 245 215 280 215 332 
+             L 285 332" 
+          stroke="#00f2fe" 
+          stroke-width="24"/>
+
+    <!-- Das "D" -->
+    <path d="M 330 180 
+             L 330 332 
+             M 330 180 
+             L 365 180 
+             A 76 76 0 0 1 365 332 
+             L 330 332" 
+          stroke="#38bdf8" 
+          stroke-width="24"/>
+  </g>
+
+  <!-- CAD-Fangpunkte & Anfeiler (Snap Markers) -->
+  <g fill="#f59e0b" stroke="#0f172a" stroke-width="3">
+    <!-- Eckpunkte S -->
+    <rect x="162" y="172" width="16" height="16"/>
+    <rect x="102" y="324" width="16" height="16"/>
+    <!-- Eckpunkte 2 -->
+    <circle cx="215" cy="195" r="9"/>
+    <rect x="277" y="324" width="16" height="16"/>
+    <!-- Eckpunkte D -->
+    <rect x="322" y="172" width="16" height="16"/>
+    <rect x="322" y="324" width="16" height="16"/>
+  </g>
+
+  <!-- Bemaßungslinie unten -->
+  <g stroke="#f59e0b" stroke-width="2">
+    <line x1="110" y1="370" x2="400" y2="370"/>
+    <line x1="110" y1="362" x2="110" y2="378"/>
+    <line x1="400" y1="362" x2="400" y2="378"/>
+  </g>
+</svg>
