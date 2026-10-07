@@ -1,6 +1,6 @@
 // Simply 2D CAD
 // Copyright (C) 2026 Thorsten Kattanek
-
+//
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
@@ -11,7 +11,7 @@ Thorsten Kattanek
 v1.0, {docdate}
 :doctype: book
 :toc: left
-:toclevels: 2
+:toclevels: 3
 :toc-title: Inhaltsverzeichnis
 :icons: font
 :experimental:
@@ -35,20 +35,20 @@ NOTE: **Für TruTops-Umsteiger:** Das arbeiten mit Hilslinien funktioniert in Si
 
 Dieses Handbuch hilft dir dabei, die Funktionen und Werkzeuge von Simply 2D CAD schnell zu verstehen und effektiv einzusetzen.
 
-== Grundlegende Navigation
-* *Pan (Verschieben):* Halte die mittlere Maustaste gedrückt und bewege die Maus.
-* *Zoom:* Halte die rechte Maustaste gedrückt und bewege die Maus nach oben (rein zoome) oder unten (raus zoomen).
+=== Grundlegende Navigation
+*Pan (Verschieben):* Halte die mittlere Maustaste gedrückt und bewege die Maus.
+*Zoom:* Halte die rechte Maustaste gedrückt und bewege die Maus nach oben (rein zoome) oder unten (raus zoomen).
 
-== Tastenkombinationen & Werkzeuge
-Im Zeichenfenster kannst du Werkzeuge direkt über Tastenkürzel aufrufen:
+=== Hinweise zur Koordinateneingabe in der Komandozeile
+*2D Koordinaten - Absolut:* Bei dieser Eingabe bezieht sich der Ursprung immer auf den Nullpunkt des Systems.
+Es muss immer x und y angegeben werden. Beispiel: `10,20` bedeutet, dass der Punkt bei x=10mm und y=20mm liegt.
 
-* kbd:[L] – Linie zeichnen
-* kbd:[C] – Kreis (Zentrum & Durchmesser)
-* kbd:[S] – Auswahl-Werkzeug
+*2D Koordinaten - Relativ:* Bei dieser Eingabe bezieht sich der Ursprung immer auf den zuletzt gesetzten Punkt. Es muss immer x und y angegeben werden. Beispiel: `@10,20` bedeutet, dass der Punkt 10mm in x-Richtung und 20mm in y-Richtung relativ zum letzten Punkt liegt.
 
-[NOTE]
-.Pro-Tipp
-Tippe einfach eine Zahl oder Koordinate (z. B. `10,20` oder `100<45`), um direkt Werte in die Befehlszeile einzugeben.
+*Polar Koordinaten:* Bei dieser Eingabe wird der Punkt durch eine Länge und einen Winkel angegeben. Beispiel: `10<45` bedeutet, dass der Punkt 10mm entfernt und in einem Winkel von 45° liegt. Der Winkel wird im mathematischen Sinn gemessen, d.h. 0° entspricht der positiven x-Achse, 90° der positiven y-Achse, 180° der negativen x-Achse und 270° der negativen y-Achse.
+
+NOTE: Die Polor Koordinaten können mit der Relativen Eingabe kombiniert werden. Beispiel: `@10<45` bedeutet, dass der Punkt 10mm entfernt und in einem Winkel von 45° relativ zum letzten Punkt liegt.
 
 == Zeichenwerkzeuge
+include::tools/point.adoc[]
 include::tools/line_2points.adoc[]

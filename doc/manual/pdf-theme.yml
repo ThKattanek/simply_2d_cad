@@ -118,4 +118,13 @@ image:
   border_color: #AAAAAA    # Farbe des Rahmens (z. B. Hellgrau)
   border_width: 1          # Breite der Linie in Pt
   border_radius: 2         # Abgerundete Ecken (optional)
-  padding: 3               # Innenabstand zwischen Bild und Rahmen
+  padding: [5,5,5,5]       # Innenabstand zwischen Bild und Rahmen
+
+# --- Einrücken beim Inhaltsverzeichnis ---
+extends: default
+toc:
+  indent: 20
+  h3:
+    indent: 20
+  h4:
+    indent: 40

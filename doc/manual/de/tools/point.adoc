@@ -7,11 +7,11 @@
 // (at your option) any later version.
 
 // === Linie mit 2 Punkten zeichnen
-:tool-id: line
-:tool-name: Linien-Werkzeug
-:tool-icon: tool_line.svg
-:tool-shortcut: L
-:tool-description: Das Linien-Werkzeug dient zum Erstellen von geraden Strecken zwischen zwei Punkten.
+:tool-id: point
+:tool-name: Punkt-Werkzeug
+:tool-icon: tool_point.svg
+:tool-shortcut: P
+:tool-description: Das Punkt Werkzeug dient zum Erstellen von Punkten.
 
 :tool-steps: pass:q[ \
 + \
@@ -21,10 +21,11 @@
 ]
 
 :tool-options: pass:q[ \
-**Koordinateneingabe:** Alternativ können auch Koordinaten in der Befehlszeile eingegeben werden. + \
+**Koordinateneingabe:** Alternativ können x,y-Koordinaten in der Befehlszeile eingegeben werden. + \
+**Längeneingabe:** Nach dem Startpunkt kann direkt eine Länge eingetippt werden. + \
 ]
 
-:tool-tip: Für den 2. Punkt kann man auch z.B. `@30<10` eingeben.
+:tool-tip: Das Werkzeug bleibt nach dem Zeichnen aktiv, um direkt weitere Linien zu erstellen.
 
 // Hier wird das Template inklusive aller Leerzeilen-Abstände geladen:
 include::_template.adoc[]
