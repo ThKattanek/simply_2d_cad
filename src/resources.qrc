@@ -25,5 +25,6 @@
         <file>icons_svg/tool_polyline.svg</file>
         <file>icons_svg/tool_parallel_line.svg</file>
         <file>icons_svg/tool_circle_3.svg</file>
+        <file>icons_svg/s2d_logo.svg</file>
     </qresource>
 </RCC>

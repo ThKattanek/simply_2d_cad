@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Simply2DCad by Thorsten Kattanek</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/icons_svg/s2d_logo.svg</normaloff>:/icons/icons_svg/s2d_logo.svg</iconset>
+  </property>
   <property name="animated">
    <bool>true</bool>
   </property>
